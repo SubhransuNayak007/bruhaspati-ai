@@ -1752,7 +1752,7 @@ function _renderStructuredResponse(data, query) {
     `).join('');
     
     return `
-      <div class="response-card" id="${id}" style="position:relative; animation: slideInLeft 0.35s ease; padding: 24px 20px;">
+      <div class="response-card" id="${id}" style="position:relative; padding: 24px 20px;">
         ${speakerBtn}
         <div class="resp-section-header" style="margin-bottom: 18px;">
           <span class="section-icon">🪜</span>
@@ -1774,7 +1774,7 @@ function _renderStructuredResponse(data, query) {
       .replace(/###\s+(.+)/g, `<h4 style="font-family:'Space Grotesk',sans-serif; color:var(--text-accent); margin: 20px 0 10px; font-weight:700; border-bottom:1px solid rgba(255,255,255,0.03); padding-bottom:4px;">$1</h4>`);
       
     return `
-      <div class="response-card" id="${id}" style="position:relative; animation: slideInLeft 0.35s ease; padding: 24px 20px;">
+      <div class="response-card" id="${id}" style="position:relative; padding: 24px 20px;">
         ${speakerBtn}
         <div class="resp-section-header" style="margin-bottom: 16px; border-bottom: 1px solid var(--border-color); padding-bottom: 12px;">
           <span class="section-icon">🔬</span>
@@ -1820,7 +1820,7 @@ function _renderStructuredResponse(data, query) {
     }
     
     return `
-      <div class="response-card" id="${id}" style="position:relative; animation: slideInLeft 0.35s ease; padding: 24px 20px;">
+      <div class="response-card" id="${id}" style="position:relative; padding: 24px 20px;">
         ${speakerBtn}
         <div class="resp-section-header" style="margin-bottom: 16px;">
           <span class="section-icon">📊</span>
@@ -1850,7 +1850,7 @@ function _renderStructuredResponse(data, query) {
   if (data.essay) {
     // Long Answer
     return `
-      <div class="response-card" id="${id}" style="position:relative; animation: slideInLeft 0.35s ease; padding: 24px 20px;">
+      <div class="response-card" id="${id}" style="position:relative; padding: 24px 20px;">
         ${speakerBtn}
         <div class="resp-section-header" style="margin-bottom: 16px;">
           <span class="section-icon">📝</span>
@@ -1881,7 +1881,7 @@ function _renderStructuredResponse(data, query) {
     `).join('');
     
     return `
-      <div class="response-card" id="${id}" style="position:relative; animation: slideInLeft 0.35s ease; padding: 24px 20px;">
+      <div class="response-card" id="${id}" style="position:relative; padding: 24px 20px;">
         ${speakerBtn}
         <div class="resp-section-header" style="margin-bottom: 12px;">
           <span class="section-icon">⚡</span>
@@ -1922,7 +1922,7 @@ function _renderStructuredResponse(data, query) {
     const kwChips = (data.keywords || []).map(k => `<span class="keyword-chip" style="background:rgba(244,63,94,0.1); border-color:rgba(244,63,94,0.25); color:#fda4af;">${k}</span>`).join('');
 
     return `
-      <div class="response-card" id="${id}" style="position:relative; animation: slideInLeft 0.35s ease;">
+      <div class="response-card" id="${id}" style="position:relative;">
         ${speakerBtn}
         
         <!-- Header -->
@@ -5636,9 +5636,15 @@ function initAuth() {
   }
 }
 
-// Bind to window for global inline onclick event resolution
+// Bind to window for global inline onclick/onkeydown event resolution
 window.handleMockLogin = handleMockLogin;
 window.initAuth = initAuth;
+window.handleKeyDown = function(event) {
+  if (event.key === 'Enter' && !event.shiftKey) {
+    event.preventDefault();
+    window.sendMessage();
+  }
+};
 
 // Call initAuth when app loads
 document.addEventListener('DOMContentLoaded', () => {

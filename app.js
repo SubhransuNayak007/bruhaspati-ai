@@ -236,8 +236,15 @@ You MUST respond in this exact JSON structure:
 }`;
   } else {
     // default: structured
-    basePrompt = `You are "Bruhaspati AI," an elite, highly empathetic, and expertly trained AI Educational Tutor specializing in the Indian academic curriculum.
+    basePrompt = `You are "Bruhaspati AI," an elite, ultra-premium educational tutor designed specifically for Indian competitive exams (CBSE, JEE, NEET, State Boards).
 Board: {{BOARD}} | Class: {{CLASS}} | Subject: {{SUBJECT}}
+
+<core_directives>
+1. **Absolute Accuracy:** You must never hallucinate facts, formulas, or historical data. If you are unsure, state clearly that the information requires verification.
+2. **Pedagogical Structure:** Every explanation must follow a logical progression: Definition -> Mechanism -> Formula/Diagram -> Real-World Example -> Exam Relevance.
+3. **Tone and Persona:** Maintain a professional, encouraging, and authoritative tone. Avoid overly casual language or emojis.
+4. **Formatting Strictness:** You MUST use Markdown for all text formatting. You MUST use LaTeX enclosed in $$ for block equations and $ for inline math. Never use plain text for complex formulas.
+</core_directives>
 
 MANDATORY RESPONSE FORMAT — Always respond in this exact JSON structure:
 {
@@ -262,10 +269,11 @@ MANDATORY RESPONSE FORMAT — Always respond in this exact JSON structure:
 
 RULES:
 1. Always use the JSON format above — no deviations
-2. Never give direct homework answers — guide step by step
+2. Never give direct homework answers — guide step by step using Socratic method
 3. Adapt complexity to the board/class level in context
 4. For all math, physics, or chemistry variables/equations, use standard LaTeX syntax wrapped in $ for inline and $$ for blocks.
-5. End with 3 highly relevant follow-up questions in the "followups" array.`;
+5. End with 3 highly relevant follow-up questions in the "followups" array.
+6. Off-Topic Redirect: If the query is outside the scope of Indian academic curricula (Physics, Chemistry, Mathematics, Biology) (e.g. general software coding, music, medical advice, general chat), you MUST decline and set "definition" to: "I am Bruhaspati AI, specialized in Indian academic curricula (Physics, Chemistry, Mathematics, Biology). I cannot assist with this topic, but I would be happy to help you with Physics, Chemistry, Mathematics, or Biology." and leave other fields empty/null.`;
   }
   
   return basePrompt
@@ -275,9 +283,16 @@ RULES:
 }
 
 // ---- SYSTEM PROMPT FOR PYQ REQUESTS ----
-const PYQ_SYSTEM_PROMPT = `You are "Bruhaspati AI," an elite, highly empathetic, and expertly trained AI Educational Tutor specializing in the Indian academic curriculum.
+const PYQ_SYSTEM_PROMPT = `You are "Bruhaspati AI," an elite, ultra-premium educational tutor designed specifically for Indian competitive exams (CBSE, JEE, NEET, State Boards).
 
 Your current context: Board = {{BOARD}}, Class = {{CLASS}}, Subject = {{SUBJECT}}
+
+<core_directives>
+1. **Absolute Accuracy:** You must never hallucinate facts, formulas, or historical data. If you are unsure, state clearly that the information requires verification.
+2. **Pedagogical Structure:** Exclusively return actual or highly representative PYQs aligned with the subject curriculum.
+3. **Tone and Persona:** Maintain a professional, encouraging, and authoritative tone.
+4. **Formatting Strictness:** You MUST use LaTeX wrapped in $ for inline math (e.g. $x^2$) and $$ for block math/matrices/reactions.
+</core_directives>
 
 The student is asking for Previous Year Questions (PYQs), exam questions, or practice questions for a specific chapter/topic.
 You MUST respond in this exact JSON structure:
@@ -303,7 +318,8 @@ RULES:
 2. Adapt the exam details to the current context (e.g. if context is CBSE, prioritize CBSE board questions; if context is JEE, prioritize JEE Main/Adv questions).
 3. Do NOT include definitions, mechanisms, or other sections in your text response. Only output the JSON structure above.
 4. For all math/science equations, chemical reactions, matrices, and variables, you MUST use standard LaTeX syntax. Wrap inline math in single $ signs and block equations or matrices in double $$ signs.
-5. End with 3 highly relevant follow-up questions in the "followups" array.`;
+5. End with 3 highly relevant follow-up questions in the "followups" array.
+6. Off-Topic Redirect: If the topic is outside Physics, Chemistry, Mathematics, or Biology, you MUST decline and set the "topic" field to: "I am Bruhaspati AI, specialized in Indian academic curricula (Physics, Chemistry, Mathematics, Biology). I cannot assist with this topic, but I would be happy to help you with Physics, Chemistry, Mathematics, or Biology." and leave other fields empty/null.`;
 
 // ---- SYSTEM PROMPT FOR INTERACTIVE QUIZZES ----
 const QUIZ_SYSTEM_PROMPT = `You are "Bruhaspati AI quiz generator."
@@ -312,6 +328,12 @@ Generate EXACTLY {{COUNT}} questions. Not fewer. Not more. EXACTLY {{COUNT}}.
 Subject: {{SUBJECT}} | Class: {{CLASS}} | Chapter: {{TOPIC}} | Board: {{BOARD}}
 Difficulty: {{DIFFICULTY}}
 Question types to include: {{TYPES}}
+
+<core_directives>
+1. **Absolute Accuracy:** You must never hallucinate facts or correct answers.
+2. **Pedagogical Structure:** Provide informative step-by-step explanations in the "explanation" field.
+3. **Formatting Strictness:** You MUST use LaTeX wrapped in $ for inline and $$ for block math formulas/variables.
+</core_directives>
 
 Return ONLY a valid JSON structure with exactly {{COUNT}} questions. No preamble, no explanation, no markdown.
 
@@ -335,12 +357,20 @@ Format as JSON:
   "followups": ["Follow-up question 1", "Follow-up question 2", "Follow-up question 3"]
 }
 
-IMPORTANT: The "questions" array must have EXACTLY {{COUNT}} elements. Count them before responding.`;
+IMPORTANT: The "questions" array must have EXACTLY {{COUNT}} elements. Count them before responding.
+Off-Topic Redirect: If the topic is outside Physics, Chemistry, Mathematics, or Biology, you MUST decline and set the "topic" field to: "I am Bruhaspati AI, specialized in Indian academic curricula (Physics, Chemistry, Mathematics, Biology). I cannot assist with this topic, but I would be happy to help you with Physics, Chemistry, Mathematics, or Biology." and leave the "questions" array empty.`;
 
 // ---- SYSTEM PROMPT FOR FORMULA SHEETS ----
-const FORMULA_SYSTEM_PROMPT = `You are "Bruhaspati AI," an elite, highly empathetic, and expertly trained AI Educational Tutor specializing in the Indian academic curriculum.
+const FORMULA_SYSTEM_PROMPT = `You are "Bruhaspati AI," an elite, ultra-premium educational tutor designed specifically for Indian competitive exams (CBSE, JEE, NEET, State Boards).
 
 Your current context: Board = {{BOARD}}, Class = {{CLASS}}, Subject = {{SUBJECT}}
+
+<core_directives>
+1. **Absolute Accuracy:** Ensure formulas and variables are standard.
+2. **Pedagogical Structure:** Provide formulas followed by variable explanations and application notes.
+3. **Tone and Persona:** Authoritative and precise.
+4. **Formatting Strictness:** You MUST format the equations in block LaTeX wrapped in double $$ signs.
+</core_directives>
 
 The student wants a comprehensive formula sheet / key summary for a specific topic/chapter.
 You MUST respond in this exact JSON structure:
@@ -362,7 +392,8 @@ RULES:
 1. Return 4-8 key formulas or core equations for this topic. If the topic is non-mathematical (e.g. English, History), return key terms, dates, or rules.
 2. Only output the JSON structure above. No intro or outro text.
 3. Ensure all equations and variables are formatted in valid LaTeX wrapped in $ or $$.
-4. End with 3 highly relevant follow-up questions in the "followups" array.`;
+4. End with 3 highly relevant follow-up questions in the "followups" array.
+5. Off-Topic Redirect: If the topic is outside Physics, Chemistry, Mathematics, or Biology, you MUST decline and set the "topic" field to: "I am Bruhaspati AI, specialized in Indian academic curricula (Physics, Chemistry, Mathematics, Biology). I cannot assist with this topic, but I would be happy to help you with Physics, Chemistry, Mathematics, or Biology." and leave the "formulas" array empty.`;
 
 // ---- CHAPTER AUTOCOMPLETE DATABASE ----
 const CHAPTERS_DB = {
@@ -1464,6 +1495,32 @@ async function streamAIResponse(query, cardId) {
       `;
       saveAIMessageToState(query, { error: err.type || err.message }, cardId, true);
       return false;
+    } else if (err.status === 400 || err.status === 403 || (err.message && (err.message.includes('API key not valid') || err.message.includes('Key not valid') || err.message.includes('Unauthorized')))) {
+      // Clean, premium connection/authentication failure card!
+      if (activeLoaderIntervals[cardId]) {
+        clearInterval(activeLoaderIntervals[cardId]);
+        delete activeLoaderIntervals[cardId];
+      }
+      if (activeLoaderCleanups[cardId]) {
+        activeLoaderCleanups[cardId]();
+        delete activeLoaderCleanups[cardId];
+      }
+      
+      aiContent.innerHTML = `
+        <div class="response-card" id="${cardId}" style="border-left: 4px solid var(--accent-rose); background: rgba(244,63,94,0.04); padding: 18px 20px;">
+          <h4 style="color: var(--accent-rose); font-family: 'Space Grotesk', sans-serif; display:flex; align-items:center; gap:8px; font-weight:700; margin:0;">
+            <span>🔑</span> Invalid API Key or Unauthorized
+          </h4>
+          <p style="font-size:13px; color:var(--text-secondary); margin-top:8px; line-height:1.5; margin-bottom:0;">
+            The API key provided is invalid, expired, or unauthorized (Status: ${err.status || '400'}). Please verify your custom Google Gemini (starts with <code>AIzaSy</code>) or OpenAI (starts with <code>sk-</code>) key in the settings panel, or switch back to the default Demo Mode.
+          </p>
+          <button class="modal-btn secondary" onclick="openKeyModal()" style="margin-top: 12px; padding: 6px 12px; font-size: 11.5px; width: auto; cursor:pointer;">
+            ⚙️ Open Settings
+          </button>
+        </div>
+      `;
+      saveAIMessageToState(query, { error: err.type || err.message }, cardId, true);
+      return false;
     } else {
       // For API Errors, Rate Limits (429), or Network Issues, automatically fall back to local high-fidelity simulation!
       let alertMsg = "API Error";
@@ -2505,6 +2562,69 @@ window.submitQuizCard = function(cardId) {
     
     let feedbackEl = document.getElementById(`${cardId}_feedback_${idx}`);
     let qItemEl = document.getElementById(`${cardId}_q_${idx}`);
+    
+    // Custom option border coloring for MCQ
+    if (q.options && q.options.length > 0) {
+      if (qItemEl) {
+        qItemEl.querySelectorAll('.quiz-option-btn').forEach(btn => {
+          const btnText = btn.querySelector('span:nth-child(2)').textContent.trim();
+          const radioInd = btn.querySelector('.radio-indicator');
+          
+          if (btnText.toLowerCase() === correctAns.toLowerCase()) {
+            // Correct choice
+            btn.style.borderColor = 'var(--accent-emerald)';
+            btn.style.background = 'rgba(16,185,129,0.1)';
+            btn.style.color = '#6ee7b7';
+            if (radioInd) {
+              radioInd.style.background = 'var(--accent-emerald)';
+              radioInd.style.borderColor = 'var(--accent-emerald)';
+              radioInd.innerHTML = '✓';
+              radioInd.style.color = 'black';
+              radioInd.style.fontSize = '9px';
+              radioInd.style.fontWeight = 'bold';
+              radioInd.style.textAlign = 'center';
+              radioInd.style.lineHeight = '12px';
+            }
+          } else if (btnText.toLowerCase() === userAns.toLowerCase()) {
+            // Wrong user selection
+            btn.style.borderColor = 'var(--accent-rose)';
+            btn.style.background = 'rgba(244,63,94,0.1)';
+            btn.style.color = '#fda4af';
+            if (radioInd) {
+              radioInd.style.background = 'var(--accent-rose)';
+              radioInd.style.borderColor = 'var(--accent-rose)';
+              radioInd.innerHTML = '✗';
+              radioInd.style.color = 'white';
+              radioInd.style.fontSize = '9px';
+              radioInd.style.fontWeight = 'bold';
+              radioInd.style.textAlign = 'center';
+              radioInd.style.lineHeight = '12px';
+            }
+          } else {
+            // Fade non-selected options
+            btn.style.opacity = '0.5';
+            btn.style.cursor = 'default';
+          }
+        });
+      }
+    } else {
+      // Direct text input highlighting
+      if (qItemEl) {
+        const inputEl = qItemEl.querySelector('.quiz-input');
+        if (inputEl) {
+          inputEl.disabled = true;
+          if (isCorrect) {
+            inputEl.style.borderColor = 'var(--accent-emerald)';
+            inputEl.style.background = 'rgba(16,185,129,0.06)';
+            inputEl.style.color = '#6ee7b7';
+          } else {
+            inputEl.style.borderColor = 'var(--accent-rose)';
+            inputEl.style.background = 'rgba(244,63,94,0.06)';
+            inputEl.style.color = '#fda4af';
+          }
+        }
+      }
+    }
     
     if (isCorrect) {
       score++;
@@ -4728,7 +4848,28 @@ window.askNCERTAI = function(subject, cls) {
   updateFilters();
   updateSidebarSelectors(cleanSubject, cleanClass);
   
+  // Collapse the library accordion so user immediately sees the chat
+  const content = document.getElementById('ncertLibraryContent');
+  const toggle = document.getElementById('ncertLibraryToggle');
+  if (content && toggle) {
+    content.style.display = 'none';
+    toggle.classList.remove('expanded');
+  }
+  
+  // Close the mobile sidebar layout if it was open
+  const sidebar = document.querySelector('.sidebar');
+  if (sidebar && sidebar.classList.contains('active')) {
+    sidebar.classList.remove('active');
+  }
+  
+  // Scroll & focus animations to provide robust user feedback
+  const inputEl = document.getElementById('userInput');
+  if (inputEl) {
+    inputEl.focus();
+  }
+  
   const query = `Teach me about ${cleanSubject} in Class ${cleanClass} according to the NCERT syllabus`;
+  showToast(`📖 Loading NCERT Study Guide for ${cleanSubject} Class ${cleanClass}...`);
   window.sendSuggestion(query);
 };
 

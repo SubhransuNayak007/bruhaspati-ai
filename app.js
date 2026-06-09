@@ -2446,12 +2446,6 @@ function startQuizTimer(cardId) {
   }, 1000);
 }
 
-async function retryQuizGeneration(query, cardId, requestedCount) {
-  state.hasRetriedQuiz = true;
-  const strictQuery = `${query} (Enforce limit: You MUST generate EXACTLY ${requestedCount} questions. This is a strict constraint. If you generate any other number of questions, it will cause a system crash.)`;
-  await streamAIResponse(strictQuery, cardId);
-}
-
 window.selectQuizCardOption = function(cardId, qIdx, selectedVal, el) {
   let quiz = activeQuizzes[cardId];
   if (!quiz || quiz.submitted) return;
@@ -3346,7 +3340,7 @@ function saveAIMessageToState(query, parsed, cardId, isError = false) {
 }
 
 // ---- SEND MESSAGE ----
-async function sendMessage() {
+window.sendMessage = async function() {
   const input = document.getElementById('userInput');
   const query = input.value.trim();
   
@@ -3899,10 +3893,10 @@ function updateSidebarSelectors(subject, classLevel) {
   });
 }
 
-function autoResize(textarea) {
+window.autoResize = function(textarea) {
   textarea.style.height = 'auto';
   textarea.style.height = Math.min(textarea.scrollHeight, 150) + 'px';
-}
+};
 
 window.toggleTheme = function() {
   state.theme = state.theme === 'dark' ? 'light' : 'dark';
@@ -3919,7 +3913,38 @@ window.toggleTheme = function() {
 };
 
 window.toggleSidebar = function() {
-  document.getElementById('sidebar').classList.toggle('open');
+  const sidebar = document.getElementById('sidebar');
+  if (sidebar) {
+    sidebar.classList.toggle('open');
+    const isOpen = sidebar.classList.contains('open');
+    const chatBtn = document.getElementById('mobileNavChat');
+    const histBtn = document.getElementById('mobileNavHistory');
+    if (chatBtn && histBtn) {
+      if (isOpen) {
+        chatBtn.classList.remove('active');
+        histBtn.classList.add('active');
+      } else {
+        chatBtn.classList.add('active');
+        histBtn.classList.remove('active');
+      }
+    }
+  }
+};
+
+window.switchMobileTab = function(tab) {
+  const sidebar = document.getElementById('sidebar');
+  const chatBtn = document.getElementById('mobileNavChat');
+  const histBtn = document.getElementById('mobileNavHistory');
+  
+  if (tab === 'history') {
+    if (sidebar) sidebar.classList.add('open');
+    if (chatBtn) chatBtn.classList.remove('active');
+    if (histBtn) histBtn.classList.add('active');
+  } else if (tab === 'chat') {
+    if (sidebar) sidebar.classList.remove('open');
+    if (chatBtn) chatBtn.classList.add('active');
+    if (histBtn) histBtn.classList.remove('active');
+  }
 };
 
 window.clearChat = function() {

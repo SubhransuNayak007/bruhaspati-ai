@@ -1620,7 +1620,8 @@ function prependQuotaWarningIfEnabled(html, data) {
 }
 
 function renderStructuredResponse(data, query) {
-  return _renderStructuredResponse(data, query);
+  let html = _renderStructuredResponse(data, query);
+  return prependQuotaWarningIfEnabled(html, data);
 }
 
 function renderInteractiveSimulator(data, query) {
@@ -3628,6 +3629,7 @@ window.saveSettings = function() {
   const board = document.getElementById('profileBoard').value;
   const classLevel = document.getElementById('profileClass').value;
   const language = document.getElementById('settingsLanguage').value;
+  const apiKey = document.getElementById('settingsApiKey').value.trim();
   
   state.studentName = name;
   state.board = board;
@@ -3638,6 +3640,19 @@ window.saveSettings = function() {
   localStorage.setItem('bruhaspati_board', board);
   localStorage.setItem('bruhaspati_class_level', classLevel);
   localStorage.setItem('bruhaspati_language', language);
+  
+  if (apiKey) {
+    state.apiKey = apiKey;
+    localStorage.setItem('bruhaspati_api_key', apiKey);
+    updateAPIStatus(true);
+    const isOA = apiKey.startsWith('sk-');
+    showToast(`🔑 Custom ${isOA ? 'OpenAI' : 'Gemini'} API key saved & connected!`);
+  } else {
+    localStorage.removeItem('bruhaspati_api_key');
+    state.apiKey = 'REDACTED_API_KEY';
+    updateAPIStatus(false);
+    showToast("ℹ️ Custom key cleared. Switched to fallback mode.");
+  }
   
   updateSidebarSelectors(state.subject, classLevel);
   document.querySelectorAll('.board-btn').forEach(btn => {
@@ -3704,6 +3719,10 @@ function loadAllSettings() {
   document.getElementById('settingsTheme').value = state.theme;
   document.getElementById('settingsFontSize').value = state.fontSize;
   document.getElementById('reduceAnimations').checked = state.reduceAnimations;
+  
+  // Populate custom API key
+  const savedKey = localStorage.getItem('bruhaspati_api_key');
+  document.getElementById('settingsApiKey').value = (savedKey && savedKey !== 'REDACTED_API_KEY') ? savedKey : '';
   
   applySettingsTheme(state.theme);
   applySettingsFontSize(state.fontSize);
@@ -3828,11 +3847,17 @@ document.addEventListener('DOMContentLoaded', () => {
     localStorage.removeItem('bruhaspati_api_key');
   }
 
-  // Clear old API key from local storage to ensure the app uses the new working key
-  localStorage.removeItem('bruhaspati_api_key');
-  state.apiKey = 'REDACTED_API_KEY';
-  state.useRealAPI = true;
-  updateAPIStatus(true);
+  // Load custom API key if present, otherwise default to REDACTED_API_KEY
+  const savedKey = localStorage.getItem('bruhaspati_api_key');
+  if (savedKey && savedKey !== 'REDACTED_API_KEY' && savedKey !== 'REDACTED_OLD_KEY') {
+    state.apiKey = savedKey;
+    state.useRealAPI = true;
+    updateAPIStatus(true);
+  } else {
+    state.apiKey = 'REDACTED_API_KEY';
+    state.useRealAPI = true;
+    updateAPIStatus(false);
+  }
   
   // Init other managers
   loadTokenState();
@@ -3995,7 +4020,7 @@ window.setAPIKey = function(key) {
 
 function updateAPIStatus(connected) {
   const badge = document.querySelector('.ai-badge');
-  if (connected && state.apiKey) {
+  if (connected && state.apiKey && state.apiKey !== 'REDACTED_API_KEY') {
     const isOA = state.apiKey.startsWith('sk-');
     if (badge) {
       badge.innerHTML = `

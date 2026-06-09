@@ -656,6 +656,14 @@
             </div>
           </div>
           
+          <div class="modal-field" style="margin-top:16px;">
+            <label class="modal-label">Custom API Key (Optional)</label>
+            <input type="password" class="quiz-input" id="settingsApiKey" placeholder="Paste Google Gemini (AIzaSy...) or OpenAI (sk-...) key" style="width:100%;" />
+            <div style="font-size:11px; color:var(--text-muted); margin-top:6px; line-height:1.45;">
+              ⚠️ The default free API quota is exhausted (429 Rate Limit). Sticking to <strong>Demo Fallback Mode</strong> unless a valid key is provided. Get a free Gemini key at <a href="https://aistudio.google.com" target="_blank" style="color:var(--accent-indigo); text-decoration:none;">aistudio.google.com</a>. Stored locally on your device.
+            </div>
+          </div>
+          
           <button class="modal-btn primary" style="width:100%; margin-top: 10px;" onclick="openUpgradeModal(); closeSettingsModal();">Upgrade to Premium 🚀</button>
         </div>
         

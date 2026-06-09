@@ -5682,13 +5682,7 @@ function showThinkingLoader(cardId, container, subject) {
   if (activeLoaderIntervals[cardId]) clearInterval(activeLoaderIntervals[cardId]);
   
   container.innerHTML = `
-    <div class="chat-loader-wrap" id="${cardId}_loader">
-      <div class="chat-avatar b-avatar-glow">
-        <svg viewBox="0 0 20 20" fill="none">
-          <circle cx="10" cy="10" r="9" fill="#0f2a5a" stroke="#c8972a" stroke-width="1"/>
-          <text x="10" y="14" text-anchor="middle" font-family="Sora,sans-serif" font-size="9" font-weight="700" fill="#c8972a">A</text>
-        </svg>
-      </div>
+    <div class="chat-loader-wrap" id="${cardId}_loader" style="padding: 4px 0; gap: 0;">
       <div class="b-typing">
         <span></span><span></span><span></span>
       </div>

@@ -886,6 +886,10 @@
       
       <!-- Mock Login (Fallback if Firebase config is missing) -->
       <div id="mockAuthContainer">
+        <div style="background: rgba(245, 158, 11, 0.08); border: 1px solid rgba(245, 158, 11, 0.25); border-radius: 8px; padding: 12px; margin-bottom: 16px; text-align: left; font-size: 12.5px; color: #fcd34d; line-height: 1.5; font-family: 'Inter', sans-serif;">
+          <strong>Sandbox Demo Mode</strong><br>
+          Real Firebase configuration is missing or inactive. Please enter any email to sign in immediately (no password required) for evaluation.
+        </div>
         <input type="text" id="mockEmail" placeholder="Enter Email" style="width: 100%; padding: 12px; margin-bottom: 12px; border-radius: 8px; border: 1px solid var(--border-color); background: rgba(0,0,0,0.2); color: white;" />
         <button onclick="handleMockLogin()" style="width: 100%; padding: 12px; background: var(--accent-gradient); border: none; border-radius: 8px; color: white; font-weight: 600; cursor: pointer;">Sign In</button>
       </div>

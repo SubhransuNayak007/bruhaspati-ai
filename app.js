@@ -23,6 +23,13 @@ let state = {
   isDemoFallback: false
 };
 
+// ---- GLOBALS ----
+let activeQuizzes = {};
+let quizTimers = {};
+let activeQuickAction = 'quiz';
+let activeLoaderIntervals = {};
+let activeLoaderCleanups = {};
+
 // ---- SYSTEM PROMPT GENERATOR ----
 function getSystemPromptForFormat(format, query) {
   if (detectQuizQuery(query)) {
@@ -1523,14 +1530,13 @@ async function streamAIResponse(query, cardId) {
       return false;
     } else {
       // For API Errors, Rate Limits (429), or Network Issues, automatically fall back to local high-fidelity simulation!
-      let alertMsg = "API Error";
-      if (err.type === 'RATE_LIMITED') alertMsg = "Rate Limit Reached (429)";
-      else if (err.type === 'SERVICE_DOWN') alertMsg = "AI Service Temporarily Down (503)";
-      else if (err.type === 'API_ERROR') alertMsg = `API Error (Status: ${err.status})`;
-      else if (err.type === 'CONTENT_BLOCKED') alertMsg = "Content safety filter block";
-      else alertMsg = "Connection/Key issue";
+      let friendlyMsg = "AI Connection issue";
+      if (err.type === 'RATE_LIMITED') friendlyMsg = "AI service is busy (Rate Limit)";
+      else if (err.type === 'SERVICE_DOWN') friendlyMsg = "AI service is temporarily offline";
+      else if (err.type === 'CONTENT_BLOCKED') friendlyMsg = "Request flagged by content safety filter";
+      else if (err.type === 'API_ERROR') friendlyMsg = `AI service returned status ${err.status}`;
       
-      showToast(`⚠️ ${alertMsg}. Launching offline smart tutor fallback...`);
+      showToast(`⚠️ ${friendlyMsg}. Launching offline smart tutor fallback...`);
       console.log(`Fallback to simulation triggered for error:`, err);
       
       // Call simulation to generate response card
@@ -1650,7 +1656,7 @@ function renderFollowUpChips(followups) {
 
 window.sendFollowUpQuestion = function(text) {
   document.getElementById('userInput').value = text;
-  sendMessage();
+  window.sendMessage();
 };
 
 // ---- RENDERING SYSTEMS ----
@@ -2963,7 +2969,7 @@ function initSpeechRecognition() {
     clearTimeout(silenceTimer);
     silenceTimer = setTimeout(() => {
       if (inputEl.value.trim()) {
-        sendMessage();
+        window.sendMessage();
         stopVoiceInput();
       }
     }, 1500);
@@ -3535,17 +3541,24 @@ window.sendMessage = async function() {
   state.isTyping = true;
   document.getElementById('sendBtn').disabled = true;
   
-  // Stream response call
-  await streamAIResponse(query, streamCardId);
-  
-  // Clear local upload previews
-  uploadedFiles = [];
-  renderUploadPreviews();
-  
-  // consumeTokens is now called strictly on successful finish inside streamAIResponse (BUG 1)
-  
-  state.isTyping = false;
-  document.getElementById('sendBtn').disabled = false;
+  try {
+    // Stream response call
+    await streamAIResponse(query, streamCardId);
+  } catch (err) {
+    console.error("Critical error inside sendMessage stream:", err);
+    showToast("⚠️ An unexpected error occurred. Please try again.");
+    if (typeof addErrorMessage === 'function') {
+      addErrorMessage("An unexpected error occurred while processing your request. Please try again or switch to offline demo mode in settings.");
+    }
+  } finally {
+    // Clear local upload previews
+    uploadedFiles = [];
+    if (typeof renderUploadPreviews === 'function') renderUploadPreviews();
+    
+    state.isTyping = false;
+    const sendBtn = document.getElementById('sendBtn');
+    if (sendBtn) sendBtn.disabled = false;
+  }
 }
 
 window.retryMessage = async function(query, cardId) {
@@ -3562,11 +3575,13 @@ window.retryMessage = async function(query, cardId) {
   state.isTyping = true;
   document.getElementById('sendBtn').disabled = true;
   
-  await streamAIResponse(query, cardId);
-  
-  // consumeTokens is called strictly on success inside streamAIResponse (BUG 1)
-  state.isTyping = false;
-  document.getElementById('sendBtn').disabled = false;
+  try {
+    await streamAIResponse(query, cardId);
+  } finally {
+    state.isTyping = false;
+    const sendBtn = document.getElementById('sendBtn');
+    if (sendBtn) sendBtn.disabled = false;
+  }
 };
 
 // ---- PRE-WARM CONTEXT ----
@@ -4249,17 +4264,14 @@ window.generateQuickAction = function() {
 // Cycling suggestions sender helper
 window.sendSuggestion = function(text) {
   document.getElementById('userInput').value = text;
-  sendMessage();
+  window.sendMessage();
 };
 
 // ---- SYSTEM SHUTDOWN LOGS ----
 console.log('%c🪐 Bruhaspati AI Engine Connected', 'font-size:14px; font-weight:bold; color:#10b981;');
 
-// ==========================================
 // PREMIUM DYNAMIC LOADER ENGINE
 // ==========================================
-let activeLoaderIntervals = {};
-let activeLoaderCleanups = {};
 
 function renderPetalsHTML(layer) {
   const angles = Array.from({ length: 12 }, (_, i) => i * 30 + (layer === 'inner' ? 15 : 0));

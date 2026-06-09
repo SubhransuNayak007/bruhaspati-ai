@@ -5565,7 +5565,7 @@ function initAuth() {
 
   authModal.style.display = 'flex';
   
-  if (typeof firebase !== 'undefined' && firebase.auth) {
+  if (typeof firebase !== 'undefined' && firebase.auth && firebase.apps && firebase.apps.length > 0) {
     // Hide mock, show real Firebase UI
     mockAuth.style.display = 'none';
     fbAuth.style.display = 'block';

@@ -5533,7 +5533,7 @@ const firebaseConfig = {
 };
 
 try {
-  if (!firebase.apps.length) {
+  if (typeof firebase !== 'undefined' && firebase.apps && !firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
   }
 } catch (e) {
@@ -5541,12 +5541,14 @@ try {
 }
 
 function handleMockLogin() {
-  const email = document.getElementById('mockEmail').value;
+  const emailEl = document.getElementById('mockEmail');
+  const email = emailEl ? emailEl.value.trim() : '';
   if (!email) {
     alert("Please enter an email");
     return;
   }
-  document.getElementById('authModalOverlay').style.display = 'none';
+  const overlay = document.getElementById('authModalOverlay');
+  if (overlay) overlay.style.display = 'none';
   showToast("Logged in as " + email);
   // Store mock auth state
   localStorage.setItem('bruhaspati_auth', email);
@@ -5557,6 +5559,8 @@ function initAuth() {
   const mockAuth = document.getElementById('mockAuthContainer');
   const fbAuth = document.getElementById('firebaseui-auth-container');
   
+  if (!authModal) return;
+
   const savedAuth = localStorage.getItem('bruhaspati_auth');
   if (savedAuth) {
     authModal.style.display = 'none';
@@ -5565,41 +5569,53 @@ function initAuth() {
 
   authModal.style.display = 'flex';
   
-  if (typeof firebase !== 'undefined' && firebase.auth && firebase.apps && firebase.apps.length > 0) {
+  const isMockConfig = !firebaseConfig || !firebaseConfig.apiKey || firebaseConfig.apiKey.includes('MockKey') || firebaseConfig.apiKey === '';
+  
+  if (typeof firebase !== 'undefined' && firebase.auth && firebase.apps && firebase.apps.length > 0 && typeof firebaseui !== 'undefined' && !isMockConfig) {
     // Hide mock, show real Firebase UI
-    mockAuth.style.display = 'none';
-    fbAuth.style.display = 'block';
+    if (mockAuth) mockAuth.style.display = 'none';
+    if (fbAuth) fbAuth.style.display = 'block';
     
-    const uiConfig = {
-      signInSuccessUrl: '/',
-      signInOptions: [
-        firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-        firebase.auth.EmailAuthProvider.PROVIDER_ID
-      ],
-      tosUrl: '#',
-      privacyPolicyUrl: '#'
-    };
-    
-    const ui = firebaseui.auth.AuthUI.getInstance() || new firebaseui.auth.AuthUI(firebase.auth());
-    ui.start('#firebaseui-auth-container', uiConfig);
-    
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        authModal.style.display = 'none';
-        localStorage.setItem('bruhaspati_auth', user.email);
-        showToast("Welcome back, " + (user.displayName || user.email));
-      } else {
-        authModal.style.display = 'flex';
-      }
-    });
+    try {
+      const uiConfig = {
+        signInSuccessUrl: '/',
+        signInOptions: [
+          firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+          firebase.auth.EmailAuthProvider.PROVIDER_ID
+        ],
+        tosUrl: '#',
+        privacyPolicyUrl: '#'
+      };
+      
+      const ui = firebaseui.auth.AuthUI.getInstance() || new firebaseui.auth.AuthUI(firebase.auth());
+      ui.start('#firebaseui-auth-container', uiConfig);
+      
+      firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+          authModal.style.display = 'none';
+          localStorage.setItem('bruhaspati_auth', user.email);
+          showToast("Welcome back, " + (user.displayName || user.email));
+        } else {
+          authModal.style.display = 'flex';
+        }
+      });
+    } catch (err) {
+      console.error("FirebaseUI initialization failed, falling back to mock:", err);
+      if (fbAuth) fbAuth.style.display = 'none';
+      if (mockAuth) mockAuth.style.display = 'block';
+    }
   } else {
     // Fallback to Mock
-    fbAuth.style.display = 'none';
-    mockAuth.style.display = 'block';
+    if (fbAuth) fbAuth.style.display = 'none';
+    if (mockAuth) mockAuth.style.display = 'block';
   }
 }
 
+// Bind to window for global inline onclick event resolution
+window.handleMockLogin = handleMockLogin;
+window.initAuth = initAuth;
+
 // Call initAuth when app loads
 document.addEventListener('DOMContentLoaded', () => {
-  initAuth();
+  window.initAuth();
 });

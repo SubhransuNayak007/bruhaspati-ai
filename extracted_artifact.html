@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bruhaspati AI — Loading Animations</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy:    #060c1a;
+    --deep:    #0a1228;
+    --surface: #0f1a35;
+    --gold:    #c8972a;
+    --gold-lt: #e8b84b;
+    --gold-dk: #8a6418;
+    --blue:    #1a5fd4;
+    --cyan:    #38bdf8;
+    --glow:    #3b82f6;
+    --text:    #e2e8f0;
+    --muted:   #64748b;
+  }
+
+  body {
+    background: var(--navy);
+    font-family: 'Inter', sans-serif;
+    color: var(--text);
+    min-height: 100vh;
+    padding: 40px 20px;
+  }
+
+  h1 {
+    font-family: 'Sora', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-align: center;
+    margin-bottom: 48px;
+  }
+
+  /* ─── DEMO GRID ─────────────────────────────────────── */
+  .demo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+    max-width: 1000px;
+    margin: 0 auto 60px;
+  }
+
+  .demo-card {
+    background: var(--surface);
+    border: 1px solid rgba(200,151,42,0.12);
+    border-radius: 20px;
+    padding: 36px 28px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .demo-label {
+    font-family: 'Sora', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold);
+    opacity: 0.7;
+  }
+
+  /* ═══════════════════════════════════════════════════
+     ANIMATION 1 — LOTUS PULSE (signature loader)
+     Like Claude's orb but with the lotus mandala
+  ═══════════════════════════════════════════════════ */
+  .lotus-loader {
+    position: relative;
+    width: 72px;
+    height: 72px;
+  }
+
+  .lotus-loader svg {
+    width: 72px;
+    height: 72px;
+    animation: lotus-breathe 2.4s ease-in-out infinite;
+  }
+
+  @keyframes lotus-breathe {
+    0%, 100% { transform: scale(1);   filter: drop-shadow(0 0 8px rgba(200,151,42,0.4)); }
+    50%       { transform: scale(1.08); filter: drop-shadow(0 0 18px rgba(200,151,42,0.7)) drop-shadow(0 0 32px rgba(59,130,246,0.35)); }
+  }
+
+  .lotus-ring {
+    position: absolute;
+    inset: -10px;
+    border-radius: 50%;
+    border: 1.5px solid transparent;
+    border-top-color: var(--gold);
+    border-right-color: rgba(200,151,42,0.3);
+    animation: ring-spin 1.8s linear infinite;
+  }
+
+  .lotus-ring-2 {
+    position: absolute;
+    inset: -18px;
+    border-radius: 50%;
+    border: 1px solid transparent;
+    border-top-color: var(--cyan);
+    border-left-color: rgba(56,189,248,0.2);
+    animation: ring-spin 3.2s linear infinite reverse;
+  }
+
+  @keyframes ring-spin {
+    to { transform: rotate(360deg); }
+  }
+
+  /* ═══════════════════════════════════════════════════
+     ANIMATION 2 — CIRCUIT DOTS (like Gemini's wave)
+  ═══════════════════════════════════════════════════ */
+  .circuit-dots {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    height: 32px;
+  }
+
+  .cdot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--gold);
+    animation: cdot-wave 1.4s ease-in-out infinite;
+  }
+
+  .cdot:nth-child(1) { animation-delay: 0s;    background: var(--gold-lt); }
+  .cdot:nth-child(2) { animation-delay: 0.15s; background: var(--gold); }
+  .cdot:nth-child(3) { animation-delay: 0.30s; background: var(--blue); }
+  .cdot:nth-child(4) { animation-delay: 0.45s; background: var(--cyan); }
+  .cdot:nth-child(5) { animation-delay: 0.60s; background: var(--gold); }
+
+  @keyframes cdot-wave {
+    0%, 60%, 100% { transform: translateY(0);    opacity: 0.5; }
+    30%            { transform: translateY(-10px); opacity: 1;   }
+  }
+
+  /* ═══════════════════════════════════════════════════
+     ANIMATION 3 — TYPING BUBBLE (like Claude/ChatGPT)
+  ═══════════════════════════════════════════════════ */
+  .typing-bubble {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: rgba(200,151,42,0.08);
+    border: 1px solid rgba(200,151,42,0.15);
+    border-radius: 18px 18px 18px 4px;
+    padding: 14px 18px;
+  }
+
+  .tbdot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--gold);
+    animation: tb-pulse 1.2s ease-in-out infinite;
+  }
+
+  .tbdot:nth-child(2) { animation-delay: 0.2s; background: rgba(200,151,42,0.7); }
+  .tbdot:nth-child(3) { animation-delay: 0.4s; background: rgba(200,151,42,0.4); }
+
+  @keyframes tb-pulse {
+    0%, 60%, 100% { transform: scale(1);   opacity: 0.4; }
+    30%            { transform: scale(1.4); opacity: 1; }
+  }
+
+  /* ═══════════════════════════════════════════════════
+     ANIMATION 4 — MANDALA SPIN (Grok-style orbital)
+  ═══════════════════════════════════════════════════ */
+  .mandala-loader {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .orbit {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px dashed rgba(200,151,42,0.25);
+  }
+
+  .orbit-1 { width: 80px; height: 80px; animation: orbit-rot 4s linear infinite; }
+  .orbit-2 { width: 58px; height: 58px; animation: orbit-rot 2.8s linear infinite reverse; }
+  .orbit-3 { width: 36px; height: 36px; animation: orbit-rot 1.8s linear infinite; }
+
+  .orbit-node {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--gold-lt);
+    top: -3px;
+    left: 50%;
+    transform: translateX(-50%);
+    box-shadow: 0 0 8px var(--gold-lt);
+  }
+
+  .orbit-node-blue {
+    background: var(--cyan);
+    box-shadow: 0 0 8px var(--cyan);
+  }
+
+  @keyframes orbit-rot {
+    to { transform: rotate(360deg); }
+  }
+
+  .mandala-center {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--gold-lt), var(--blue));
+    animation: center-pulse 2s ease-in-out infinite;
+    z-index: 10;
+  }
+
+  @keyframes center-pulse {
+    0%, 100% { box-shadow: 0 0 6px var(--gold), 0 0 12px rgba(200,151,42,0.3); }
+    50%       { box-shadow: 0 0 14px var(--gold-lt), 0 0 28px rgba(56,189,248,0.4); }
+  }
+
+  /* ═══════════════════════════════════════════════════
+     ANIMATION 5 — SKELETON CARD (response loading)
+  ═══════════════════════════════════════════════════ */
+  .skeleton-card {
+    width: 100%;
+    max-width: 320px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(200,151,42,0.1);
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .skel-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .skel-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(90deg, rgba(200,151,42,0.1) 25%, rgba(200,151,42,0.22) 50%, rgba(200,151,42,0.1) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.6s infinite;
+    flex-shrink: 0;
+  }
+
+  .skel-title {
+    height: 12px;
+    border-radius: 6px;
+    background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.09) 50%, rgba(255,255,255,0.04) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.6s infinite;
+    flex: 1;
+  }
+
+  .skel-line {
+    height: 10px;
+    border-radius: 5px;
+    background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.09) 50%, rgba(255,255,255,0.04) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.6s infinite;
+  }
+
+  .skel-line.short  { width: 60%; }
+  .skel-line.medium { width: 80%; }
+  .skel-line.full   { width: 100%; }
+
+  @keyframes shimmer {
+    to { background-position: -200% 0; }
+  }
+
+  /* ═══════════════════════════════════════════════════
+     ANIMATION 6 — FULL CHAT MESSAGE ENTERING
+     (the actual in-chat loading state with logo)
+  ═══════════════════════════════════════════════════ */
+  .chat-loader-wrap {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    width: 100%;
+    max-width: 340px;
+  }
+
+  .chat-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 40% 35%, #1a3a7a, #060c1a);
+    border: 1.5px solid rgba(200,151,42,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    animation: avatar-glow 2.4s ease-in-out infinite;
+  }
+
+  @keyframes avatar-glow {
+    0%, 100% { box-shadow: 0 0 0px rgba(200,151,42,0.0); }
+    50%       { box-shadow: 0 0 12px rgba(200,151,42,0.5), 0 0 24px rgba(59,130,246,0.2); }
+  }
+
+  .chat-avatar svg { width: 20px; height: 20px; }
+
+  .chat-bubble {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(200,151,42,0.12);
+    border-radius: 4px 16px 16px 16px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 80px;
+  }
+
+  /* ═══════════════════════════════════════════════════
+     LIVE DEMO — Interactive toggle
+  ═══════════════════════════════════════════════════ */
+  .live-demo {
+    max-width: 640px;
+    margin: 0 auto 60px;
+    background: var(--surface);
+    border: 1px solid rgba(200,151,42,0.15);
+    border-radius: 24px;
+    overflow: hidden;
+  }
+
+  .live-header {
+    padding: 20px 28px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .live-title {
+    font-family: 'Sora', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .live-subtitle {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  .live-body {
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    min-height: 180px;
+  }
+
+  /* User message */
+  .msg-user {
+    align-self: flex-end;
+    background: linear-gradient(135deg, #1e3a7a, #1a2f5e);
+    border: 1px solid rgba(200,151,42,0.2);
+    border-radius: 16px 16px 4px 16px;
+    padding: 12px 16px;
+    font-size: 14px;
+    max-width: 70%;
+    animation: msg-in 0.3s ease;
+  }
+
+  /* AI streaming message */
+  .msg-ai {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    animation: msg-in 0.3s ease;
+  }
+
+  @keyframes msg-in {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .msg-ai-text {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(200,151,42,0.1);
+    border-radius: 4px 16px 16px 16px;
+    padding: 12px 16px;
+    font-size: 14px;
+    line-height: 1.7;
+    max-width: calc(100% - 48px);
+  }
+
+  /* streaming cursor */
+  .cursor {
+    display: inline-block;
+    width: 2px;
+    height: 15px;
+    background: var(--gold);
+    margin-left: 2px;
+    vertical-align: text-bottom;
+    animation: blink 1s step-end infinite;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0; }
+  }
+
+  .live-input-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 20px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .live-input {
+    flex: 1;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(200,151,42,0.15);
+    border-radius: 12px;
+    padding: 11px 16px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .live-input:focus { border-color: rgba(200,151,42,0.4); }
+  .live-input::placeholder { color: var(--muted); }
+
+  .send-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--gold-dk), var(--gold));
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.15s, box-shadow 0.15s;
+    color: #fff;
+  }
+
+  .send-btn:hover { transform: scale(1.06); box-shadow: 0 4px 16px rgba(200,151,42,0.4); }
+
+  /* ═══════════════════════════════════════════════════
+     CODE BLOCK (copy-paste ready)
+  ═══════════════════════════════════════════════════ */
+  .code-section {
+    max-width: 1000px;
+    margin: 0 auto 60px;
+  }
+
+  .code-section h2 {
+    font-family: 'Sora', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+
+  .code-block {
+    background: #0d1424;
+    border: 1px solid rgba(200,151,42,0.1);
+    border-radius: 16px;
+    padding: 24px;
+    font-family: 'Courier New', monospace;
+    font-size: 12.5px;
+    line-height: 1.7;
+    color: #a5b4fc;
+    overflow-x: auto;
+    position: relative;
+  }
+
+  .code-block .kw  { color: #c8972a; }
+  .code-block .str { color: #38bdf8; }
+  .code-block .cls { color: #86efac; }
+  .code-block .com { color: #475569; font-style: italic; }
+  .code-block .val { color: #f472b6; }
+
+  .copy-btn {
+    position: absolute;
+    top: 12px; right: 12px;
+    background: rgba(200,151,42,0.12);
+    border: 1px solid rgba(200,151,42,0.2);
+    border-radius: 8px;
+    color: var(--gold);
+    font-size: 11px;
+    font-family: 'Inter', sans-serif;
+    padding: 5px 12px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .copy-btn:hover { background: rgba(200,151,42,0.22); }
+</style>
+</head>
+<body>
+
+<h1>Bruhaspati AI — Premium Loading Animations</h1>
+
+<!-- ── ANIMATION SHOWCASE ──────────────────────── -->
+<div class="demo-grid">
+
+  <!-- 1. Lotus Pulse -->
+  <div class="demo-card">
+    <div class="demo-label">Lotus Pulse · Page Load</div>
+    <div class="lotus-loader">
+      <div class="lotus-ring-2"></div>
+      <div class="lotus-ring"></div>
+      <!-- Inline lotus SVG matching brand logo -->
+      <svg viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="lc" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#1a3a7a"/>
+            <stop offset="100%" stop-color="#060c1a"/>
+          </radialGradient>
+          <filter id="gf"><feGaussianBlur stdDeviation="1.5" result="blur"/><feComposite in="SourceGraphic" in2="blur" operator="over"/></filter>
+        </defs>
+        <!-- Petals -->
+        <g opacity="0.9">
+          <ellipse cx="36" cy="14" rx="6" ry="12" fill="#0f2a5a" stroke="#c8972a" stroke-width="1.2" transform="rotate(0 36 36)"/>
+          <ellipse cx="36" cy="14" rx="6" ry="12" fill="#0f2a5a" stroke="#c8972a" stroke-width="1.2" transform="rotate(40 36 36)"/>
+          <ellipse cx="36" cy="14" rx="6" ry="12" fill="#0f2a5a" stroke="#c8972a" stroke-width="1.2" transform="rotate(80 36 36)"/>
+          <ellipse cx="36" cy="14" rx="6" ry="12" fill="#0f2a5a" stroke="#c8972a" stroke-width="1.2" transform="rotate(120 36 36)"/>
+          <ellipse cx="36" cy="14" rx="6" ry="12" fill="#0f2a5a" stroke="#c8972a" stroke-width="1.2" transform="rotate(160 36 36)"/>
+          <ellipse cx="36" cy="14" rx="6" ry="12" fill="#0f2a5a" stroke="#c8972a" stroke-width="1.2" transform="rotate(200 36 36)"/>
+          <ellipse cx="36" cy="14" rx="6" ry="12" fill="#0f2a5a" stroke="#c8972a" stroke-width="1.2" transform="rotate(240 36 36)"/>
+          <ellipse cx="36" cy="14" rx="6" ry="12" fill="#0f2a5a" stroke="#c8972a" stroke-width="1.2" transform="rotate(280 36 36)"/>
+          <ellipse cx="36" cy="14" rx="6" ry="12" fill="#0f2a5a" stroke="#c8972a" stroke-width="1.2" transform="rotate(320 36 36)"/>
+        </g>
+        <!-- Center orb -->
+        <circle cx="36" cy="36" r="14" fill="url(#lc)" stroke="#c8972a" stroke-width="1.5"/>
+        <!-- A lettermark -->
+        <text x="36" y="41" text-anchor="middle" font-family="Sora,sans-serif" font-size="13" font-weight="700" fill="#c8972a">A</text>
+        <!-- Circuit dots -->
+        <circle cx="36" cy="25" r="1.5" fill="#38bdf8" opacity="0.8"/>
+        <circle cx="43" cy="30" r="1.5" fill="#38bdf8" opacity="0.6"/>
+        <circle cx="29" cy="30" r="1.5" fill="#38bdf8" opacity="0.6"/>
+      </svg>
+    </div>
+    <span style="font-size:12px;color:var(--muted)">Used on splash screen / initial load</span>
+  </div>
+
+  <!-- 2. Circuit Dots Wave -->
+  <div class="demo-card">
+    <div class="demo-label">Circuit Wave · Thinking</div>
+    <div class="circuit-dots">
+      <div class="cdot"></div>
+      <div class="cdot"></div>
+      <div class="cdot"></div>
+      <div class="cdot"></div>
+      <div class="cdot"></div>
+    </div>
+    <span style="font-size:12px;color:var(--muted)">Shown while AI is processing</span>
+  </div>
+
+  <!-- 3. Typing Bubble -->
+  <div class="demo-card">
+    <div class="demo-label">Typing Bubble · Chat</div>
+    <div class="typing-bubble">
+      <div class="tbdot"></div>
+      <div class="tbdot"></div>
+      <div class="tbdot"></div>
+    </div>
+    <span style="font-size:12px;color:var(--muted)">In-chat "AI is typing…" indicator</span>
+  </div>
+
+  <!-- 4. Mandala Orbit -->
+  <div class="demo-card">
+    <div class="demo-label">Mandala Orbit · Deep Thinking</div>
+    <div class="mandala-loader">
+      <div class="orbit orbit-1"><div class="orbit-node"></div></div>
+      <div class="orbit orbit-2"><div class="orbit-node orbit-node-blue"></div></div>
+      <div class="orbit orbit-3"><div class="orbit-node"></div></div>
+      <div class="mandala-center"></div>
+    </div>
+    <span style="font-size:12px;color:var(--muted)">For long AI generation / formula sheet</span>
+  </div>
+
+  <!-- 5. Skeleton -->
+  <div class="demo-card">
+    <div class="demo-label">Skeleton Card · Response Loading</div>
+    <div class="skeleton-card">
+      <div class="skel-header">
+        <div class="skel-avatar"></div>
+        <div class="skel-title"></div>
+      </div>
+      <div class="skel-line full"></div>
+      <div class="skel-line medium"></div>
+      <div class="skel-line full"></div>
+      <div class="skel-line short"></div>
+    </div>
+    <span style="font-size:12px;color:var(--muted)">Before first token arrives</span>
+  </div>
+
+  <!-- 6. Chat bubble loader -->
+  <div class="demo-card">
+    <div class="demo-label">Chat Bubble · Inline Loader</div>
+    <div class="chat-loader-wrap">
+      <div class="chat-avatar">
+        <svg viewBox="0 0 20 20" fill="none">
+          <circle cx="10" cy="10" r="9" fill="#0f2a5a" stroke="#c8972a" stroke-width="1"/>
+          <text x="10" y="14" text-anchor="middle" font-family="Sora,sans-serif" font-size="9" font-weight="700" fill="#c8972a">A</text>
+        </svg>
+      </div>
+      <div class="chat-bubble">
+        <div class="tbdot"></div>
+        <div class="tbdot"></div>
+        <div class="tbdot"></div>
+      </div>
+    </div>
+    <span style="font-size:12px;color:var(--muted)">Appears before streaming starts</span>
+  </div>
+
+</div>
+
+<!-- ── LIVE INTERACTIVE DEMO ───────────────────── -->
+<div class="live-demo">
+  <div class="live-header">
+    <div class="chat-avatar" style="width:40px;height:40px;animation:avatar-glow 2.4s ease-in-out infinite;">
+      <svg viewBox="0 0 20 20" width="22" height="22" fill="none">
+        <circle cx="10" cy="10" r="9" fill="#0f2a5a" stroke="#c8972a" stroke-width="1"/>
+        <text x="10" y="14" text-anchor="middle" font-family="Sora,sans-serif" font-size="9" font-weight="700" fill="#c8972a">A</text>
+      </svg>
+    </div>
+    <div>
+      <div class="live-title">Bruhaspati AI</div>
+      <div class="live-subtitle">Click "Ask" to see the loading sequence live</div>
+    </div>
+  </div>
+  <div class="live-body" id="liveBody">
+    <div style="color:var(--muted);font-size:13px;text-align:center;margin:auto">
+      Type a question and click send →
+    </div>
+  </div>
+  <div class="live-input-row">
+    <input class="live-input" id="liveInput" placeholder="Ask about Matrices, Photosynthesis…" />
+    <button class="send-btn" onclick="triggerDemo()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+    </button>
+  </div>
+</div>
+
+<!-- ── COPY-PASTE CODE ─────────────────────────── -->
+<div class="code-section">
+  <h2>Drop-in CSS — add to your project</h2>
+  <div class="code-block" id="codeBlock">
+    <button class="copy-btn" onclick="copyCode()">Copy</button>
+<span class="com">/* ── Bruhaspati AI — Chat Loading Animations ── */</span>
+
+<span class="com">/* 1. Typing Bubble */</span>
+<span class="cls">.b-typing</span> {
+  <span class="kw">display</span>: <span class="val">flex</span>; <span class="kw">gap</span>: <span class="val">5px</span>;
+  <span class="kw">background</span>: <span class="str">rgba(200,151,42,0.08)</span>;
+  <span class="kw">border</span>: <span class="val">1px solid</span> <span class="str">rgba(200,151,42,0.15)</span>;
+  <span class="kw">border-radius</span>: <span class="val">18px 18px 18px 4px</span>;
+  <span class="kw">padding</span>: <span class="val">14px 18px</span>;
+}
+<span class="cls">.b-typing span</span> {
+  <span class="kw">width</span>: <span class="val">7px</span>; <span class="kw">height</span>: <span class="val">7px</span>; <span class="kw">border-radius</span>: <span class="val">50%</span>;
+  <span class="kw">background</span>: <span class="str">#c8972a</span>;
+  <span class="kw">animation</span>: <span class="val">b-pulse 1.2s ease-in-out infinite</span>;
+}
+<span class="cls">.b-typing span:nth-child(2)</span> { <span class="kw">animation-delay</span>: <span class="val">0.2s</span>; }
+<span class="cls">.b-typing span:nth-child(3)</span> { <span class="kw">animation-delay</span>: <span class="val">0.4s</span>; }
+<span class="kw">@keyframes</span> <span class="cls">b-pulse</span> {
+  <span class="val">0%, 60%, 100%</span> { <span class="kw">transform</span>: <span class="val">scale(1)</span>;   <span class="kw">opacity</span>: <span class="val">0.4</span>; }
+  <span class="val">30%</span>           { <span class="kw">transform</span>: <span class="val">scale(1.4)</span>; <span class="kw">opacity</span>: <span class="val">1</span>; }
+}
+
+<span class="com">/* 2. Skeleton shimmer */</span>
+<span class="cls">.b-skel</span> {
+  <span class="kw">background</span>: <span class="val">linear-gradient</span>(<span class="val">90deg</span>,
+    <span class="str">rgba(255,255,255,0.04)</span> <span class="val">25%</span>,
+    <span class="str">rgba(255,255,255,0.09)</span> <span class="val">50%</span>,
+    <span class="str">rgba(255,255,255,0.04)</span> <span class="val">75%</span>);
+  <span class="kw">background-size</span>: <span class="val">200% 100%</span>;
+  <span class="kw">animation</span>: <span class="val">b-shimmer 1.6s infinite</span>;
+  <span class="kw">border-radius</span>: <span class="val">6px</span>;
+}
+<span class="kw">@keyframes</span> <span class="cls">b-shimmer</span> { <span class="val">to</span> { <span class="kw">background-position</span>: <span class="val">-200% 0</span>; } }
+
+<span class="com">/* 3. Streaming text cursor */</span>
+<span class="cls">.b-cursor</span> {
+  <span class="kw">display</span>: <span class="val">inline-block</span>;
+  <span class="kw">width</span>: <span class="val">2px</span>; <span class="kw">height</span>: <span class="val">15px</span>;
+  <span class="kw">background</span>: <span class="str">#c8972a</span>;
+  <span class="kw">margin-left</span>: <span class="val">2px</span>;
+  <span class="kw">vertical-align</span>: <span class="val">text-bottom</span>;
+  <span class="kw">animation</span>: <span class="val">b-blink 1s step-end infinite</span>;
+}
+<span class="kw">@keyframes</span> <span class="cls">b-blink</span> {
+  <span class="val">0%, 100%</span> { <span class="kw">opacity</span>: <span class="val">1</span>; } <span class="val">50%</span> { <span class="kw">opacity</span>: <span class="val">0</span>; }
+}
+
+<span class="com">/* 4. Lotus avatar glow */</span>
+<span class="cls">.b-avatar-glow</span> {
+  <span class="kw">animation</span>: <span class="val">b-aglow 2.4s ease-in-out infinite</span>;
+}
+<span class="kw">@keyframes</span> <span class="cls">b-aglow</span> {
+  <span class="val">0%, 100%</span> { <span class="kw">box-shadow</span>: <span class="val">0 0 0px</span> <span class="str">rgba(200,151,42,0)</span>; }
+  <span class="val">50%</span>       { <span class="kw">box-shadow</span>: <span class="val">0 0 14px</span> <span class="str">rgba(200,151,42,0.5)</span>, <span class="val">0 0 28px</span> <span class="str">rgba(59,130,246,0.2)</span>; }
+}
+  </div>
+</div>
+
+<script>
+  // ── Live demo engine ──────────────────────────────
+  const DEMO_ANSWERS = [
+    "A <strong>skew-symmetric matrix</strong> A satisfies A<sup>T</sup> = −A. This means every diagonal element must be zero, and off-diagonal elements are negatives of each other. They appear in physics when representing cross products and angular velocity in 3D space.",
+    "Newton's <strong>Second Law of Motion</strong> states that the net force acting on an object equals the rate of change of its momentum. In simpler form: F = ma, where F is force in Newtons, m is mass in kg, and a is acceleration in m/s².",
+    "<strong>Photosynthesis</strong> is the process by which plants convert light energy into chemical energy stored as glucose. The overall equation is: 6CO₂ + 6H₂O + light → C₆H₁₂O₆ + 6O₂. It occurs in the chloroplasts, specifically in the thylakoid membranes.",
+  ];
+
+  let answerIdx = 0;
+  let streamTimer = null;
+
+  function triggerDemo() {
+    const input = document.getElementById('liveInput');
+    const body  = document.getElementById('liveBody');
+    const q     = input.value.trim() || "Explain skew symmetric matrix";
+    input.value = '';
+
+    // Clear
+    body.innerHTML = '';
+
+    // User message
+    const userMsg = document.createElement('div');
+    userMsg.className = 'msg-user';
+    userMsg.textContent = q;
+    body.appendChild(userMsg);
+
+    // AI typing bubble
+    const aiWrap = document.createElement('div');
+    aiWrap.className = 'msg-ai';
+    aiWrap.innerHTML = `
+      <div class="chat-avatar b-avatar-glow">
+        <svg viewBox="0 0 20 20" width="20" height="20" fill="none">
+          <circle cx="10" cy="10" r="9" fill="#0f2a5a" stroke="#c8972a" stroke-width="1"/>
+          <text x="10" y="14" text-anchor="middle" font-family="Sora,sans-serif" font-size="9" font-weight="700" fill="#c8972a">A</text>
+        </svg>
+      </div>
+      <div class="chat-bubble" id="aiBubble">
+        <div class="tbdot"></div><div class="tbdot"></div><div class="tbdot"></div>
+      </div>`;
+    body.appendChild(aiWrap);
+    body.scrollTop = body.scrollHeight;
+
+    // After 1.2s, start streaming
+    const answer = DEMO_ANSWERS[answerIdx % DEMO_ANSWERS.length];
+    answerIdx++;
+
+    // Strip HTML for char-by-char, then render HTML at end
+    const plain = answer.replace(/<[^>]+>/g, '');
+    let i = 0;
+
+    setTimeout(() => {
+      const bubble = document.getElementById('aiBubble');
+      bubble.className = 'msg-ai-text';
+      bubble.innerHTML = '<span id="streamText"></span><span class="cursor"></span>';
+
+      if (streamTimer) clearInterval(streamTimer);
+      streamTimer = setInterval(() => {
+        const el = document.getElementById('streamText');
+        if (!el) { clearInterval(streamTimer); return; }
+        if (i < plain.length) {
+          el.textContent += plain[i++];
+          body.scrollTop = body.scrollHeight;
+        } else {
+          clearInterval(streamTimer);
+          // Render rich HTML, remove cursor
+          bubble.innerHTML = answer;
+        }
+      }, 18);
+    }, 1200);
+  }
+
+  document.getElementById('liveInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') triggerDemo();
+  });
+
+  // ── Copy code ──────────────────────────────────────
+  function copyCode() {
+    const raw = document.getElementById('codeBlock').innerText.replace('Copy\n','');
+    navigator.clipboard.writeText(raw).then(() => {
+      document.querySelector('.copy-btn').textContent = 'Copied!';
+      setTimeout(() => document.querySelector('.copy-btn').textContent = 'Copy', 2000);
+    });
+  }
+</script>
+</body>
+</html>

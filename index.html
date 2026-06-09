@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Bruhaspati AI — Elite AI Tutor for CBSE, JEE, NEET, Board Exams. Get structured answers with definitions, diagrams, exam history, and board keywords." />
+  <title>Bruhaspati AI — Your Elite Indian Exam Tutor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Bricolage+Grotesque:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <!-- MathJax for high-quality mathematical LaTeX rendering -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        processEscapes: true
+      },
+      options: {
+        ignoreHtmlClass: 'tex2jax_ignore',
+        processHtmlClass: 'tex2jax_process'
+      }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" id="MathJax-script" async></script>
+</head>
+<body>
+  <!-- Global SVG Assets for Reusable Lotus Emblem -->
+  <svg style="display: none;">
+    <defs>
+      <linearGradient id="outerPetalGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#0B0F19" />
+        <stop offset="50%" stop-color="#111827" />
+        <stop offset="100%" stop-color="#070A12" />
+      </linearGradient>
+      <linearGradient id="innerPetalGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#1E3A8A" />
+        <stop offset="50%" stop-color="#1E40AF" />
+        <stop offset="100%" stop-color="#111827" />
+      </linearGradient>
+      <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#F5C76A" />
+        <stop offset="35%" stop-color="#EAB308" />
+        <stop offset="70%" stop-color="#CA8A04" />
+        <stop offset="100%" stop-color="#F5C76A" />
+      </linearGradient>
+      <radialGradient id="glassSphereGrad" cx="30%" cy="30%" r="70%">
+        <stop offset="0%" stop-color="#60A5FA" />
+        <stop offset="30%" stop-color="#2563EB" />
+        <stop offset="75%" stop-color="#1E1B4B" />
+        <stop offset="100%" stop-color="#030712" />
+      </radialGradient>
+      
+      <!-- PETAL MASTER GROUPS -->
+      <g id="static-outer-petal">
+        <path d="M 50,50 C 36,32 38,12 50,2 C 62,12 64,32 50,50 Z" fill="url(#outerPetalGrad)" />
+        <path d="M 50,50 C 36,32 38,12 50,2 C 62,12 64,32 50,50" fill="none" stroke="url(#goldGrad)" stroke-width="1.4" />
+      </g>
+      <g id="static-inner-petal">
+        <path d="M 50,50 C 36,32 38,12 50,2 C 62,12 64,32 50,50 Z" fill="url(#innerPetalGrad)" />
+        <path d="M 50,50 C 36,32 38,12 50,2 C 62,12 64,32 50,50" fill="none" stroke="url(#goldGrad)" stroke-width="1.0" />
+        <path d="M 50,42 L 50,15" fill="none" stroke="#60A5FA" stroke-width="0.75" opacity="0.8" />
+        <circle cx="50" cy="15" r="0.7" fill="#93C5FD" />
+        <path d="M 50,35 L 45,28 L 45,20" fill="none" stroke="#60A5FA" stroke-width="0.75" opacity="0.8" />
+        <circle cx="45" cy="20" r="0.7" fill="#93C5FD" />
+        <path d="M 50,31 L 55,25 L 55,18" fill="none" stroke="#60A5FA" stroke-width="0.75" opacity="0.8" />
+        <circle cx="55" cy="18" r="0.7" fill="#93C5FD" />
+      </g>
+      
+      <!-- EMBLEM COMPOSITION -->
+      <g id="lotus-emblem">
+        <use href="#static-outer-petal" transform="rotate(0 50 50)"/>
+        <use href="#static-outer-petal" transform="rotate(30 50 50)"/>
+        <use href="#static-outer-petal" transform="rotate(60 50 50)"/>
+        <use href="#static-outer-petal" transform="rotate(90 50 50)"/>
+        <use href="#static-outer-petal" transform="rotate(120 50 50)"/>
+        <use href="#static-outer-petal" transform="rotate(150 50 50)"/>
+        <use href="#static-outer-petal" transform="rotate(180 50 50)"/>
+        <use href="#static-outer-petal" transform="rotate(210 50 50)"/>
+        <use href="#static-outer-petal" transform="rotate(240 50 50)"/>
+        <use href="#static-outer-petal" transform="rotate(270 50 50)"/>
+        <use href="#static-outer-petal" transform="rotate(300 50 50)"/>
+        <use href="#static-outer-petal" transform="rotate(330 50 50)"/>
+        
+        <use href="#static-inner-petal" transform="rotate(15 50 50) scale(0.82)"/>
+        <use href="#static-inner-petal" transform="rotate(45 50 50) scale(0.82)"/>
+        <use href="#static-inner-petal" transform="rotate(75 50 50) scale(0.82)"/>
+        <use href="#static-inner-petal" transform="rotate(105 50 50) scale(0.82)"/>
+        <use href="#static-inner-petal" transform="rotate(135 50 50) scale(0.82)"/>
+        <use href="#static-inner-petal" transform="rotate(165 50 50) scale(0.82)"/>
+        <use href="#static-inner-petal" transform="rotate(195 50 50) scale(0.82)"/>
+        <use href="#static-inner-petal" transform="rotate(225 50 50) scale(0.82)"/>
+        <use href="#static-inner-petal" transform="rotate(255 50 50) scale(0.82)"/>
+        <use href="#static-inner-petal" transform="rotate(285 50 50) scale(0.82)"/>
+        <use href="#static-inner-petal" transform="rotate(315 50 50) scale(0.82)"/>
+        <use href="#static-inner-petal" transform="rotate(345 50 50) scale(0.82)"/>
+        
+        <circle cx="50" cy="50" r="16.5" fill="url(#glassSphereGrad)" stroke="url(#goldGrad)" stroke-width="1.25" />
+        <path d="M 36.5,44.5 A 13.5,13.5 0 0 1 48,34.5 A 15.5,15.5 0 0 0 34.5,47 A 15.5,15.5 0 0 1 36.5,44.5 Z" fill="rgba(255, 255, 255, 0.16)" />
+        
+        <line x1="50" y1="37" x2="48" y2="44" stroke="#F5C76A" stroke-width="0.8" opacity="0.85" />
+        <line x1="50" y1="37" x2="52" y2="44" stroke="#F5C76A" stroke-width="0.8" opacity="0.85" />
+        <line x1="48" y1="44" x2="46" y2="51" stroke="#F5C76A" stroke-width="0.8" opacity="0.85" />
+        <line x1="52" y1="44" x2="54" y2="51" stroke="#F5C76A" stroke-width="0.8" opacity="0.85" />
+        <line x1="46" y1="51" x2="43" y2="59" stroke="#F5C76A" stroke-width="0.8" opacity="0.85" />
+        <line x1="54" y1="51" x2="57" y2="59" stroke="#F5C76A" stroke-width="0.8" opacity="0.85" />
+        <line x1="46" y1="51" x2="50" y2="51" stroke="#F5C76A" stroke-width="0.8" opacity="0.85" />
+        <line x1="54" y1="51" x2="50" y2="51" stroke="#F5C76A" stroke-width="0.8" opacity="0.85" />
+        <line x1="48" y1="44" x2="52" y2="44" stroke="#F5C76A" stroke-width="0.8" opacity="0.85" />
+        <line x1="50" y1="51" x2="50" y2="59" stroke="#F5C76A" stroke-width="0.8" opacity="0.85" />
+        <line x1="43" y1="59" x2="50" y2="59" stroke="#F5C76A" stroke-width="0.8" opacity="0.85" />
+        <line x1="57" y1="59" x2="50" y2="59" stroke="#F5C76A" stroke-width="0.8" opacity="0.85" />
+        
+        <circle cx="50" cy="37" r="1.2" fill="#F5C76A" stroke="#0B1020" stroke-width="0.4" />
+        <circle cx="43" cy="59" r="1.2" fill="#F5C76A" stroke="#0B1020" stroke-width="0.4" />
+        <circle cx="57" cy="59" r="1.2" fill="#F5C76A" stroke="#0B1020" stroke-width="0.4" />
+        <circle cx="46" cy="51" r="1.2" fill="#F5C76A" stroke="#0B1020" stroke-width="0.4" />
+        <circle cx="54" cy="51" r="1.2" fill="#F5C76A" stroke="#0B1020" stroke-width="0.4" />
+        <circle cx="48" cy="44" r="1.2" fill="#F5C76A" stroke="#0B1020" stroke-width="0.4" />
+        <circle cx="52" cy="44" r="1.2" fill="#F5C76A" stroke="#0B1020" stroke-width="0.4" />
+        <circle cx="50" cy="51" r="1.2" fill="#F5C76A" stroke="#0B1020" stroke-width="0.4" />
+        <circle cx="50" cy="59" r="1.2" fill="#F5C76A" stroke="#0B1020" stroke-width="0.4" />
+      </g>
+    </defs>
+  </svg>
+
+  <!-- Animated Background -->
+  <div class="bg-orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <!-- App Shell -->
+  <div class="app-shell">
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="sidebar" id="sidebar">
+      <!-- Aurora background glow for logo -->
+      <div class="sidebar-logo-glow"></div>
+      
+      <!-- Logo -->
+      <div class="sidebar-logo">
+        <div class="logo-icon">
+          <img src="logo.jpg" alt="Bruhaspati AI Logo" />
+        </div>
+        <div class="logo-text">
+          <span class="logo-name">Bruhaspati</span>
+          <span class="logo-tag">AI Tutor</span>
+        </div>
+      </div>
+
+      <!-- New Chat Button -->
+      <div class="sidebar-section" style="padding: 10px 14px; border-bottom: 1px solid var(--border-color);">
+        <button class="new-chat-btn" id="newChatBtn" onclick="startNewChat()">
+          <span style="font-size:14px; margin-right:6px;">✏️</span> New Chat
+        </button>
+      </div>
+
+      <!-- Board Selector -->
+      <div class="sidebar-section">
+        <p class="sidebar-label">📚 SELECT BOARD / EXAM</p>
+        <div class="board-grid" id="boardGrid">
+          <button class="board-btn active" data-board="CBSE" id="board-CBSE">CBSE</button>
+          <button class="board-btn" data-board="CHSE" id="board-CHSE">CHSE Odisha</button>
+          <button class="board-btn" data-board="BSE" id="board-BSE">BSE Odisha</button>
+          <button class="board-btn" data-board="JEE" id="board-JEE">JEE Main</button>
+          <button class="board-btn" data-board="JEEADV" id="board-JEEADV">JEE Adv.</button>
+          <button class="board-btn" data-board="NEET" id="board-NEET">NEET UG</button>
+          <button class="board-btn" data-board="IAT" id="board-IAT">IISER IAT</button>
+          <button class="board-btn" data-board="NTA" id="board-NTA">NTA / CUET</button>
+        </div>
+      </div>
+
+      <!-- Class Selector -->
+      <div class="sidebar-section">
+        <p class="sidebar-label">🎓 CLASS LEVEL</p>
+        <div class="class-row" id="classRow">
+          <button class="class-btn" data-class="10">10th</button>
+          <button class="class-btn active" data-class="11">11th</button>
+          <button class="class-btn" data-class="12">12th</button>
+          <button class="class-btn" data-class="UG">UG/PG</button>
+        </div>
+      </div>
+
+      <!-- Subject Selector -->
+      <div class="sidebar-section">
+        <p class="sidebar-label">🔬 SUBJECT</p>
+        <div class="subject-list" id="subjectList">
+          <button class="subject-btn active" data-subject="All">All Subjects</button>
+          <button class="subject-btn" data-subject="Physics">⚡ Physics</button>
+          <button class="subject-btn" data-subject="Chemistry">🧪 Chemistry</button>
+          <button class="subject-btn" data-subject="Biology">🌿 Biology</button>
+          <button class="subject-btn" data-subject="Mathematics">📐 Mathematics</button>
+          <button class="subject-btn" data-subject="English">📖 English</button>
+          <button class="subject-btn" data-subject="History">🏛️ History</button>
+          <button class="subject-btn" data-subject="Accountancy">💰 Accountancy</button>
+          <button class="subject-btn" data-subject="Economics">📊 Economics</button>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="sidebar-section">
+        <p class="sidebar-label">⚡ QUICK ACTIONS</p>
+        <div class="quick-actions">
+          <button class="quick-btn" id="quizModeBtn" onclick="openQuickActionModal('quiz')">
+            <span>🧠</span> Quiz Me!
+          </button>
+          <button class="quick-btn" id="formulaBtn" onclick="openQuickActionModal('formula')">
+            <span>📋</span> Formula Sheet
+          </button>
+          <button class="quick-btn" id="pyqBtn" onclick="openQuickActionModal('pyq')">
+            <span>📝</span> PYQ Practice
+          </button>
+        </div>
+      <!-- NCERT Library Section -->
+      <div class="sidebar-section ncert-library-section">
+        <button class="sidebar-accordion-btn" id="ncertLibraryToggle" onclick="toggleNCERTLibrary()">
+          <span>📚 NCERT Library</span>
+          <span class="accordion-arrow" id="ncertAccordionArrow">▼</span>
+        </button>
+        <div class="sidebar-accordion-content" id="ncertLibraryContent" style="display: none;">
+          <!-- Search box -->
+          <div class="ncert-search-container">
+            <input type="text" class="ncert-search" id="ncertSearchInput" placeholder="Search books..." oninput="filterNCERTBooks()" />
+          </div>
+          <!-- Tabs -->
+          <div class="ncert-tabs">
+            <button class="ncert-tab-btn active" id="ncertTabClass11" onclick="switchNCERTTab('Class 11')">Class 11</button>
+            <button class="ncert-tab-btn" id="ncertTabClass12" onclick="switchNCERTTab('Class 12')">Class 12</button>
+          </div>
+          <!-- Books Container -->
+          <div class="ncert-books-list" id="ncertBooksList">
+            <!-- Populated dynamically from JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Chats History Section -->
+      <div class="sidebar-section recent-chats-section" style="flex: 1; min-height: 120px; display: flex; flex-direction: column; border-bottom: 1px solid var(--border-color);">
+        <p class="sidebar-label">💬 Recent Chats</p>
+        <div class="recent-chats-list" id="recentChatsList" style="flex: 1;">
+          <!-- Populated dynamically from localStorage -->
+          <div style="font-size:11.5px; color:var(--text-muted); text-align:center; padding:12px 6px;">No recent study chats.</div>
+        </div>
+      </div>
+
+      <!-- Bookmarked Answers Section -->
+      <div class="sidebar-section bookmarks-section" style="max-height: 150px; display: flex; flex-direction: column;">
+        <p class="sidebar-label">🔖 Bookmarks</p>
+        <div class="recent-chats-list" id="bookmarksList" style="overflow-y: auto;">
+          <!-- Populated dynamically from localStorage -->
+          <div style="font-size:11.5px; color:var(--text-muted); text-align:center; padding:8px 6px;">No bookmarked answers.</div>
+        </div>
+      </div>
+
+      <!-- Sidebar Footer (Token Meter + Badge) -->
+      <div class="sidebar-footer">
+        <div class="token-meter-container">
+          <div style="display:flex; justify-content:space-between; font-size:11px; font-weight:600; margin-bottom:4px; color:var(--text-secondary);">
+            <span>⚡ Token Limit (Daily)</span>
+            <span id="tokenMeterText">0 / 2,000</span>
+          </div>
+          <div class="token-meter-bar">
+            <div class="token-meter-fill" id="tokenMeterFill" style="width: 0%;"></div>
+          </div>
+          <button class="upgrade-btn-sidebar" onclick="openUpgradeModal()">Upgrade 🚀</button>
+        </div>
+        <div class="ai-badge" style="margin-top: 12px;">
+          <span class="ai-dot"></span>
+          <span>Powered by Gemini 3.5 Flash</span>
+        </div>
+        <p class="footer-note">CBSE • NCERT • NTA • State Boards</p>
+      </div>
+    </aside>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="main-area">
+
+      <!-- Top Bar -->
+      <header class="topbar">
+        <!-- Sidebar Toggle for Mobile -->
+        <button class="menu-toggle" id="menuToggle" onclick="toggleSidebar()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+        </button>
+        
+        <!-- Sidebar Collapse Toggle for Desktop -->
+        <button class="sidebar-collapse-toggle" id="sidebarCollapseToggle" onclick="toggleSidebarCollapse()" title="Toggle Sidebar">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+            <line x1="9" y1="3" x2="9" y2="21"/>
+            <path d="M14 9l-3 3 3 3"/>
+          </svg>
+        </button>
+
+        <div class="topbar-center">
+          <div class="active-filters" id="activeFilters">
+            <span class="filter-chip board-chip">CBSE</span>
+            <span class="filter-chip class-chip">Class 11</span>
+            <span class="filter-chip subject-chip">All Subjects</span>
+          </div>
+        </div>
+        <div class="topbar-right">
+          <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Toggle theme">
+            <svg id="themeIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+            </svg>
+          </button>
+          <button class="clear-btn" onclick="clearChat()" title="Clear chat">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/>
+            </svg>
+          </button>
+          <button class="settings-btn" id="settingsBtn" onclick="openSettingsModal()" title="Settings">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      <!-- Chat Container -->
+      <div class="chat-container" id="chatContainer">
+
+        <!-- Welcome Screen -->
+        <div class="welcome-screen" id="welcomeScreen">
+          <!-- Aurora shimmer backdrop for welcome screen logo -->
+          <div class="welcome-logo-glow"></div>
+          
+          <div class="welcome-hero">
+            <div class="welcome-logo lotus-loader">
+              <div class="lotus-ring-2"></div>
+              <div class="lotus-ring"></div>
+              <img src="logo.jpg" alt="Bruhaspati AI Logo" />
+            </div>
+            <h1 class="welcome-title">Bruhaspati <span class="title-accent">AI</span></h1>
+            <p class="welcome-subtitle">Your Elite Indian Exam Tutor</p>
+            <p class="welcome-desc">Ask any question from CBSE, JEE, NEET, BSE/CHSE Odisha, or IAT. Get structured answers with definitions, diagrams, exam history & board keywords — just like a master teacher.</p>
+          </div>
+
+          <div class="suggestion-grid">
+            <p class="suggestion-label">✨ Cycle suggestions:</p>
+            <div class="suggestions" id="cyclingSuggestions">
+              <button class="suggestion-chip" onclick="sendSuggestion('Explain Photosynthesis for Class 10')">🌿 Explain Photosynthesis for Class 10</button>
+              <button class="suggestion-chip" onclick="sendSuggestion('What is Lanthanoid Contraction in Chemistry?')">⚗️ Lanthanoid Contraction — Class 12</button>
+              <button class="suggestion-chip" onclick="sendSuggestion('Explain Newton\'s Laws of Motion with examples')">⚡ Newton's Laws of Motion</button>
+            </div>
+          </div>
+
+          <!-- Exam Stats Banner -->
+          <div class="stats-banner">
+            <div class="stat-item">
+              <span class="stat-num">100K+</span>
+              <span class="stat-label">PYQs Covered</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+              <span class="stat-num">8</span>
+              <span class="stat-label">Boards & Exams</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+              <span class="stat-num">47</span>
+              <span class="stat-label">Years of PYQs</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+              <span class="stat-num">7</span>
+              <span class="stat-label">Structured Sections</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Messages Area -->
+        <div class="messages-area" id="messagesArea"></div>
+
+      </div>
+
+      <!-- Input Area -->
+      <div class="input-area">
+        <!-- Claude/ChatGPT Style Mode Selector Pill Row -->
+        <div class="mode-bar">
+          <button class="mode-chip mode-chip--active" data-mode="structured" onclick="setAnswerFormat('structured')" title="Classic exam format">
+            <span class="mode-icon">📋</span>
+            <span class="mode-label">Structured</span>
+          </button>
+          <button class="mode-chip" data-mode="long_answer" onclick="setAnswerFormat('long_answer')" title="Essay / board style">
+            <span class="mode-icon">📝</span>
+            <span class="mode-label">Long Answer</span>
+          </button>
+          <button class="mode-chip" data-mode="step_by_step" onclick="setAnswerFormat('step_by_step')" title="Learn from scratch">
+            <span class="mode-icon">🪜</span>
+            <span class="mode-label">Step by Step</span>
+          </button>
+          <button class="mode-chip" data-mode="quick_summary" onclick="setAnswerFormat('quick_summary')" title="5 key points only">
+            <span class="mode-icon">⚡</span>
+            <span class="mode-label">Quick Summary</span>
+          </button>
+          <button class="mode-chip" data-mode="exam_focused" onclick="setAnswerFormat('exam_focused')" title="PYQ + keywords only">
+            <span class="mode-icon">🎯</span>
+            <span class="mode-label">Exam Focus</span>
+          </button>
+          <button class="mode-chip" data-mode="deep_research" onclick="setAnswerFormat('deep_research')" title="University level">
+            <span class="mode-icon">🔬</span>
+            <span class="mode-label">Deep Research</span>
+          </button>
+          <button class="mode-chip" data-mode="graph_visual" onclick="setAnswerFormat('graph_visual')" title="Charts & diagrams">
+            <span class="mode-icon">📊</span>
+            <span class="mode-label">Graph / Visual</span>
+          </button>
+          <button class="mode-chip" data-mode="interactive" onclick="setAnswerFormat('interactive')" title="Guided learning">
+            <span class="mode-icon">🎮</span>
+            <span class="mode-label">Interactive</span>
+          </button>
+        </div>
+
+        <div class="input-wrapper">
+          <!-- Notes upload preview strip -->
+          <div class="upload-preview-strip" id="uploadPreviewStrip" style="display: none;"></div>
+          
+          <div class="input-main-row">
+            <!-- Upload Paperclip Button -->
+            <button class="input-btn upload-btn" id="uploadBtn" onclick="triggerNotesUpload()" title="Upload Notes (Max 10 pages)">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/>
+              </svg>
+            </button>
+            <input type="file" id="notesFileInput" multiple accept="image/*,application/pdf" style="display: none;" onchange="handleNotesUpload(event)" />
+            
+            <textarea
+              id="userInput"
+              class="chat-input"
+              placeholder="Ask any concept — Photosynthesis, Newton's Laws, Integration..."
+              rows="1"
+              onkeydown="handleKeyDown(event)"
+              oninput="autoResize(this); handlePreWarm()"
+            ></textarea>
+            
+            <div class="input-right-buttons">
+              <!-- Voice Microphone Button -->
+              <button class="input-btn voice-btn" id="voiceBtn" onclick="toggleVoiceInput()" title="Speak to Bruhaspati">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                  <path d="M19 10v1a7 7 0 0 1-14 0v-1"/>
+                  <line x1="12" y1="19" x2="12" y2="23"/>
+                  <line x1="8" y1="23" x2="16" y2="23"/>
+                </svg>
+              </button>
+              <button class="send-btn" id="sendBtn" onclick="sendMessage()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div class="input-actions">
+            <div class="input-meta">
+              <span class="input-hint" id="inputHint">Press Enter to send • Shift+Enter for new line</span>
+            </div>
+          </div>
+        </div>
+        <p class="input-disclaimer">Bruhaspati AI covers CBSE • CHSE Odisha • BSE Odisha • JEE Main & Advanced • NEET UG • IISER IAT</p>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Quiz Modal -->
+  <div class="modal-overlay" id="quizModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>🧠 Quick Quiz Check</h3>
+        <button class="modal-close" onclick="closeQuiz()">✕</button>
+      </div>
+      <div class="modal-body" id="quizBody"></div>
+      <div class="modal-footer">
+        <button class="modal-btn secondary" onclick="closeQuiz()">Skip</button>
+        <button class="modal-btn primary" id="quizSubmitBtn" onclick="submitQuizAnswer()">Submit Answer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Action Generator Modal -->
+  <div class="modal-overlay" id="quickActionModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="quickActionModalTitle">⚙️ Generate Learning Resource</h3>
+        <button class="modal-close" onclick="closeQuickActionModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-field">
+          <label class="modal-label">📚 Subject</label>
+          <select class="quiz-input modal-select" id="quickActionSubject">
+            <option value="Physics">⚡ Physics</option>
+            <option value="Chemistry">🧪 Chemistry</option>
+            <option value="Biology">🌿 Biology</option>
+            <option value="Mathematics">📐 Mathematics</option>
+            <option value="English">📖 English</option>
+            <option value="History">🏛️ History</option>
+            <option value="Accountancy">💰 Accountancy</option>
+            <option value="Economics">📊 Economics</option>
+          </select>
+        </div>
+        <div class="modal-field">
+          <label class="modal-label">🎓 Class Level</label>
+          <select class="quiz-input modal-select" id="quickActionClass">
+            <option value="10">Class 10</option>
+            <option value="11">Class 11</option>
+            <option value="12">Class 12</option>
+            <option value="UG">UG/PG Level</option>
+          </select>
+        </div>
+        <div class="modal-field" style="margin-bottom: 0;">
+          <label class="modal-label">📖 Chapter / Topic name</label>
+          <input type="text" class="quiz-input" id="quickActionTopic" placeholder="e.g. Matrices, Photosynthesis, Electrostatics" />
+        </div>
+        
+        <!-- Configurable Quiz specific settings (toggled dynamically in JS) -->
+        <div id="quizConfigContainer" style="display: none; border-top: 1px solid var(--border-color); padding-top: 12px; margin-top: 12px;">
+          <div class="modal-field">
+            <label class="modal-label">❓ Number of Questions</label>
+            <select class="quiz-input modal-select" id="quizNumQuestions">
+              <option value="4">4 Questions</option>
+              <option value="6">6 Questions</option>
+              <option value="8">8 Questions</option>
+              <option value="10">10 Questions</option>
+              <option value="15">15 Questions</option>
+              <option value="20">20 Questions</option>
+            </select>
+          </div>
+          <div class="modal-field">
+            <label class="modal-label">📝 Question Types</label>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 13px; color: var(--text-secondary);">
+              <label style="display:flex; align-items:center; gap:6px; cursor:pointer;"><input type="checkbox" id="quizTypeMcq" checked /> MCQ</label>
+              <label style="display:flex; align-items:center; gap:6px; cursor:pointer;"><input type="checkbox" id="quizTypeTf" checked /> True / False</label>
+              <label style="display:flex; align-items:center; gap:6px; cursor:pointer;"><input type="checkbox" id="quizTypeShort" /> Short Answer</label>
+              <label style="display:flex; align-items:center; gap:6px; cursor:pointer;"><input type="checkbox" id="quizTypeFill" /> Fill Blank</label>
+            </div>
+          </div>
+          <div class="modal-field" style="margin-bottom: 0;">
+            <label class="modal-label">⚡ Difficulty</label>
+            <select class="quiz-input modal-select" id="quizDifficulty">
+              <option value="Mixed">Mixed</option>
+              <option value="Easy">Easy</option>
+              <option value="Medium">Medium</option>
+              <option value="Hard">Hard</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="modal-btn secondary" onclick="closeQuickActionModal()">Cancel</button>
+        <button class="modal-btn primary" onclick="generateQuickAction()">Generate 🚀</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Settings Modal -->
+  <div class="modal-overlay" id="settingsModal">
+    <div class="modal-card" style="max-width: 520px;">
+      <div class="modal-header">
+        <h3>⚙️ Custom Control Settings</h3>
+        <button class="modal-close" onclick="closeSettingsModal()">✕</button>
+      </div>
+      
+      <!-- Tab Headers -->
+      <div class="settings-tabs">
+        <button class="settings-tab-btn active" onclick="switchSettingsTab(this, 'profile-tab')">👤 Profile</button>
+        <button class="settings-tab-btn" onclick="switchSettingsTab(this, 'appearance-tab')">🎨 Appearance</button>
+        <button class="settings-tab-btn" onclick="switchSettingsTab(this, 'usage-tab')">⚡ Usage & Plan</button>
+        <button class="settings-tab-btn" onclick="switchSettingsTab(this, 'data-tab')">💾 Data</button>
+      </div>
+      
+      <div class="modal-body" style="max-height: 380px; overflow-y: auto;">
+        <!-- Tab 1: Profile -->
+        <div id="profile-tab" class="settings-tab-content">
+          <div class="modal-field">
+            <label class="modal-label">Student Name</label>
+            <input type="text" class="quiz-input" id="profileName" placeholder="Enter your name" />
+          </div>
+          <div class="modal-field">
+            <label class="modal-label">Default Board</label>
+            <select class="quiz-input modal-select" id="profileBoard">
+              <option value="CBSE">CBSE</option>
+              <option value="CHSE">CHSE Odisha</option>
+              <option value="BSE">BSE Odisha</option>
+              <option value="JEE">JEE Main</option>
+              <option value="JEEADV">JEE Advanced</option>
+              <option value="NEET">NEET UG</option>
+              <option value="IAT">IISER IAT</option>
+              <option value="NTA">NTA / CUET</option>
+            </select>
+          </div>
+          <div class="modal-field" style="margin-bottom:0;">
+            <label class="modal-label">Default Class</label>
+            <select class="quiz-input modal-select" id="profileClass">
+              <option value="10">Class 10</option>
+              <option value="11">Class 11</option>
+              <option value="12">Class 12</option>
+              <option value="UG">UG/PG Level</option>
+            </select>
+          </div>
+        </div>
+        
+        <!-- Tab 2: Appearance -->
+        <div id="appearance-tab" class="settings-tab-content" style="display:none;">
+          <div class="modal-field">
+            <label class="modal-label">Theme</label>
+            <select class="quiz-input modal-select" id="settingsTheme" onchange="applySettingsTheme(this.value)">
+              <option value="dark">Deep Space Navy (Dark)</option>
+              <option value="light">Warm Chalkboard (Light)</option>
+              <option value="oled">Pure OLED Black</option>
+            </select>
+          </div>
+          <div class="modal-field">
+            <label class="modal-label">Font Size</label>
+            <select class="quiz-input modal-select" id="settingsFontSize" onchange="applySettingsFontSize(this.value)">
+              <option value="medium">Medium (Default)</option>
+              <option value="small">Small</option>
+              <option value="large">Large</option>
+            </select>
+          </div>
+          <div class="modal-field">
+            <label class="modal-label">Language Mode</label>
+            <select class="quiz-input modal-select" id="settingsLanguage">
+              <option value="English">English Only</option>
+              <option value="Hinglish">Hinglish (Mix of English + Hindi)</option>
+            </select>
+          </div>
+          <div class="modal-field" style="margin-bottom:0; display:flex; justify-content:space-between; align-items:center;">
+            <label class="modal-label" style="margin-bottom:0; cursor:pointer;" for="reduceAnimations">Reduce Animations (Accessibility)</label>
+            <input type="checkbox" id="reduceAnimations" onchange="applyReduceAnimations(this.checked)" />
+          </div>
+        </div>
+        
+        <!-- Tab 3: Usage & Plan -->
+        <div id="usage-tab" class="settings-tab-content" style="display:none;">
+          <div style="background:rgba(255,255,255,0.02); border:1px solid var(--border-color); border-radius:var(--radius-md); padding:14px; margin-bottom:16px; text-align:center;">
+            <div style="font-size:11px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Current Plan</div>
+            <div id="settingsPlanTitle" style="font-family:'Space Grotesk',sans-serif; font-size:22px; font-weight:700; color:var(--text-primary); margin:6px 0;">Free Student Tier</div>
+            <div style="font-size:12px; color:var(--text-secondary);">Daily Limit: 2,000 tokens reset at midnight</div>
+          </div>
+          
+          <div class="modal-field">
+            <label class="modal-label">Daily Token Consumption</label>
+            <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:6px; color:var(--text-secondary);">
+              <span id="settingsTokenText">0 / 2,000 tokens</span>
+              <span id="settingsTokenPercent">0%</span>
+            </div>
+            <div class="token-meter-bar" style="height:10px;">
+              <div class="token-meter-fill" id="settingsTokenFill" style="width: 0%;"></div>
+            </div>
+          </div>
+          
+          <button class="modal-btn primary" style="width:100%; margin-top: 10px;" onclick="openUpgradeModal(); closeSettingsModal();">Upgrade to Premium 🚀</button>
+        </div>
+        
+        <!-- Tab 4: Data -->
+        <div id="data-tab" class="settings-tab-content" style="display:none;">
+          <p style="font-size:13px; color:var(--text-secondary); margin-bottom:16px; line-height:1.5;">Manage your local backup studies, configuration limits, and historical chat storage.</p>
+          <div style="display:flex; flex-direction:column; gap:10px;">
+            <button class="modal-btn secondary" style="width:100%; text-align:left; display:flex; justify-content:space-between; align-items:center;" onclick="exportChatHistory()">
+              <span>💾 Export Study Logs (JSON)</span>
+              <span>↓</span>
+            </button>
+            <button class="modal-btn secondary" style="width:100%; text-align:left; display:flex; justify-content:space-between; align-items:center; border-color:rgba(244,63,94,0.3); color:#fda4af;" onclick="clearAllChatHistory()">
+              <span>🗑️ Clear Conversation Memory</span>
+              <span>Delete</span>
+            </button>
+            <button class="modal-btn secondary" style="width:100%; text-align:left; display:flex; justify-content:space-between; align-items:center; border-color:rgba(244,63,94,0.3); color:#fda4af;" onclick="resetAllPreferences()">
+              <span>🔄 Reset App Preferences</span>
+              <span>Reset</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <div class="modal-footer">
+        <button class="modal-btn primary" onclick="saveSettings()">Save Settings</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Upgrade Modal -->
+  <div class="modal-overlay" id="upgradeModal">
+    <div class="modal-card" style="max-width: 480px;">
+      <div class="modal-header">
+        <h3>⚡ Upgrade to Premium Plan</h3>
+        <button class="modal-close" onclick="closeUpgradeModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size:13.5px; color:var(--text-secondary); margin-bottom:16px; line-height:1.6; text-align:center;">
+          Get unlimited daily usage tokens, voice synthesis readings, paperclip document upload OCR, and full board history access.
+        </p>
+        
+        <div class="pricing-table" style="display:flex; flex-direction:column; gap:10px; margin-bottom:18px;">
+          <!-- Free Plan -->
+          <div class="plan-card" id="planCardFree" style="display:flex; justify-content:space-between; align-items:center; padding:12px 16px; border:1px solid var(--border-color); border-radius:var(--radius-md); background:rgba(255,255,255,0.01);">
+            <div>
+              <div style="font-weight:700; font-size:14px; color:var(--text-primary);">Free Student Plan</div>
+              <div style="font-size:11.5px; color:var(--text-muted);">2,000 daily tokens limit</div>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-weight:700; font-size:15px; color:var(--text-primary);">₹0</div>
+              <button class="modal-btn secondary" id="planFreeBtn" style="padding:4px 10px; font-size:11px; margin-top:4px;" disabled>Active</button>
+            </div>
+          </div>
+          
+          <!-- Pro Plan -->
+          <div class="plan-card" id="planCardPro" style="display:flex; justify-content:space-between; align-items:center; padding:12px 16px; border:1px solid rgba(99,102,241,0.3); border-radius:var(--radius-md); background:rgba(99,102,241,0.03); transition: var(--transition);">
+            <div>
+              <div style="font-weight:700; font-size:14px; color:var(--text-primary); display:flex; align-items:center; gap:6px;">Pro Exam Prep 🌟</div>
+              <div style="font-size:11.5px; color:var(--text-secondary);">20,000 daily tokens • Voice + Uploads</div>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-weight:700; font-size:15px; color:var(--text-accent);">₹199 / mo</div>
+              <button class="modal-btn primary" id="planProBtn" style="padding:4px 10px; font-size:11px; margin-top:4px;" onclick="selectPlan('pro')">Activate Pro</button>
+            </div>
+          </div>
+          
+          <!-- Ultra Plan -->
+          <div class="plan-card" id="planCardUltra" style="display:flex; justify-content:space-between; align-items:center; padding:12px 16px; border:1px solid rgba(16,185,129,0.3); border-radius:var(--radius-md); background:rgba(16,185,129,0.03); transition: var(--transition);">
+            <div>
+              <div style="font-weight:700; font-size:14px; color:var(--text-primary); display:flex; align-items:center; gap:6px;">Ultra Scholar 🚀</div>
+              <div style="font-size:11.5px; color:var(--text-secondary);">Unlimited daily tokens • Priority API access</div>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-weight:700; font-size:15px; color:#34d399;">₹399 / mo</div>
+              <button class="modal-btn primary" id="planUltraBtn" style="padding:4px 10px; font-size:11px; margin-top:4px; background:linear-gradient(135deg, #10b981, #059669);" onclick="selectPlan('ultra')">Activate Ultra</button>
+            </div>
+          </div>
+        </div>
+        
+        <div id="paymentStatus" style="display:none; text-align:center; padding:12px; background:rgba(16,185,129,0.08); border-radius:var(--radius-sm); border:1px solid rgba(16,185,129,0.2); margin-top:10px; font-size:13px; color:#34d399; font-weight: 600;">
+          <!-- status text -->
+        </div>
+      </div>
+      <div class="modal-footer" style="justify-content:center;">
+        <p style="font-size:11.5px; color:var(--text-muted); text-align:center;">Questions? <a href="https://wa.me/919999999999?text=Hello%20Bruhaspati%20AI%20Team,%20I%20want%20to%20upgrade%20my%20plan." target="_blank" style="color:var(--text-accent); text-decoration:underline;">Chat with us on WhatsApp</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- NCERT Download/Read Modal -->
+  <div class="modal-overlay" id="ncertModal" onclick="if(event.target === this) closeNCERTModal()">
+    <div class="modal-card" style="max-width: 500px;">
+      <div class="modal-header">
+        <h3>📚 NCERT Textbook Options</h3>
+        <button class="modal-close" onclick="closeNCERTModal()">×</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 13.5px; line-height: 1.5; color: var(--text-color); margin-bottom: 16px;">
+          Choose how you would like to read the textbook <strong><span id="ncertModalBookName">Book</span></strong>:
+        </p>
+        
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <!-- Option 1: Read inside the app with 3D animation -->
+          <button id="ncertModalAppBtn" class="modal-btn primary" style="display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; padding: 14px; font-weight: 700; font-size: 14px; background: linear-gradient(135deg, #c8972a, #b3821c); border: none;">
+            📖 Option 1: Read Inside App (3D Flip-Book)
+          </button>
+          
+          <!-- Option 2: Open on DIKSHA -->
+          <a id="ncertModalDikshaBtn" href="https://diksha.gov.in/" target="_blank" rel="noreferrer noopener" class="modal-btn secondary" style="display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; padding: 12px; font-weight: 600; border: 1px solid rgba(255,255,255,0.15);">
+            🌐 Option 2: Open on DIKSHA Website
+          </a>
+
+          <!-- Option 3: Open on NCERT -->
+          <a id="ncertModalOfficialBtn" href="#" target="_blank" rel="noreferrer noopener" class="modal-btn secondary" style="display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; padding: 12px; font-weight: 600; border: 1px solid rgba(255,255,255,0.15);">
+            🏛️ Option 3: Open on NCERT Website
+          </a>
+        </div>
+      </div>
+      <div class="modal-footer" style="justify-content: center;">
+        <p style="font-size: 11px; color: var(--text-muted); text-align: center; margin: 0;">
+          Note: If the NCERT server is offline, Bruhaspati AI will load an interactive offline sample chapter.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Immersive Interactive 3D Flipbook Modal -->
+  <div class="modal-overlay" id="flipbookModal" style="z-index: 2000; background: rgba(10, 10, 15, 0.98); backdrop-filter: blur(20px);">
+    <div class="flipbook-container" style="display: flex; flex-direction: column; width: 100vw; height: 100vh; color: #fff; position: relative;">
+      
+      <!-- Header / Control bar -->
+      <div class="flipbook-header" style="display: flex; align-items: center; justify-content: space-between; padding: 16px 24px; background: rgba(255, 255, 255, 0.03); border-bottom: 1px solid rgba(255, 255, 255, 0.08); backdrop-filter: blur(10px);">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <img src="logo.jpg" style="width: 32px; height: 32px; border-radius: 50%; border: 1px gold solid;" alt="logo">
+          <div>
+            <h3 id="flipbookTitle" style="margin: 0; font-size: 16px; font-weight: 600; color: #fff;">Class 11 Chemistry - Chapter 1</h3>
+            <span id="flipbookSubtitle" style="font-size: 11px; color: var(--text-muted);">Bruhaspati AI 3D Reader Engine</span>
+          </div>
+        </div>
+        
+        <!-- Center controls (Page Prev / Next / Input) -->
+        <div class="flipbook-page-controls" style="display: flex; align-items: center; gap: 16px; background: rgba(255,255,255,0.05); padding: 6px 16px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.1);">
+          <button class="flipbook-btn" onclick="flipbookPrev()" style="background: none; border: none; color: #fff; cursor: pointer; font-size: 16px; transition: transform 0.2s;">⬅️</button>
+          <div style="font-size: 13px; font-family: monospace;">
+            Page <input type="number" id="flipbookPageInput" value="1" min="1" max="100" onchange="flipbookGoToPage(this.value)" style="width: 45px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; color: #fff; text-align: center; font-size: 13px; font-family: monospace; padding: 2px;"> of <span id="flipbookTotalPages">1</span>
+          </div>
+          <button class="flipbook-btn" onclick="flipbookNext()" style="background: none; border: none; color: #fff; cursor: pointer; font-size: 16px; transition: transform 0.2s;">➡️</button>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <!-- Fallback toggle indicator if online file loaded vs offline demo -->
+          <span id="flipbookSourceBadge" class="ncert-badge" style="background: rgba(16,185,129,0.15); color: #34d399; border: 1px solid rgba(16,185,129,0.3); font-size: 10px;">Offline Demo</span>
+          <button class="modal-close" onclick="closeFlipbook()" style="position: static; font-size: 28px; background: none; border: none; color: #a1a1aa; cursor: pointer; transition: color 0.2s;">×</button>
+        </div>
+      </div>
+      
+      <!-- Main Flipbook Area -->
+      <div class="flipbook-body" style="flex: 1; display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 20px; position: relative;">
+        <!-- Loading overlay -->
+        <div id="flipbookLoader" style="position: absolute; top:0; left:0; width:100%; height:100%; background: rgba(10, 10, 15, 0.9); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:16px; z-index:10;">
+          <div class="lotus-loader active" style="width: 80px; height: 80px;">
+            <img src="logo.jpg" style="width: 100%; height:100%; border-radius: 50%;" alt="loader">
+          </div>
+          <div style="color: #F5C76A; font-weight: 600; font-size: 15px; letter-spacing: 0.5px;" id="flipbookLoaderText">Loading Textbook Pages...</div>
+          <div class="progress-bar-container" style="width: 200px; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; overflow:hidden;">
+            <div id="flipbookLoadProgress" style="width: 0%; height: 100%; background: linear-gradient(90deg, #F5C76A, #e6b34c); transition: width 0.3s;"></div>
+          </div>
+        </div>
+
+        <!-- The actual Turnable Book Wrapper -->
+        <div id="flipbookWrapper" style="display: none; box-shadow: 0 30px 70px rgba(0,0,0,0.8); border-radius: 8px; overflow: visible;">
+          <div id="flipbookCanvas" class="flipbook-viewport"></div>
+        </div>
+      </div>
+
+      <!-- Bottom controls -->
+      <div class="flipbook-footer" style="display: flex; align-items: center; justify-content: space-between; padding: 12px 24px; background: rgba(0, 0, 0, 0.2); border-top: 1px solid rgba(255, 255, 255, 0.05); font-size: 12px; color: var(--text-muted);">
+        <div>Drag page corners or use arrow keys to flip pages.</div>
+        <div style="display: flex; gap: 16px;">
+          <button onclick="toggleFlipbookFullscreen()" style="background: none; border: none; color: #fff; cursor: pointer; display: flex; align-items: center; gap: 4px;">📺 Fullscreen</button>
+          <a id="flipbookDownloadLink" href="#" target="_blank" download style="color: #fff; text-decoration: none; display: flex; align-items: center; gap: 4px;">📥 Download PDF</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Autocomplete Suggestions popup -->
+  <div class="autocomplete-popup" id="autocompletePopup" style="display: none;"></div>
+
+  <!-- Mobile Bottom Nav Drawer -->
+  <nav class="mobile-bottom-nav">
+    <button class="mobile-nav-btn active" id="mobileNavChat" onclick="switchMobileTab('chat')">
+      <span class="mobile-nav-icon">💬</span>
+      <span class="mobile-nav-text">Chat</span>
+    </button>
+    <button class="mobile-nav-btn" id="mobileNavHistory" onclick="switchMobileTab('history')">
+      <span class="mobile-nav-icon">📖</span>
+      <span class="mobile-nav-text">History</span>
+    </button>
+    <button class="mobile-nav-btn" id="mobileNavQuiz" onclick="openQuickActionModal('quiz')">
+      <span class="mobile-nav-icon">🧠</span>
+      <span class="mobile-nav-text">Quiz</span>
+    </button>
+    <button class="mobile-nav-btn" id="mobileNavSettings" onclick="openSettingsModal()">
+      <span class="mobile-nav-icon">⚙️</span>
+      <span class="mobile-nav-text">Settings</span>
+    </button>
+  </nav>
+
+  <!-- Auth Modal Overlay -->
+  <div id="authModalOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 9999; backdrop-filter: blur(5px); justify-content: center; align-items: center;">
+    <div style="background: var(--bg-card); padding: 40px; border-radius: 16px; border: 1px solid var(--border-color); width: 90%; max-width: 400px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.5);">
+      <div style="font-size: 40px; margin-bottom: 10px;">🛡️</div>
+      <h2 style="margin-bottom: 10px; font-family: 'Sora', sans-serif;">Authentication Required</h2>
+      <p style="color: var(--text-muted); margin-bottom: 24px; font-size: 14px;">Please sign in to access Bruhaspati AI.</p>
+      
+      <!-- FirebaseUI Container -->
+      <div id="firebaseui-auth-container"></div>
+      
+      <!-- Mock Login (Fallback if Firebase config is missing) -->
+      <div id="mockAuthContainer">
+        <input type="text" id="mockEmail" placeholder="Enter Email" style="width: 100%; padding: 12px; margin-bottom: 12px; border-radius: 8px; border: 1px solid var(--border-color); background: rgba(0,0,0,0.2); color: white;" />
+        <button onclick="handleMockLogin()" style="width: 100%; padding: 12px; background: var(--accent-gradient); border: none; border-radius: 8px; color: white; font-weight: 600; cursor: pointer;">Sign In</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
+  <!-- Add Firebase products that you want to use -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/ui/6.1.0/firebase-ui-auth.js"></script>
+  <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/6.1.0/firebase-ui-auth.css" />
+
+  <!-- PDF.js & Page-Flip scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
+  <script src="https://unpkg.com/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

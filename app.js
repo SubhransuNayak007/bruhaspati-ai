@@ -3349,6 +3349,13 @@ function saveAIMessageToState(query, parsed, cardId, isError = false) {
 async function sendMessage() {
   const input = document.getElementById('userInput');
   const query = input.value.trim();
+  
+  if (!localStorage.getItem('bruhaspati_auth')) {
+    showToast("⚠️ Please log in to use the chat.");
+    if (typeof initAuth === 'function') initAuth();
+    return;
+  }
+  
   if (!query || state.isTyping) return;
   
   if (window.speechSynthesis.speaking) {

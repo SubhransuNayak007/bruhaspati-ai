@@ -1305,7 +1305,7 @@ async function streamAIResponse(query, cardId) {
             contents: [{ parts: contentsParts }],
             generationConfig: {
               temperature: 0.7,
-              maxOutputTokens: 8192,
+              maxOutputTokens: 20000,
               responseMimeType: "application/json"
             }
           };

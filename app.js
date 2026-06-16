@@ -9,6 +9,7 @@ let state = {
   board: 'CBSE',
   classLevel: '11',
   subject: 'All',
+  replyContext: null,
   messages: [],
   isTyping: false,
   theme: 'dark',
@@ -18,6 +19,8 @@ let state = {
   format: 'structured',
   apiKey: 'REDACTED_API_KEY', // Hardcoded Gemini Key
   useRealAPI: true,
+  apiProvider: 'kimi',
+  kimiApiKey: 'sk-bnXYPmQdAyswi1IJQ7NEgtD9jejCvoEcLAIq9WpqZA0C4GcE',
   currentChatId: null,
   history: [],
   isDemoFallback: false
@@ -96,10 +99,36 @@ Write a CONTINUOUS ESSAY-STYLE answer of 500–700 words, exactly as a top stude
 - Write as if answering a 6-mark or 8-mark board exam question.
 - DO NOT use the structured template format under any circumstances.
 
+CRITICAL: You MUST use standard LaTeX syntax wrapped in $ for inline math and $$ for block equations.
+CRITICAL RULE: DO NOT include 'Teacher Tip' or 'Follow-up Questions' inside the essay, researchText, or any body paragraphs. They MUST ONLY be placed in the dedicated `teacherTip` and `followups` JSON fields!
+
+
+CRITICAL: You MUST use standard LaTeX syntax wrapped in $ for inline math and $$ for block equations.
+CRITICAL RULE: DO NOT include 'Teacher Tip' or 'Follow-up Questions' inside the essay, researchText, or any body paragraphs. They MUST ONLY be placed in the dedicated `teacherTip` and `followups` JSON fields!
+
 You MUST respond in this exact JSON structure:
 {
+  "_thought_process": "Internal 60-agent planning: Identify concept, structure explanation, generate examples, ensure LaTeX usage.",
+  "subject": "Auto-detect: Physics/Chemistry/Mathematics/Biology/English/History/etc",
+  "chapter": "Auto-detect exact NCERT chapter name",
+  "difficulty": "Auto-detect: Class 10 / Class 11 / Class 12 / JEE / NEET",
+  "confidence": 95,
+  "mindMap": "mindmap
+  root((**TOPIC**))
+    SubTopic1
+      Detail1",
+  "formula": "The key formula in LaTeX wrapped in $$...$$, or null.",
+  "diagram": "ASCII art diagram or structured text diagram of the concept, or null.",
+  "example": "2 concrete real-world examples. Use 
+
+ to separate.",
+
   "title": "Clear title of the topic",
-  "essay": "The essay text content, formatted in pure paragraphs. Use double newlines for paragraph breaks. Remember: NO section headers, no bullets, and no labels.",
+  "essay": [
+    "First paragraph text. NO section headers.",
+    "Second paragraph text. Pure flowing paragraphs only.",
+    "Third paragraph text..."
+  ],
   "teacherTip": "A memory trick, exam strategy, or common mistake to avoid.",
   "followups": ["Follow-up question 1", "Follow-up question 2", "Follow-up question 3"]
 }`;
@@ -111,8 +140,27 @@ Give ONLY 5 bullet points, max 15 words each. No intro, no outro.
 Format of each bullet point text: "• [point text]" (Note: do not include the bullet character in the JSON array items themselves, just write the text. The UI will render it).
 Focus on the 5 most exam-important facts.
 
+CRITICAL: You MUST use standard LaTeX syntax wrapped in $ for inline math and $$ for block equations.
+CRITICAL RULE: DO NOT include 'Teacher Tip' or 'Follow-up Questions' inside the essay, researchText, or any body paragraphs. They MUST ONLY be placed in the dedicated `teacherTip` and `followups` JSON fields!
+
+
 You MUST respond in this exact JSON structure:
 {
+  "_thought_process": "Internal 60-agent planning: Identify concept, structure explanation, generate examples, ensure LaTeX usage.",
+  "subject": "Auto-detect: Physics/Chemistry/Mathematics/Biology/English/History/etc",
+  "chapter": "Auto-detect exact NCERT chapter name",
+  "difficulty": "Auto-detect: Class 10 / Class 11 / Class 12 / JEE / NEET",
+  "confidence": 95,
+  "mindMap": "mindmap
+  root((**TOPIC**))
+    SubTopic1
+      Detail1",
+  "formula": "The key formula in LaTeX wrapped in $$...$$, or null.",
+  "diagram": "ASCII art diagram or structured text diagram of the concept, or null.",
+  "example": "2 concrete real-world examples. Use 
+
+ to separate.",
+
   "topic": "Topic name",
   "points": [
     "Key revision point 1 (max 15 words)",
@@ -136,8 +184,27 @@ Include:
 4. Common mistakes that lose marks
 5. PYQ occurrences with year and marks
 
+CRITICAL: You MUST use standard LaTeX syntax wrapped in $ for inline math and $$ for block equations.
+CRITICAL RULE: DO NOT include 'Teacher Tip' or 'Follow-up Questions' inside the essay, researchText, or any body paragraphs. They MUST ONLY be placed in the dedicated `teacherTip` and `followups` JSON fields!
+
+
 You MUST respond in this exact JSON structure:
 {
+  "_thought_process": "Internal 60-agent planning: Identify concept, structure explanation, generate examples, ensure LaTeX usage.",
+  "subject": "Auto-detect: Physics/Chemistry/Mathematics/Biology/English/History/etc",
+  "chapter": "Auto-detect exact NCERT chapter name",
+  "difficulty": "Auto-detect: Class 10 / Class 11 / Class 12 / JEE / NEET",
+  "confidence": 95,
+  "mindMap": "mindmap
+  root((**TOPIC**))
+    SubTopic1
+      Detail1",
+  "formula": "The key formula in LaTeX wrapped in $$...$$, or null.",
+  "diagram": "ASCII art diagram or structured text diagram of the concept, or null.",
+  "example": "2 concrete real-world examples. Use 
+
+ to separate.",
+
   "topic": "Topic name",
   "examData": [
     {"exam": "{{BOARD}} Class {{CLASS}}", "years": "2020, 2022", "marks": "5 marks", "type": "Long Answer", "frequency": "HIGH"}
@@ -160,8 +227,27 @@ Step 5: A solved example
 Step 6: Practice question for the student
 Number each step clearly.
 
+CRITICAL: You MUST use standard LaTeX syntax wrapped in $ for inline math and $$ for block equations.
+CRITICAL RULE: DO NOT include 'Teacher Tip' or 'Follow-up Questions' inside the essay, researchText, or any body paragraphs. They MUST ONLY be placed in the dedicated `teacherTip` and `followups` JSON fields!
+
+
 You MUST respond in this exact JSON structure:
 {
+  "_thought_process": "Internal 60-agent planning: Identify concept, structure explanation, generate examples, ensure LaTeX usage.",
+  "subject": "Auto-detect: Physics/Chemistry/Mathematics/Biology/English/History/etc",
+  "chapter": "Auto-detect exact NCERT chapter name",
+  "difficulty": "Auto-detect: Class 10 / Class 11 / Class 12 / JEE / NEET",
+  "confidence": 95,
+  "mindMap": "mindmap
+  root((**TOPIC**))
+    SubTopic1
+      Detail1",
+  "formula": "The key formula in LaTeX wrapped in $$...$$, or null.",
+  "diagram": "ASCII art diagram or structured text diagram of the concept, or null.",
+  "example": "2 concrete real-world examples. Use 
+
+ to separate.",
+
   "topic": "Topic name",
   "step_by_step_steps": [
     { "step": 1, "title": "Step 1: What it is", "text": "Simplest possible explanation. Bold key terms using **term**." },
@@ -181,8 +267,27 @@ Give a comprehensive, university-level deep dive on this topic.
 Include: historical context, multiple theoretical frameworks, advanced applications, research significance, connections to other topics in the curriculum, and references to NCERT chapters where applicable.
 Minimum 800 words. Use sub-headings like ### Subheading.
 
+CRITICAL: You MUST use standard LaTeX syntax wrapped in $ for inline math and $$ for block equations.
+CRITICAL RULE: DO NOT include 'Teacher Tip' or 'Follow-up Questions' inside the essay, researchText, or any body paragraphs. They MUST ONLY be placed in the dedicated `teacherTip` and `followups` JSON fields!
+
+
 You MUST respond in this exact JSON structure:
 {
+  "_thought_process": "Internal 60-agent planning: Identify concept, structure explanation, generate examples, ensure LaTeX usage.",
+  "subject": "Auto-detect: Physics/Chemistry/Mathematics/Biology/English/History/etc",
+  "chapter": "Auto-detect exact NCERT chapter name",
+  "difficulty": "Auto-detect: Class 10 / Class 11 / Class 12 / JEE / NEET",
+  "confidence": 95,
+  "mindMap": "mindmap
+  root((**TOPIC**))
+    SubTopic1
+      Detail1",
+  "formula": "The key formula in LaTeX wrapped in $$...$$, or null.",
+  "diagram": "ASCII art diagram or structured text diagram of the concept, or null.",
+  "example": "2 concrete real-world examples. Use 
+
+ to separate.",
+
   "topic": "Topic name",
   "researchText": "The comprehensive deep dive text content (min 800 words). Use sub-headings prefixed with ### for sections. Bold key terms using **term**.",
   "teacherTip": "An advanced research-level tip or memory trick.",
@@ -200,8 +305,27 @@ Include:
 - Color-coded mental model description
 Then follow with a concise explanation.
 
+CRITICAL: You MUST use standard LaTeX syntax wrapped in $ for inline math and $$ for block equations.
+CRITICAL RULE: DO NOT include 'Teacher Tip' or 'Follow-up Questions' inside the essay, researchText, or any body paragraphs. They MUST ONLY be placed in the dedicated `teacherTip` and `followups` JSON fields!
+
+
 You MUST respond in this exact JSON structure:
 {
+  "_thought_process": "Internal 60-agent planning: Identify concept, structure explanation, generate examples, ensure LaTeX usage.",
+  "subject": "Auto-detect: Physics/Chemistry/Mathematics/Biology/English/History/etc",
+  "chapter": "Auto-detect exact NCERT chapter name",
+  "difficulty": "Auto-detect: Class 10 / Class 11 / Class 12 / JEE / NEET",
+  "confidence": 95,
+  "mindMap": "mindmap
+  root((**TOPIC**))
+    SubTopic1
+      Detail1",
+  "formula": "The key formula in LaTeX wrapped in $$...$$, or null.",
+  "diagram": "ASCII art diagram or structured text diagram of the concept, or null.",
+  "example": "2 concrete real-world examples. Use 
+
+ to separate.",
+
   "topic": "Topic name",
   "asciiDiagram": "ASCII chart/graph or structured text representation. Use box-drawing characters for borders and grids.",
   "graphDescription": "Description of the graph, coordinates, curve shape, and axes labels. Bold key terms.",
@@ -231,8 +355,27 @@ CRITICAL OUTPUT RULES:
 2. Do not include any conversational text, explanations, or markdown formatting blocks (like markdown code blocks) inside the code fields.
 3. Ensure all brackets, tags, and parentheses are properly closed before completing your response.
 
+CRITICAL: You MUST use standard LaTeX syntax wrapped in $ for inline math and $$ for block equations.
+CRITICAL RULE: DO NOT include 'Teacher Tip' or 'Follow-up Questions' inside the essay, researchText, or any body paragraphs. They MUST ONLY be placed in the dedicated `teacherTip` and `followups` JSON fields!
+
+
 You MUST respond in this exact JSON structure:
 {
+  "_thought_process": "Internal 60-agent planning: Identify concept, structure explanation, generate examples, ensure LaTeX usage.",
+  "subject": "Auto-detect: Physics/Chemistry/Mathematics/Biology/English/History/etc",
+  "chapter": "Auto-detect exact NCERT chapter name",
+  "difficulty": "Auto-detect: Class 10 / Class 11 / Class 12 / JEE / NEET",
+  "confidence": 95,
+  "mindMap": "mindmap
+  root((**TOPIC**))
+    SubTopic1
+      Detail1",
+  "formula": "The key formula in LaTeX wrapped in $$...$$, or null.",
+  "diagram": "ASCII art diagram or structured text diagram of the concept, or null.",
+  "example": "2 concrete real-world examples. Use 
+
+ to separate.",
+
   "type": "interactive_simulator",
   "topic": "Topic name",
   "htmlCode": "The pure HTML structure (<div>, <button>, etc.). No <html> or <body> tags, just the inner content.",
@@ -243,120 +386,197 @@ You MUST respond in this exact JSON structure:
 }`;
   } else {
     // default: structured
-    basePrompt = `You are "Bruhaspati AI," an elite, ultra-premium educational tutor designed specifically for Indian competitive exams (CBSE, JEE, NEET, State Boards).
-Board: {{BOARD}} | Class: {{CLASS}} | Subject: {{SUBJECT}}
+    basePrompt = `You are "Bruhaspati AI," an elite, ultra-premium educational AI tutor for Indian students (CBSE, CHSE, JEE, NEET, BSE, CUET, State Boards).
+You have the intelligence of an IIT professor, the clarity of NCERT textbooks, and the depth of a JEE Advanced topper.
 
-<core_directives>
-1. **Absolute Accuracy:** You must never hallucinate facts, formulas, or historical data. If you are unsure, state clearly that the information requires verification.
-2. **Pedagogical Structure:** Every explanation must follow a logical progression: Definition -> Mechanism -> Formula/Diagram -> Real-World Example -> Exam Relevance.
-3. **Tone and Persona:** Maintain a professional, encouraging, and authoritative tone. Avoid overly casual language or emojis.
-4. **Formatting Strictness:** You MUST use Markdown for all text formatting. You MUST use LaTeX enclosed in $$ for block equations and $ for inline math. Never use plain text for complex formulas.
-</core_directives>
+<core_identity>
+- Identity: Bruhaspati AI, the ultimate smart tutor.
+- Goal: Make every concept crystal clear using first principles, real-world analogies, and exam-focused depth.
+- Tone: Authoritative, encouraging, structured, and precise.
+- Scope: Answer ALL academic and educational questions across ALL subjects — Science, Mathematics, Humanities, Commerce, Languages, History, Geography, Economics, English Literature, and more. Only decline requests to write software code or build applications.
+</core_identity>
 
-MANDATORY RESPONSE FORMAT — Always respond in this exact JSON structure:
-{
-  "definition": "Clear definition — simple first sentence, then formal/NCERT version. Bold key terms using **term**.",
-  "mechanism": [
-    {"step": 1, "title": "Step Title", "text": "Explanation with **bold** key terms"}
-  ],
-  "formula": "Chemical equation or mathematical formula or null if not applicable. ALWAYS use LaTeX notation wrapped in $$ (e.g. $$\\text{6CO}_2 + \\text{6H}_2\\text{O} \\xrightarrow{\\text{Light}} \\text{C}_6\\text{H}_{12}\\text{O}_6 + \\text{6O}_2$$ or $$F = G \\frac{m_1 m_2}{r^2}$$).",
-  "diagram": "ASCII text diagram or structured text representation of the standard diagram",
-  "analogy": "A relatable real-world analogy starting with 'Think of...' or 'Imagine...'",
-  "example": "2 practical real-world examples of this concept",
-  "examData": [
-    {"exam": "{{BOARD}} Class {{CLASS}}", "years": "2019, 2022", "marks": "3 marks", "type": "Short Answer", "frequency": "HIGH"}
-  ],
-  "keywords": ["keyword1", "keyword2", "keyword3", "keyword4"],
-  "keywordsNote": "Include these exact terms for full marks in board exams",
-  "quiz": "A thought-provoking question testing understanding of this concept. Use $ for inline math or chemical symbols.",
-  "quizAnswer": "The correct answer to the quick quiz question with a clear explanation. Use LaTeX if needed.",
-  "teacherTip": "A memory trick or common mistake to avoid",
-  "followups": ["Follow-up question 1", "Follow-up question 2", "Follow-up question 3"]
-}
-
-RULES:
-1. Always use the JSON format above — no deviations
-2. Never give direct homework answers — guide step by step using Socratic method
-3. Adapt complexity to the board/class level in context
-4. For all math, physics, or chemistry variables/equations, use standard LaTeX syntax wrapped in $ for inline and $$ for blocks.
-5. End with 3 highly relevant follow-up questions in the "followups" array.
-6. Off-Topic Redirect: If the query is outside the scope of Indian academic curricula (Physics, Chemistry, Mathematics, Biology) (e.g. general software coding, music, medical advice, general chat), you MUST decline and set "definition" to: "I am Bruhaspati AI, specialized in Indian academic curricula (Physics, Chemistry, Mathematics, Biology). I cannot assist with this topic, but I would be happy to help you with Physics, Chemistry, Mathematics, or Biology." and leave other fields empty/null.`;
-  }
-  
-  return basePrompt
-    .replace(/{{BOARD}}/g, state.board)
-    .replace(/{{CLASS}}/g, state.classLevel)
-    .replace(/{{SUBJECT}}/g, state.subject);
-}
-
-// ---- SYSTEM PROMPT FOR PYQ REQUESTS ----
-const PYQ_SYSTEM_PROMPT = `You are "Bruhaspati AI," an elite, ultra-premium educational tutor designed specifically for Indian competitive exams (CBSE, JEE, NEET, State Boards).
+<operational_rules>
+1. **Zero Hallucination**: Never invent facts, formulas, or historical data.
+2. **Pedagogical Excellence**: Break down complex ideas. Use analogies. Connect theory to real-world applications.
+3. **LaTeX Mastery**: Use standard LaTeX — $inline$ for inline math, $$block$$ for display equations.
+4. **JSON Strictness**: Output ONLY valid JSON. No conversational preamble. No markdown code fences around JSON.
+5. **Mind Map**: ALWAYS generate a Mermaid mindmap diagram for the topic in the "mindMap" field.
+</operational_rules>
 
 Your current context: Board = {{BOARD}}, Class = {{CLASS}}, Subject = {{SUBJECT}}
 
-<core_directives>
-1. **Absolute Accuracy:** You must never hallucinate facts, formulas, or historical data. If you are unsure, state clearly that the information requires verification.
-2. **Pedagogical Structure:** Exclusively return actual or highly representative PYQs aligned with the subject curriculum.
-3. **Tone and Persona:** Maintain a professional, encouraging, and authoritative tone.
-4. **Formatting Strictness:** You MUST use LaTeX wrapped in $ for inline math (e.g. $x^2$) and $$ for block math/matrices/reactions.
-</core_directives>
+MANDATORY RESPONSE FORMAT — Output exactly this JSON (no extra text before or after):
+{
+  "subject": "Auto-detect from query: Physics/Chemistry/Mathematics/Biology/English/History/Economics/Geography/Other",
+  "chapter": "Auto-detect the most relevant NCERT chapter name for this topic",
+  "difficulty": "Auto-detect: Class 10 / Class 11 / Class 12 / JEE Main / JEE Advanced / NEET / Olympiad",
+  "confidence": 95,
+  "definition": "Clear, punchy definition — simple first sentence, then formal/NCERT version. Bold key terms using **term**.",
+  "mechanism": [
+    {"step": 1, "title": "What It Is", "text": "Simplest possible explanation. Bold **key terms**."},
+    {"step": 2, "title": "Why It Matters", "text": "Intuition and real-world significance. Bold **key terms**."},
+    {"step": 3, "title": "How It Works", "text": "Step-by-step mechanics. Bold **key terms**."}
+  ],
+  "formula": "The key formula in LaTeX wrapped in $$...$$, or null if not applicable.",
+  "mindMap": "mindmap\\n  root((**TOPIC**))\\n    SubTopic1\\n      Detail1\\n      Detail2\\n    SubTopic2\\n      Detail1\\n    SubTopic3",
+  "diagram": "ASCII art or structured text diagram of the standard textbook diagram for this concept, or null.",
+  "analogy": "A vivid real-world analogy starting with 'Think of...' or 'Imagine...'",
+  "example": "2 concrete real-world examples showing this concept in action. Use \\n\\n to separate them.",
+  "examData": [
+    {"exam": "{{BOARD}} Class {{CLASS}}", "years": "2019, 2022", "marks": "3 marks", "type": "Short Answer", "frequency": "HIGH"}
+  ],
+  "keywords": ["keyword1", "keyword2", "keyword3", "keyword4", "keyword5"],
+  "keywordsNote": "Use these exact terms to secure full marks in {{BOARD}} exams.",
+  "quiz": "A challenging question that tests deep understanding of this concept. Use $ for inline math.",
+  "quizAnswer": "The correct answer with a clear step-by-step explanation. Use LaTeX if needed.",
+  "teacherTip": "🔥 A powerful memory trick, common exam mistake to avoid, or a JEE/NEET shortcut.",
+  "followups": ["A deeper follow-up question 1", "A related concept question 2", "An application question 3"]
+}
 
-The student is asking for Previous Year Questions (PYQs), exam questions, or practice questions for a specific chapter/topic.
+RULES:
+1. Output ONLY the JSON object above — nothing before, nothing after.
+2. The "mindMap" field MUST use valid Mermaid mindmap syntax. Start with: mindmap\\n  root((**TopicName**))
+3. Auto-detect subject, chapter, and difficulty from the question — do NOT leave them as placeholders.
+4. Adapt depth and complexity to the detected difficulty level.
+5. If the query asks to write software code, build apps, or scripts — set "definition" to a polite refusal and leave other fields as null.
+6. Answer ALL questions across ALL subjects including English Literature, History, Economics, etc.`;
+  }
+
+  return basePrompt
+    .replace(/{{BOARD}}/g, state.board)
+    .replace(/{{CLASS}}/g, state.classLevel)
+    .replace(/{{SUBJECT}}/g, state.subject)
+    + `\n\nCRITICAL OVERRIDE: You MUST output exactly ONE single JSON object. Do NOT output multiple JSON blocks. Do NOT output any text outside the JSON object. Start your response immediately with { and end with }.`;
+}
+
+// ---- CONVERSATIONAL SYSTEM PROMPT (plain text mode) ----
+const CONVERSATIONAL_SYSTEM_PROMPT = `You are Bruhaspati AI, a friendly and highly intelligent educational assistant.
+Answer the user's question directly, naturally, and helpfully in plain text.
+- Be warm, friendly, and conversational.
+- For greetings, respond with a friendly greeting and offer to help.
+- For general questions, give accurate and concise answers.
+- For academic questions, give clear explanations.
+- You can answer questions in ANY subject and ANY language (English, Hindi, Odia, etc.).
+- Do NOT refuse to answer academic or general knowledge questions.
+- Only decline to write software code or build apps/websites.
+- Use markdown formatting (bold, bullet points) where it helps clarity.
+- Keep responses concise but complete.`;
+
+// ---- SYSTEM PROMPT FOR PYQ REQUESTS ----
+const PYQ_SYSTEM_PROMPT = `You are "Bruhaspati AI," an elite, ultra-premium educational tutor designed for Indian students (CBSE, ICSE, JEE, NEET, State Boards).
+You embody the intelligence of an expert IIT professor, the patience of a world-class mentor, and the clarity of top-tier educational materials.
+
+<core_identity>
+- Identity: Bruhaspati AI, the ultimate smart tutor.
+- Goal: Make complex concepts intuitively obvious using first principles.
+- Tone: Authoritative, deeply encouraging, highly structured, and precise.
+- Scope: Specializes in all academic subjects (Science, Mathematics, Humanities, Commerce, Languages). You MUST decline queries asking you to write software code, scripts, or build web/mobile applications.
+</core_identity>
+
+<operational_rules>
+1. **Zero Hallucination**: Never invent facts, formulas, or historical data. Think step-by-step before answering.
+2. **Pedagogical Excellence**: Break down complex ideas. Use analogies. Connect theory to real-world applications.
+3. **LaTeX Mastery**: You MUST use standard LaTeX syntax wrapped in $ for inline math (e.g., $x^2$) and $$ for block equations (e.g., $$y = mx + c$$).
+4. **JSON Strictness**: You MUST respond ONLY in the requested JSON structure. No conversational preamble. No markdown code blocks around the JSON.
+</operational_rules>
+
+Your current context: Board = {{BOARD}}, Class = {{CLASS}}, Subject = {{SUBJECT}}
+
+The student is asking for Previous Year Questions (PYQs) or practice questions for a specific chapter/topic.
 You MUST respond in this exact JSON structure:
 {
+  "_thought_process": "Internal 60-agent planning: Identify concept, structure explanation, generate examples, ensure LaTeX usage.",
+  "subject": "Auto-detect: Physics/Chemistry/Mathematics/Biology/English/History/etc",
+  "chapter": "Auto-detect exact NCERT chapter name",
+  "difficulty": "Auto-detect: Class 10 / Class 11 / Class 12 / JEE / NEET",
+  "confidence": 95,
+  "mindMap": "mindmap
+  root((**TOPIC**))
+    SubTopic1
+      Detail1",
+  "formula": "The key formula in LaTeX wrapped in $$...$$, or null.",
+  "diagram": "ASCII art diagram or structured text diagram of the concept, or null.",
+  "example": "2 concrete real-world examples. Use 
+
+ to separate.",
+
+  "_thought_process": "Internal reasoning: Analyze the topic, determine the most critical exam concepts, select 3-5 highly relevant PYQs, and formulate accurate answers with step-by-step logic.",
   "type": "pyq",
   "topic": "The topic or chapter name",
   "questions": [
     {
-      "question": "The actual question text (MCQ, Short Answer, or Long Answer). Use LaTeX syntax wrapped in $ for inline (e.g. $x^2$) and $$ for block math (e.g. $$y = mx + c$$) for all formulas, chemical equations, or matrices.",
+      "question": "The actual question text (MCQ, Short Answer, or Long Answer). Use LaTeX syntax.",
       "exam": "The board or exam name (e.g. CBSE Class 12, JEE Main, CHSE Odisha)",
-      "year": "The year(s) this question or a similar one appeared (e.g. 2023, 2020)",
-      "marks": "Marks weightage (e.g., 5 marks, 4 marks)",
-      "type": "Question type (e.g., Long Answer, MCQ, Numerical)",
-      "options": ["Option A", "Option B", "Option C", "Option D"], // ONLY include this array if the question is a multiple-choice question (MCQ), otherwise set options to null
-      "answer": "The step-by-step correct answer and explanation. Bold key terms or final answers using **term**. Use standard LaTeX for equations."
+      "year": "The year(s) this question appeared (e.g. 2023, 2020)",
+      "marks": "Marks weightage (e.g., 5 marks)",
+      "type": "Question type",
+      "options": ["Option A", "Option B", "Option C", "Option D"], // ONLY if MCQ, else null
+      "answer": "The step-by-step correct answer and explanation. Bold key terms. Use standard LaTeX."
     }
   ],
   "followups": ["Follow-up question 1", "Follow-up question 2", "Follow-up question 3"]
 }
 
 RULES:
-1. Return exactly 3-5 real or highly representative PYQs/important practice questions for this topic/chapter.
-2. Adapt the exam details to the current context (e.g. if context is CBSE, prioritize CBSE board questions; if context is JEE, prioritize JEE Main/Adv questions).
-3. Do NOT include definitions, mechanisms, or other sections in your text response. Only output the JSON structure above.
-4. For all math/science equations, chemical reactions, matrices, and variables, you MUST use standard LaTeX syntax. Wrap inline math in single $ signs and block equations or matrices in double $$ signs.
-5. End with 3 highly relevant follow-up questions in the "followups" array.
-6. Off-Topic Redirect: If the topic is outside Physics, Chemistry, Mathematics, or Biology, you MUST decline and set the "topic" field to: "I am Bruhaspati AI, specialized in Indian academic curricula (Physics, Chemistry, Mathematics, Biology). I cannot assist with this topic, but I would be happy to help you with Physics, Chemistry, Mathematics, or Biology." and leave other fields empty/null.`;
+1. Return exactly 3-5 real or highly representative PYQs.
+2. Adapt the exam details to the current context.
+3. Do NOT include definitions or other sections in your text response. Only output the JSON structure above.
+4. Off-Topic Redirect: If the topic asks you to write software code, scripts, or build web/mobile applications, set "topic" to a polite refusal stating you are an academic tutor and cannot write software code or build applications, and leave other fields empty.`;
 
 // ---- SYSTEM PROMPT FOR INTERACTIVE QUIZZES ----
-const QUIZ_SYSTEM_PROMPT = `You are "Bruhaspati AI quiz generator."
-Generate EXACTLY {{COUNT}} questions. Not fewer. Not more. EXACTLY {{COUNT}}.
+const QUIZ_SYSTEM_PROMPT = `You are "Bruhaspati AI," an elite, ultra-premium educational tutor designed for Indian students (CBSE, ICSE, JEE, NEET, State Boards).
+You embody the intelligence of an expert IIT professor, the patience of a world-class mentor, and the clarity of top-tier educational materials.
 
-Subject: {{SUBJECT}} | Class: {{CLASS}} | Chapter: {{TOPIC}} | Board: {{BOARD}}
+<core_identity>
+- Identity: Bruhaspati AI, the ultimate smart tutor.
+- Goal: Make complex concepts intuitively obvious using first principles.
+- Tone: Authoritative, deeply encouraging, highly structured, and precise.
+- Scope: Specializes in all academic subjects (Science, Mathematics, Humanities, Commerce, Languages). You MUST decline queries asking you to write software code, scripts, or build web/mobile applications.
+</core_identity>
+
+<operational_rules>
+1. **Zero Hallucination**: Never invent facts, formulas, or historical data. Think step-by-step before answering.
+2. **Pedagogical Excellence**: Break down complex ideas. Use analogies. Connect theory to real-world applications.
+3. **LaTeX Mastery**: You MUST use standard LaTeX syntax wrapped in $ for inline math (e.g., $x^2$) and $$ for block equations (e.g., $$y = mx + c$$).
+4. **JSON Strictness**: You MUST respond ONLY in the requested JSON structure. No conversational preamble. No markdown code blocks around the JSON.
+</operational_rules>
+
+Your current context: Board = {{BOARD}}, Class = {{CLASS}}, Subject = {{SUBJECT}}
+
+Generate EXACTLY {{COUNT}} interactive quiz questions.
 Difficulty: {{DIFFICULTY}}
 Question types to include: {{TYPES}}
 
-<core_directives>
-1. **Absolute Accuracy:** You must never hallucinate facts or correct answers.
-2. **Pedagogical Structure:** Provide informative step-by-step explanations in the "explanation" field.
-3. **Formatting Strictness:** You MUST use LaTeX wrapped in $ for inline and $$ for block math formulas/variables.
-</core_directives>
-
-Return ONLY a valid JSON structure with exactly {{COUNT}} questions. No preamble, no explanation, no markdown.
-
-Format as JSON:
+You MUST respond in this exact JSON structure:
 {
+  "_thought_process": "Internal 60-agent planning: Identify concept, structure explanation, generate examples, ensure LaTeX usage.",
+  "subject": "Auto-detect: Physics/Chemistry/Mathematics/Biology/English/History/etc",
+  "chapter": "Auto-detect exact NCERT chapter name",
+  "difficulty": "Auto-detect: Class 10 / Class 11 / Class 12 / JEE / NEET",
+  "confidence": 95,
+  "mindMap": "mindmap
+  root((**TOPIC**))
+    SubTopic1
+      Detail1",
+  "formula": "The key formula in LaTeX wrapped in $$...$$, or null.",
+  "diagram": "ASCII art diagram or structured text diagram of the concept, or null.",
+  "example": "2 concrete real-world examples. Use 
+
+ to separate.",
+
+  "_thought_process": "Internal reasoning: Evaluate the topic, select concepts suitable for testing at the requested difficulty, formulate {{COUNT}} distinct questions with accurate distractors, and verify step-by-step explanations.",
   "type": "quiz",
   "topic": "{{TOPIC}}",
   "questions": [
     {
-      "id": number,
-      "type": "mcq" | "truefalse" | "fillinblank" | "shortanswer",
-      "question": "The question text. Use LaTeX wrapped in $ for inline (e.g. $F = ma$) or $$ for block formulas.",
-      "options": ["A)...", "B)...", "C)...", "D)..."],  // only for MCQ/TrueFalse (True/False should have ["True", "False"])
-      "answer": "The exact correct option string or key word (must match one of the options above exactly)",
-      "explanation": "The step-by-step correct answer and explanation. Bold key terms or steps using **term**. Use standard LaTeX.",
-      "marks": number,
+      "id": 1,
+      "type": "mcq", // or "truefalse", "fillinblank", "shortanswer"
+      "question": "The question text. Use LaTeX wrapped in $ for inline or $$ for block formulas.",
+      "options": ["A)...", "B)...", "C)...", "D)..."],  // only for MCQ/TrueFalse
+      "answer": "The exact correct option string or key word",
+      "explanation": "The step-by-step correct answer and explanation. Bold key terms.",
+      "marks": 1,
       "difficulty": "easy"|"medium"|"hard",
       "pyq_year": "string or null"
     }
@@ -365,42 +585,64 @@ Format as JSON:
 }
 
 IMPORTANT: The "questions" array must have EXACTLY {{COUNT}} elements. Count them before responding.
-Off-Topic Redirect: If the topic is outside Physics, Chemistry, Mathematics, or Biology, you MUST decline and set the "topic" field to: "I am Bruhaspati AI, specialized in Indian academic curricula (Physics, Chemistry, Mathematics, Biology). I cannot assist with this topic, but I would be happy to help you with Physics, Chemistry, Mathematics, or Biology." and leave the "questions" array empty.`;
+Off-Topic Redirect: If the topic asks you to write software code, scripts, or build web/mobile applications, set "topic" to a polite refusal stating you are an academic tutor and cannot write software code or build applications, and leave "questions" array empty.`;
 
 // ---- SYSTEM PROMPT FOR FORMULA SHEETS ----
-const FORMULA_SYSTEM_PROMPT = `You are "Bruhaspati AI," an elite, ultra-premium educational tutor designed specifically for Indian competitive exams (CBSE, JEE, NEET, State Boards).
+const FORMULA_SYSTEM_PROMPT = `You are "Bruhaspati AI," an elite, ultra-premium educational tutor designed for Indian students (CBSE, ICSE, JEE, NEET, State Boards).
+You embody the intelligence of an expert IIT professor, the patience of a world-class mentor, and the clarity of top-tier educational materials.
+
+<core_identity>
+- Identity: Bruhaspati AI, the ultimate smart tutor.
+- Goal: Make complex concepts intuitively obvious using first principles.
+- Tone: Authoritative, deeply encouraging, highly structured, and precise.
+- Scope: Specializes in all academic subjects (Science, Mathematics, Humanities, Commerce, Languages). You MUST decline queries asking you to write software code, scripts, or build web/mobile applications.
+</core_identity>
+
+<operational_rules>
+1. **Zero Hallucination**: Never invent facts, formulas, or historical data. Think step-by-step before answering.
+2. **Pedagogical Excellence**: Break down complex ideas. Use analogies. Connect theory to real-world applications.
+3. **LaTeX Mastery**: You MUST use standard LaTeX syntax wrapped in $ for inline math (e.g., $x^2$) and $$ for block equations (e.g., $$y = mx + c$$).
+4. **JSON Strictness**: You MUST respond ONLY in the requested JSON structure. No conversational preamble. No markdown code blocks around the JSON.
+</operational_rules>
 
 Your current context: Board = {{BOARD}}, Class = {{CLASS}}, Subject = {{SUBJECT}}
 
-<core_directives>
-1. **Absolute Accuracy:** Ensure formulas and variables are standard.
-2. **Pedagogical Structure:** Provide formulas followed by variable explanations and application notes.
-3. **Tone and Persona:** Authoritative and precise.
-4. **Formatting Strictness:** You MUST format the equations in block LaTeX wrapped in double $$ signs.
-</core_directives>
-
-The student wants a comprehensive formula sheet / key summary for a specific topic/chapter.
+The student wants a comprehensive formula sheet or key summary for a specific topic.
 You MUST respond in this exact JSON structure:
 {
+  "_thought_process": "Internal 60-agent planning: Identify concept, structure explanation, generate examples, ensure LaTeX usage.",
+  "subject": "Auto-detect: Physics/Chemistry/Mathematics/Biology/English/History/etc",
+  "chapter": "Auto-detect exact NCERT chapter name",
+  "difficulty": "Auto-detect: Class 10 / Class 11 / Class 12 / JEE / NEET",
+  "confidence": 95,
+  "mindMap": "mindmap
+  root((**TOPIC**))
+    SubTopic1
+      Detail1",
+  "formula": "The key formula in LaTeX wrapped in $$...$$, or null.",
+  "diagram": "ASCII art diagram or structured text diagram of the concept, or null.",
+  "example": "2 concrete real-world examples. Use 
+
+ to separate.",
+
+  "_thought_process": "Internal reasoning: Identify the 4-8 most critical formulas, equations, or rules for this topic. Verify standard notation and units. Draft concise pedagogical notes for each.",
   "type": "formula_sheet",
   "topic": "The topic or chapter name",
   "formulas": [
     {
-      "name": "Formula Name (e.g. Coulomb's Law, Quadratic Formula)",
-      "equation": "The equation/formula block in LaTeX format wrapped in double $$ signs (e.g. $$F = \\frac{k \\cdot q_1 \\cdot q_2}{r^2}$$ or $$x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}$$). If non-mathematical, write the key rule or balanced chemical equation in LaTeX.",
-      "terms": "Explanation of individual variables/terms (e.g., F = Force, q1/q2 = Charges). Use $ ... $ for inline variables.",
-      "note": "A short pedagogical tip or application note (e.g., 'Only valid for point charges')."
+      "name": "Formula Name (e.g. Coulomb's Law)",
+      "equation": "The equation/formula block in LaTeX format wrapped in double $$ signs.",
+      "terms": "Explanation of individual variables/terms using $...$ for inline variables.",
+      "note": "A short pedagogical tip or application note."
     }
   ],
   "followups": ["Follow-up question 1", "Follow-up question 2", "Follow-up question 3"]
 }
 
 RULES:
-1. Return 4-8 key formulas or core equations for this topic. If the topic is non-mathematical (e.g. English, History), return key terms, dates, or rules.
-2. Only output the JSON structure above. No intro or outro text.
-3. Ensure all equations and variables are formatted in valid LaTeX wrapped in $ or $$.
-4. End with 3 highly relevant follow-up questions in the "followups" array.
-5. Off-Topic Redirect: If the topic is outside Physics, Chemistry, Mathematics, or Biology, you MUST decline and set the "topic" field to: "I am Bruhaspati AI, specialized in Indian academic curricula (Physics, Chemistry, Mathematics, Biology). I cannot assist with this topic, but I would be happy to help you with Physics, Chemistry, Mathematics, or Biology." and leave the "formulas" array empty.`;
+1. Return 4-8 key formulas or core equations.
+2. Ensure all equations are formatted in valid LaTeX wrapped in $ or $$.
+3. Off-Topic Redirect: If the topic asks you to write software code, scripts, or build web/mobile applications, set "topic" to a polite refusal stating you are an academic tutor and cannot write software code or build applications, and leave the "formulas" array empty.`;
 
 // ---- CHAPTER AUTOCOMPLETE DATABASE ----
 const CHAPTERS_DB = {
@@ -467,6 +709,25 @@ function detectQuizQuery(query) {
 function detectFormulaQuery(query) {
   const q = query.toLowerCase();
   return q.includes('generate a formula sheet') || q.includes('formula sheet for') || q.includes('key formula summary') || q.includes('formula sheet of') || q.includes('formula summary');
+}
+
+function detectConversationalQuery(query) {
+  if (!query || typeof query !== 'string') return false;
+  const q = query.trim().toLowerCase();
+  // Greetings and small talk
+  const greetings = ['hello', 'hi', 'hey', 'helo', 'namaste', 'good morning', 'good evening', 'good afternoon', 'good night', 'how are you', "what's up", 'whats up', 'sup', 'yo', 'howdy'];
+  if (greetings.some(g => q === g || q.startsWith(g + ' ') || q.startsWith(g + ',') || q.startsWith(g + '!'))) return true;
+  // General knowledge / opinion / conversational patterns
+  const convPatterns = [
+    /^(who are you|what are you|what is your name|tell me about yourself|introduce yourself)/,
+    /^(thank(s| you)|ok|okay|great|nice|cool|awesome|got it|understood|sure|alright|fine)(\b|[!.,])/i,
+    /^(what is (today|the time|the date|your purpose|your goal))/,
+    /^(can you help|help me|i need help)/,
+    /^(how do (i|you)|how can (i|you))/,
+    /^(what do you think|your opinion|do you know)/
+  ];
+  if (convPatterns.some(p => p.test(q))) return true;
+  return false;
 }
 
 function extractTopicFromQuery(query) {
@@ -890,22 +1151,144 @@ function detectSubjectFromQuery(query, fallbackSubject) {
     'organism', 'ecology', 'environment', 'reproduction'
   ];
 
+  const engKeywords = [
+    'english', 'grammar', 'essay', 'report writing', 'letter writing', 'formal letter', 'informal letter',
+    'notice writing', 'article writing', 'comprehension', 'unseen passage', 'tense', 'active voice',
+    'passive voice', 'direct speech', 'indirect speech', 'narration', 'preposition', 'conjunction',
+    'literature', 'prose', 'poetry', 'writing skills', 'writing format', 'byline', 'headline', 'writing'
+  ];
+
   if (chemKeywords.some(kw => q.includes(kw))) return 'Chemistry';
   if (physKeywords.some(kw => q.includes(kw))) return 'Physics';
   if (mathKeywords.some(kw => q.includes(kw))) return 'Mathematics';
   if (bioKeywords.some(kw => q.includes(kw))) return 'Biology';
+  if (engKeywords.some(kw => q.includes(kw))) return 'English';
 
-  return fallbackSubject !== 'All' ? fallbackSubject : 'Physics';
+  return fallbackSubject !== 'All' ? fallbackSubject : 'Academic Studies';
 }
 
 function getDemoResponse(query) {
   const q = query.toLowerCase();
+  
+  if (detectConversationalQuery(query)) {
+    return "Hello! I am Bruhaspati AI. (This is a simulated demo response because API keys are missing or quota was exceeded).";
+  }
+
   const topic = extractTopicFromQuery(query);
   let subject = state.subject;
   if (subject === 'All') {
     subject = detectSubjectFromQuery(query, 'Physics');
   }
   const classLevel = state.classLevel;
+  const cleanTopic = topic !== 'Selected Topic' ? topic : 'this concept';
+  const displaySubject = subject !== 'All' ? subject : 'your selected topic';
+  
+  const isDemoMatch = q.includes('lanthanoid') || q.includes('lanthanide') || q.includes('contraction') ||
+                      q.includes('photosynthesis') || q.includes('calvin') || q.includes('chlorophyll') ||
+                      q.includes('newton') || q.includes('inertia') || q.includes('force') || q.includes('motion') ||
+                      q.includes('matrix') || q.includes('matrices') || 
+                      (q.includes('report') && q.includes('rain') && q.includes('berhampur'));
+
+  const codingBlacklist = [
+    'coding', 'javascript', 'html', 'css', 'python code', 'program in', 'java code', 'c++ code', 
+    'write code', 'build website', 'build web app', 'build mobile app', 'software code', 
+    'develop a website', 'develop an app'
+  ];
+
+  const isOffTopic = codingBlacklist.some(term => q.includes(term));
+
+  if (isOffTopic) {
+    return {
+      definition: "I am Bruhaspati AI, specialized in academic curricula. I cannot assist with writing software code or building applications, but I would be happy to help you with any academic subject!",
+      mechanism: null,
+      formula: null,
+      diagram: null,
+      analogy: null,
+      example: null,
+      examData: null,
+      keywords: [],
+      keywordsNote: "",
+      quiz: null,
+      quizAnswer: null,
+      teacherTip: null,
+      followups: []
+    };
+  }
+
+  // Handle specific English report writing fallback query
+  if (q.includes('report') && q.includes('rain') && q.includes('berhampur')) {
+    return {
+      definition: "**Report Writing** is a factual writing skill in CBSE Class 12 English Core. A report is a factual description of an event or incident, written in a clear, objective, and concise manner.\\n\\n**Topic:** Report on Rainfall in Berhampur (Odisha).",
+      mechanism: [
+        { step: 1, title: "Headline / Title", text: "Create an eye-catching, brief headline in bold (e.g., **HEAVY MONSOON RAINFALL LASHES BERHAMPUR**)." },
+        { step: 2, title: "Byline", text: "State who wrote the report (e.g., *By Special Correspondent* or *By Rohan, Staff Reporter*)." },
+        { step: 3, title: "Opening Paragraph", text: "Mention the **What, Where, When, and Who** (e.g., 'Berhampur, June 12: Record-breaking monsoon rainfall of 120mm lashing the silk city within 24 hours...')" },
+        { step: 4, title: "Body Paragraphs", text: "Provide detailed facts: waterlogging in low-lying areas (like Haladiapadar), local administration response, traffic disruption, and quotes from local residents." },
+        { step: 5, title: "Concluding Paragraph", text: "Mention the current situation, relief operations, and meteorological department alerts." }
+      ],
+      formula: `\\text{Report Writing Format Structure:}\\n\\n$$\\text{HEADLINE} \\\\ \\text{[Byline]} \\\\ \\text{[Place, Date: Lead Paragraph]} \\\\ \\text{[Body - Details of Event]} \\\\ \\text{[Conclusion/Action/Quotes]}$$`,
+      diagram: `┌───────────────────────────────────────────────┐
+│                   HEADLINE                    │
+│                 [By Rohan]                    │
+│                                               │
+│ Berhampur, June 12: The silk city witnessed   │
+│ torrential rains yesterday, leading to severe │
+│ waterlogging. Key areas like Kamapalli and    │
+│ Badabazar were inundated under 3 feet of      │
+│ water.                                        │
+│                                               │
+│ Public transport ground to a halt. Local      │
+│ municipal authorities (BeMC) deployed water   │
+│ pumps to clear the streets.                   │
+└───────────────────────────────────────────────┘`,
+      analogy: "Think of a report like a news broadcast: it is strictly factual, written in the third person, uses passive voice (e.g., *'roads were flooded'* rather than *'water flooded roads'*), and avoids personal opinions.",
+      example: "📝 **Report Writing Sample:**\n\n**HEAVY RAINFALL INUNDATES BERHAMPUR; NORMAL LIFE DISRUPTED**\n*By Amit, Staff Reporter*\n\n**Berhampur, June 12:** Severe monsoon rain lashed Berhampur on Thursday, dumping over 150mm of water. The sudden downpour caught residents off guard, causing knee-deep waterlogging in major areas including Kamapalli, Badabazar, and Gate Bazar. Municipal crews were seen working to clear blocked storm drains. The Met office has issued a yellow alert for the next 24 hours.",
+      examData: [
+        { exam: "CBSE Class 12 English", years: "2018, 2020, 2022", marks: "5 marks", type: "Writing Skills", frequency: "HIGH" },
+        { exam: "CHSE Odisha English", years: "2019, 2021", marks: "10 marks", type: "Long Composition", frequency: "HIGH" }
+      ],
+      keywords: ["Headline", "Byline", "Factual description", "Third person", "Passive voice", "Waterlogging", "BeMC Relief"],
+      keywordsNote: "Strict adherence to the 120-150 word limit and inclusion of format elements (Headline + Byline) guarantees full format marks.",
+      quiz: "Which tense should primarily be used when writing a newspaper report about an event that occurred yesterday?",
+      quizAnswer: "The **Past Tense** (specifically Simple Past and Past Passive voice) should be used, as you are reporting on an event that has already occurred.",
+      teacherTip: "⚠️ **Common Mistake:** Avoid using 'I', 'we', or 'my' in a report. Always maintain an objective, third-person perspective."
+    };
+  }
+
+
+
+  if (subject === 'English') {
+    return {
+      definition: `**${cleanTopic}** is an essential topic in **English Grammar / Writing Skills** under the **${state.board}** curriculum for **Class ${state.classLevel}**.
+
+**Core Concept:** In English studies, **${cleanTopic.toLowerCase()}** refers to the structured set of rules, formats, or literary elements used to communicate effectively.`,
+      mechanism: [
+        { step: 1, title: "Core Rules & Identification", text: `Identify the primary rules governing **${cleanTopic.toLowerCase()}** in ${state.board} standards.` },
+        { step: 2, title: "Structure & Application", text: "Understand the structural format or grammatical syntax. Pay attention to how sentence patterns change." },
+        { step: 3, title: "Common Usage & Exercises", text: "Practice converting active patterns to correct expressions to secure high marks in writing sections." }
+      ],
+      formula: `\\text{General English Syntax Formula:}\\n\\n$$\\text{Subject} + \\text{Verb} + \\text{Object} \\quad \\xrightarrow{\\text{Passive}} \\quad \\text{Object} + \\text{Auxiliary Verb} + \\text{V}_3 + \\text{by} + \\text{Subject}$$`,
+      diagram: `    [ ${cleanTopic.toUpperCase()} ]
+               │
+       ┌───────┴───────┐
+       ▼               ▼
+   [Format]        [Examples]
+   CBSE Standard   Factual/Active`,
+      analogy: `Think of **${cleanTopic.toLowerCase()}** like building blocks: every sentence or composition requires a specific ordering of nouns, verbs, or sections to convey the exact meaning clearly.`,
+      example: `1. 📝 **Classroom Application**: Writing a formal draft matching the ${state.board} rubric.
+2. 🗣️ **Everyday Communication**: Formulating polite requests or news reporting in active/passive structures.`,
+      examData: [
+        { exam: `${state.board} English`, years: "2019, 2021, 2023", marks: "4-5 marks", type: "Section B / C", frequency: "HIGH" }
+      ],
+      keywords: [cleanTopic, "Writing Format", "Grammar Rule", "Sentence Syntax", "Marking Rubric"],
+      keywordsNote: "Ensure strict compliance with word limits in CBSE writing skills to prevent negative marking.",
+      quiz: `What is the primary objective of mastering ${cleanTopic.toLowerCase()} in your board exams?`,
+      quizAnswer: `To construct precise, grammatically accurate sentences and follow standard ${state.board} layout rubrics.`,
+      teacherTip: `🧠 **Tip:** Always proofread your writing for tense consistency.
+
+⚠️ **Mistake:** Mixing active and passive voice randomly in a single writing piece.`
+    };
+  }
 
   if (detectQuizQuery(query)) {
     return generateMockQuiz(topic, subject, classLevel, 4, ["MCQ", "True/False"], "Medium");
@@ -931,35 +1314,9 @@ function getDemoResponse(query) {
   }
   
   // Dynamic fallback generator if topic doesn't match static items
-  const cleanTopic = topic !== 'Selected Topic' ? topic : 'this concept';
-  const displaySubject = subject !== 'All' ? subject : 'your selected topic';
+
   
-  return {
-    definition: `**${cleanTopic}** is an important concept in **${displaySubject}** under the **${state.board}** curriculum for **Class ${state.classLevel}**.\n\n**Formal Definition:** In ${displaySubject.toLowerCase()}, **${cleanTopic.toLowerCase()}** describes the fundamental properties, mathematical relation, and behavior of this system under standard conditions. It is frequently tested in both conceptual questions and analytical problem-solving.`,
-    mechanism: [
-      { step: 1, title: `Understanding the Foundations`, text: `First, identify the core parameters governing **${cleanTopic.toLowerCase()}**. In the ${state.board} syllabus, this forms the theoretical basis.` },
-      { step: 2, title: `Operational Principles`, text: `Analyze the main interactions and variables that alter **${cleanTopic.toLowerCase()}** in practical scenarios. Observe how changing parameters shifts the equilibrium/value.` },
-      { step: 3, title: `Exam Application & Numerical Analysis`, text: `Be ready to apply these steps in CBSE/State board 3-mark and 5-mark long questions. Pay special attention to unit conversions and sign conventions.` }
-    ],
-    formula: `\\text{For } ${cleanTopic} \\text{ calculations:}\n\n$$\\text{Value} = \\frac{\\text{Force} \\times \\text{Scale}}{\\text{Resistance}} = \\kappa \\cdot (x_2 - x_1)$$\n\n\\text{Where } \\kappa \\text{ is the proportionality constant depending on the board standards.}`,
-    diagram: `    [ ${cleanTopic.toUpperCase()} ]
-               │
-      ┌────────┴────────┐
-      ▼                 ▼
-  [Theory]          [Formula]
-  NCERT §1.4        $$V = k \\cdot x$$`,
-    analogy: `Think of **${cleanTopic.toLowerCase()}** like a balanced scale. Any change in one of the constituent parameters instantly shifts the weight, requiring an equal adjustment in the opposing variable to maintain stability.`,
-    example: `1. 🧪 **Standard Class Application**: Resolving numerical questions on ${cleanTopic.toLowerCase()} in assignments.\n2. 🏭 **Real-world Engineering**: Designing systems that account for the properties of ${cleanTopic.toLowerCase()} in industrial setups.`,
-    examData: [
-      { exam: `${state.board} Class ${state.classLevel}`, years: "2019, 2021, 2023", marks: "3 marks", type: "Short Answer", frequency: "MEDIUM" },
-      { exam: "JEE / NEET", years: "2020, 2022", marks: "4 marks", type: "Concept MCQ", frequency: "HIGH" }
-    ],
-    keywords: [cleanTopic, "Foundational theory", "Board syllabus standard", "Formula relation", "Numerical calculation"],
-    keywordsNote: `Board marking schemes require you to state the relation of ${cleanTopic.toLowerCase()} and mention its exact units.`,
-    quiz: `In a standard exam question about ${cleanTopic.toLowerCase()}, which variable represents the primary independent factor?`,
-    quizAnswer: `The primary independent factor is the driving force or concentration parameter, which changes the value of ${cleanTopic.toLowerCase()} proportionally.`,
-    teacherTip: `🧠 **Memory Trick:** Focus on the core variables of ${cleanTopic.toLowerCase()} first before trying to memorize complex derivations.\n\n⚠️ **Common Mistake:** Forgetting to convert the unit variables to standard SI units before applying formulas in ${cleanTopic.toLowerCase()} calculations.`
-  };
+  return "⚠️ **Bruhaspati AI is currently in Offline Demo Mode.**\n\nNo valid API key was found for the selected provider. Please go to **Settings** and either select **Kimi (Built-in)** or enter your own Gemini/OpenAI API key to get real answers for your queries.\n\n*(The structured UI templates are only available when the AI is fully connected).*";
 }
 
 // ---- TOAST UTILITY ----
@@ -1033,7 +1390,7 @@ function formatTime(timestamp) {
 // ---- JSON REPAIR UTILITY ----
 function repairJSON(jsonStr) {
   let repaired = jsonStr.trim();
-  if (!repaired) return '{}';
+  if (!repaired) return '';
   
   let inString = false;
   let isEscaped = false;
@@ -1127,6 +1484,40 @@ function cleanAndParseJSON(jsonStr) {
 }
 
 // ---- APIS: REAL CHUNK STREAMERS ----
+
+// ---- CONTEXT MEMORY MANAGER ----
+function buildConversationContext() {
+  if (!state.messages || state.messages.length === 0) return null;
+  
+  let active_subject = null;
+  let active_chapter = null;
+  let active_topic = null;
+  let last_action = null;
+  
+  // Find the most recent AI message to extract topic/chapter
+  for (let i = state.messages.length - 1; i >= 0; i--) {
+    let m = state.messages[i];
+    if (m.sender === 'ai' && m.data) {
+      if (!active_subject && m.data.subject) active_subject = m.data.subject;
+      if (!active_chapter && m.data.chapter) active_chapter = m.data.chapter;
+      if (!active_topic && m.data.topic) active_topic = m.data.topic;
+      if (!active_topic && m.data.title) active_topic = m.data.title;
+      if (!last_action) last_action = "Explanation/Discussion";
+      if (active_subject || active_chapter || active_topic) break;
+    }
+  }
+  
+  if (!active_subject && !active_chapter && !active_topic) return null;
+  
+  return {
+    subject: active_subject || "Unknown",
+    chapter: active_chapter || "Unknown",
+    active_topic: active_topic || "Unknown",
+    last_action: last_action || "Unknown",
+    student_profile: `Board: ${state.board}, Class: ${state.classLevel}, Subject Focus: ${state.subject}`
+  };
+}
+
 async function streamAIResponse(query, cardId) {
   state.isDemoFallback = false;
   const activeBubble = document.getElementById(cardId);
@@ -1158,7 +1549,21 @@ async function streamAIResponse(query, cardId) {
       throw { type: 'QUOTA_EXCEEDED' };
     }
 
-    if (!state.useRealAPI || !state.apiKey) {
+    // Resolve API Key and Provider
+    let activeKey = state.apiKey;
+    let provider = state.apiProvider || 'gemini';
+    
+    if (activeKey === 'REDACTED_API_KEY' || !activeKey) {
+      if (provider === 'kimi') {
+        activeKey = 'sk-bnXYPmQdAyswi1IJQ7NEgtD9jejCvoEcLAIq9WpqZA0C4GcE';
+      } else if (provider === 'openai') {
+        activeKey = '';
+      } else {
+        activeKey = 'REDACTED_API_KEY';
+      }
+    }
+
+    if (!state.useRealAPI || !activeKey || activeKey === 'REDACTED_API_KEY') {
       // Latency simulator + mock stream
       await delay(800);
       
@@ -1189,7 +1594,7 @@ async function streamAIResponse(query, cardId) {
         }
       }
       
-      let jsonString = JSON.stringify(responseData);
+      let jsonString = typeof responseData === 'string' ? responseData : JSON.stringify(responseData);
       let currentIndex = 0;
       const chunkSize = 35;
       let accumulatedText = '';
@@ -1218,22 +1623,32 @@ async function streamAIResponse(query, cardId) {
       });
     }
 
-    const isOpenAI = state.apiKey.startsWith('sk-');
+    const isOpenAI = provider === 'openai' || provider === 'kimi';
     let accumulatedText = '';
     let response;
     let headers = { 'Content-Type': 'application/json' };
-    const basePrompt = getSystemPromptForFormat(state.format, query);
+    const isConversational = detectConversationalQuery(query);
+    const basePrompt = isConversational ? CONVERSATIONAL_SYSTEM_PROMPT : getSystemPromptForFormat(state.format, query);
     
     if (isOpenAI) {
-      const url = 'https://api.openai.com/v1/chat/completions';
-      headers['Authorization'] = `Bearer ${state.apiKey}`;
+      const url = provider === 'kimi' ? 'https://api.moonshot.cn/v1/chat/completions' : 'https://api.openai.com/v1/chat/completions';
+      headers['Authorization'] = `Bearer ${activeKey}`;
       
       const messages = [
         { role: 'system', content: basePrompt }
       ];
       
       if (uploadedFiles && uploadedFiles.length > 0) {
-        const content = [{ type: 'text', text: 'Student Query: ' + query }];
+                const context = buildConversationContext();
+        let finalQueryString = 'Student Query: ' + query;
+        if (context) {
+          finalQueryString = JSON.stringify({
+            current_query: query,
+            conversation_context: context,
+            instruction: "The student is likely asking a follow-up question. Answer their query SPECIFICALLY within the context of the active_topic and chapter. Use the student_profile for exam targeting."
+          }, null, 2);
+        }
+        const content = [{ type: 'text', text: finalQueryString }];
         uploadedFiles.forEach(file => {
           if (file.mimeType.startsWith('image/')) {
             content.push({
@@ -1251,26 +1666,68 @@ async function streamAIResponse(query, cardId) {
         });
         messages.push({ role: 'user', content: content });
       } else {
-        messages.push({ role: 'user', content: 'Student Query: ' + query });
+                const context = buildConversationContext();
+        let finalQueryString = 'Student Query: ' + query;
+        if (context) {
+          finalQueryString = JSON.stringify({
+            current_query: query,
+            conversation_context: context,
+            instruction: "The student is likely asking a follow-up question. Answer their query SPECIFICALLY within the context of the active_topic and chapter. Use the student_profile for exam targeting."
+          }, null, 2);
+        }
+        messages.push({ role: 'user', content: finalQueryString });
       }
 
       const body = {
-        model: 'gpt-4o-mini',
+        model: provider === 'kimi' ? 'moonshot-v1-32k' : 'gpt-4o-mini',
         messages: messages,
-        response_format: { type: 'json_object' },
         temperature: 0.7,
         stream: true
       };
       
-      response = await fetch(url, {
-        method: 'POST',
-        headers: headers,
-        body: JSON.stringify(body)
-      });
-      
-      if (response.status === 429) throw { type: 'RATE_LIMITED' };
-      if (response.status === 503) throw { type: 'SERVICE_DOWN' };
-      if (!response.ok)            throw { type: 'API_ERROR', status: response.status };
+      try {
+        response = await fetch(url, {
+          method: 'POST',
+          headers: headers,
+          body: JSON.stringify(body),
+          signal: window.currentAbortController ? window.currentAbortController.signal : null
+        });
+        
+        if (response.status === 429) throw { type: 'RATE_LIMITED' };
+        if (response.status === 503) throw { type: 'SERVICE_DOWN' };
+        if (!response.ok)            throw { type: 'API_ERROR', status: response.status };
+      } catch (kimiErr) {
+        if (kimiErr.name === 'AbortError') throw kimiErr;
+        if (provider === 'kimi') {
+          console.warn("⚠️ Kimi API failed. Falling back to OpenRouter Backup...", kimiErr);
+          const orUrl = 'https://openrouter.ai/api/v1/chat/completions';
+          const orKey = 'REMOVED_API_KEY';
+          
+          headers['Authorization'] = `Bearer ${orKey}`;
+          headers['HTTP-Referer'] = 'https://bruhaspati-ai.vercel.app';
+          headers['X-Title'] = 'Bruhaspati AI';
+          
+          const orBody = {
+            model: 'meta-llama/llama-3.1-70b-instruct',
+            messages: messages,
+            temperature: 0.7,
+            stream: true
+          };
+          
+          response = await fetch(orUrl, {
+            method: 'POST',
+            headers: headers,
+            body: JSON.stringify(orBody),
+            signal: window.currentAbortController ? window.currentAbortController.signal : null
+          });
+          
+          if (!response.ok) {
+            throw { type: 'API_ERROR', status: response.status };
+          }
+        } else {
+          throw kimiErr;
+        }
+      }
       
     } else {
       // Cascading Gemini models
@@ -1287,9 +1744,18 @@ async function streamAIResponse(query, cardId) {
       for (const modelSpec of models) {
         try {
           console.log(`📡 Trying Gemini Model: ${modelSpec.name} (${modelSpec.version})...`);
-          const url = `https://generativelanguage.googleapis.com/${modelSpec.version}/models/${modelSpec.name}:streamGenerateContent?alt=sse&key=${state.apiKey}`;
+          const url = `https://generativelanguage.googleapis.com/${modelSpec.version}/models/${modelSpec.name}:streamGenerateContent?alt=sse&key=${activeKey}`;
           
-          let contentsParts = [{ text: basePrompt + '\n\nStudent Query: ' + query }];
+                    const context = buildConversationContext();
+          let finalQueryString = 'Student Query: ' + query;
+          if (context) {
+            finalQueryString = JSON.stringify({
+              current_query: query,
+              conversation_context: context,
+              instruction: "The student is likely asking a follow-up question. Answer their query SPECIFICALLY within the context of the active_topic and chapter. Use the student_profile for exam targeting."
+            }, null, 2);
+          }
+          let contentsParts = [{ text: finalQueryString }];
           if (uploadedFiles && uploadedFiles.length > 0) {
             uploadedFiles.forEach(file => {
               contentsParts.push({
@@ -1301,19 +1767,21 @@ async function streamAIResponse(query, cardId) {
             });
           }
           
+          const genConfig = {
+            temperature: 0.7,
+            maxOutputTokens: 20000
+          };
           const body = {
-            contents: [{ parts: contentsParts }],
-            generationConfig: {
-              temperature: 0.7,
-              maxOutputTokens: 20000,
-              responseMimeType: "application/json"
-            }
+            systemInstruction: { parts: [{ text: basePrompt }] },
+            contents: [{ role: 'user', parts: contentsParts }],
+            generationConfig: genConfig
           };
           
           response = await fetch(url, {
             method: 'POST',
             headers: headers,
-            body: JSON.stringify(body)
+            body: JSON.stringify(body),
+            signal: window.currentAbortController ? window.currentAbortController.signal : null
           });
           
           if (response.status === 429) throw { type: 'RATE_LIMITED' };
@@ -1326,6 +1794,7 @@ async function streamAIResponse(query, cardId) {
             throw { type: 'API_ERROR', status: response.status };
           }
         } catch (err) {
+          if (err.name === 'AbortError') throw err;
           console.warn(`⚠️ Model ${modelSpec.name} failed: ${err.type || err.message}. Cascading...`);
           lastError = err;
           if (err.type) throw err; // re-throw our typed errors
@@ -1419,6 +1888,13 @@ async function streamAIResponse(query, cardId) {
       }
     }
     if (!parsedJson) {
+      // If this is a conversational query or plain text response, render as markdown
+      if (accumulatedText && accumulatedText.trim().length > 0) {
+        renderPlainTextResponse(accumulatedText.trim(), aiContent, cardId, query);
+        consumeTokens(cost);
+        state.hasRetriedQuiz = false;
+        return true;
+      }
       throw { type: 'NO_RESPONSE' };
     }
     
@@ -1515,6 +1991,7 @@ async function streamAIResponse(query, cardId) {
       
       aiContent.innerHTML = `
         <div class="response-card" id="${cardId}" style="border-left: 4px solid var(--accent-rose); background: rgba(244,63,94,0.04); padding: 18px 20px;">
+      ${metaBadgeHtml}
           <h4 style="color: var(--accent-rose); font-family: 'Space Grotesk', sans-serif; display:flex; align-items:center; gap:8px; font-weight:700; margin:0;">
             <span>🔑</span> Invalid API Key or Unauthorized
           </h4>
@@ -1524,6 +2001,7 @@ async function streamAIResponse(query, cardId) {
           <button class="modal-btn secondary" onclick="openKeyModal()" style="margin-top: 12px; padding: 6px 12px; font-size: 11.5px; width: auto; cursor:pointer;">
             ⚙️ Open Settings
           </button>
+      ${premiumCommonHtml}
         </div>
       `;
       saveAIMessageToState(query, { error: err.type || err.message }, cardId, true);
@@ -1540,66 +2018,104 @@ async function streamAIResponse(query, cardId) {
       console.log(`Fallback to simulation triggered for error:`, err);
       
       // Call simulation to generate response card
-      simulateDemoStream(query, cardId);
+      await simulateDemoStream(query, cardId);
       return true;
     }
   }
 }
 
 async function simulateDemoStream(query, cardId) {
-  state.isDemoFallback = true;
-  let activeBubble = document.getElementById(cardId);
-  if (!activeBubble) activeBubble = document.getElementById(cardId + '_loader');
-  if (!activeBubble) return;
-  const aiContent = activeBubble.closest('.msg-ai').querySelector('.ai-content');
-  
-  await delay(800); // Latency simulator
-  let responseData = getDemoResponse(query);
-  responseData.isDemoFallback = true;
-  let jsonString = JSON.stringify(responseData);
-  
-  let currentIndex = 0;
-  const chunkSize = 35;
-  let accumulatedText = '';
-  let lastRenderTime = 0;
-  
-  const timer = setInterval(() => {
-    if (currentIndex >= jsonString.length) {
-      clearInterval(timer);
-      renderPartialText(jsonString, aiContent, cardId, query, true);
+  return new Promise(async (resolve) => {
+    state.isDemoFallback = true;
+    let activeBubble = document.getElementById(cardId);
+    if (!activeBubble) activeBubble = document.getElementById(cardId + '_loader');
+    if (!activeBubble) {
+      resolve();
       return;
     }
+    const aiContent = activeBubble.closest('.msg-ai').querySelector('.ai-content');
     
-    accumulatedText += jsonString.substring(currentIndex, currentIndex + chunkSize);
-    currentIndex += chunkSize;
+    await delay(800); // Latency simulator
+    let responseData = getDemoResponse(query);
+    responseData.isDemoFallback = true;
+    let jsonString = JSON.stringify(responseData);
     
-    let now = Date.now();
-    if (now - lastRenderTime > 100) {
-      lastRenderTime = now;
-      renderPartialText(accumulatedText, aiContent, cardId, query, false);
-    }
-  }, 25);
+    let currentIndex = 0;
+    const chunkSize = 35;
+    let accumulatedText = '';
+    let lastRenderTime = 0;
+    
+    const timer = setInterval(() => {
+      if (currentIndex >= jsonString.length) {
+        clearInterval(timer);
+        renderPartialText(jsonString, aiContent, cardId, query, true);
+        resolve();
+        return;
+      }
+      
+      accumulatedText += jsonString.substring(currentIndex, currentIndex + chunkSize);
+      currentIndex += chunkSize;
+      
+      let now = Date.now();
+      if (now - lastRenderTime > 100) {
+        lastRenderTime = now;
+        renderPartialText(accumulatedText, aiContent, cardId, query, false);
+      }
+    }, 25);
+  });
 }
 
 function renderPartialText(text, container, cardId, query, isFinal = false) {
-  let parsed = cleanAndParseJSON(text);
-  if (!parsed && isFinal) {
-    const jsonMatch = text.match(/\{[\s\S]*\}/);
-    if (jsonMatch) {
-      try {
-        parsed = JSON.parse(repairJSON(jsonMatch[0]));
-      } catch (_) {}
+  let conversationalText = "";
+
+  // Step 1: Strip <think> tags completely
+  let processedText = text.replace(/<think>[\s\S]*?(<\/think>|$)/gi, '').trim();
+  // Also strip markdown code fences
+  processedText = processedText.replace(/^```json\s*/i, '').replace(/```\s*$/i, '').trim();
+
+  // Step 2: Detect JSON vs conversational prefix
+  let jsonPart = processedText;
+  const firstBraceIndex = processedText.indexOf('{');
+  if (firstBraceIndex > 0) {
+    conversationalText = processedText.substring(0, firstBraceIndex).trim();
+    jsonPart = processedText.substring(firstBraceIndex);
+  }
+
+  // Step 3: Only attempt parsing if we have enough accumulated content
+  // During streaming, show skeleton until JSON is parseable
+  // This prevents raw JSON from leaking to the user
+  let parsed = null;
+
+  if (jsonPart.length > 50 || isFinal) {
+    parsed = cleanAndParseJSON(jsonPart);
+    if (!parsed) {
+      const regex = isFinal ? /\{[\s\S]*\}/ : /\{[\s\S]*/;
+      const jsonMatch = jsonPart.match(regex);
+      if (jsonMatch) {
+        try {
+          parsed = JSON.parse(repairJSON(jsonMatch[0]));
+        } catch (_) {}
+      }
     }
   }
-  
-  if (!parsed) {
-    const defMatch = text.match(/"definition"\s*:\s*"([^"]+)"/);
-    if (defMatch) {
-      parsed = { definition: defMatch[1] };
-    }
-  }
-  
+
+  // Step 4: Strip internal reasoning fields before ANY rendering
   if (parsed) {
+    delete parsed._thought_process;
+    delete parsed.__thought;
+    delete parsed.internal_reasoning;
+  }
+
+  if (parsed) {
+    // Only render the structured premium card when generation is 100% complete
+    // This perfectly matches the "Thinking -> Full Answer" behavior and eliminates JSON leak bugs
+    if (!isFinal) {
+      if (!document.getElementById(cardId + '_loader')) {
+        showSkeletonLoader(cardId, container);
+      }
+      return;
+    }
+
     // Clean up active loader timers
     if (activeLoaderIntervals[cardId]) {
       clearInterval(activeLoaderIntervals[cardId]);
@@ -1609,47 +2125,162 @@ function renderPartialText(text, container, cardId, query, isFinal = false) {
       activeLoaderCleanups[cardId]();
       delete activeLoaderCleanups[cardId];
     }
-    
+
     parsed._cardId = cardId;
-    
-    // Apply streaming cursor (BUG 2)
+
+    // Apply streaming cursor
     const renderData = applyStreamingCursor(parsed, isFinal);
     let html = renderStructuredResponse(renderData, query);
+
+    if (conversationalText) {
+      const prefixHtml = `
+        <div class="response-card plain-text-card" style="margin-bottom: 12px; background: transparent; border: none; padding: 0 10px; box-shadow: none;">
+          ${markdownToHtml(conversationalText)}
+        </div>
+      `;
+      html = prefixHtml + html;
+    }
+
     container.innerHTML = html;
-    
+
     if (isFinal) {
-      const chipsHtml = renderFollowUpChips(parsed.followups);
+      // Render Mermaid mind maps if present
+      renderMermaidInContainer(container);
+
+      const chipsHtml = renderFollowUpChips(parsed.followups, cardId, query);
       if (chipsHtml) {
         container.insertAdjacentHTML('beforeend', chipsHtml);
       }
-      
+
       saveAIMessageToState(query, parsed, cardId);
-      
+
       if (parsed.type === 'quiz') {
         startQuizTimer(cardId);
       }
     }
+  } else if (isFinal && text && text.trim().length > 10) {
+    // Plain text / conversational response — render as markdown
+    renderPlainTextResponse(text.trim(), container, cardId, query);
   } else {
-    // If the loader hasn't been set up yet, fallback to skeleton
-    if (!document.getElementById(cardId + '_loader')) {
+    // During streaming — keep showing skeleton loader. Never show raw JSON.
+    // Only show partial text preview if it's clearly conversational (no JSON braces)
+    const hasJsonBrace = processedText.includes('{');
+    if (!hasJsonBrace && processedText.length > 30) {
+      const preview = markdownToHtml(processedText);
+      container.innerHTML = `<div class="response-card plain-text-card" id="${cardId}"><div class="plain-text-body">${preview}<span class="streaming-cursor">▌</span></div></div>`;
+    } else if (!document.getElementById(cardId + '_loader')) {
       showSkeletonLoader(cardId, container);
     }
   }
+
+  triggerMathJax();
+  scrollToBottom();
+}
+
+// ---- MERMAID RENDERER ----
+function renderMermaidInContainer(container) {
+  if (typeof mermaid === 'undefined') return;
+  const mermaidDivs = container.querySelectorAll('.mermaid:not([data-processed])');
+  if (mermaidDivs.length === 0) return;
+  try {
+    mermaid.run({ nodes: mermaidDivs });
+  } catch(e) {
+    mermaidDivs.forEach(d => d.style.display = 'none');
+  }
+}
+
+// ---- PLAIN TEXT / CONVERSATIONAL RESPONSE RENDERER ----
+function renderPlainTextResponse(text, container, cardId, query) {
+  // Clean up active loader timers
+  if (activeLoaderIntervals[cardId]) {
+    clearInterval(activeLoaderIntervals[cardId]);
+    delete activeLoaderIntervals[cardId];
+  }
+  if (activeLoaderCleanups[cardId]) {
+    activeLoaderCleanups[cardId]();
+    delete activeLoaderCleanups[cardId];
+  }
+  
+  const htmlContent = markdownToHtml(text);
+  
+  container.innerHTML = `
+    <div class="response-card plain-text-card" id="${cardId}">
+      <div class="plain-text-body">${htmlContent}</div>
+    </div>
+  `;
+  
+  const chipsHtml = renderFollowUpChips(null, cardId, query);
+  if (chipsHtml) {
+    container.insertAdjacentHTML('beforeend', chipsHtml);
+  }
+  
+  // Save to state
+  const msgData = { type: 'plain', text: text, _cardId: cardId };
+  saveAIMessageToState(query, msgData, cardId);
   
   triggerMathJax();
   scrollToBottom();
 }
 
-// ---- RECOMENDED FOLLOWUPS CHIPS ----
-function renderFollowUpChips(followups) {
-  if (!followups || !followups.length) return '';
+// ---- MARKDOWN TO HTML CONVERTER ----
+function markdownToHtml(text) {
+  if (!text) return '';
+  let html = escapeHtml(text);
+  // Unescape for markdown processing
+  // Bold
+  html = html.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+  // Italic
+  html = html.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+  // Inline code
+  html = html.replace(/`([^`]+)`/g, '<code style="background:rgba(255,255,255,0.1);padding:2px 6px;border-radius:4px;font-family:monospace;">$1</code>');
+  // Headers
+  html = html.replace(/^### (.+)$/gm, '<h4 style="margin:12px 0 6px;font-size:1em;color:var(--accent-color,#a78bfa);">$1</h4>');
+  html = html.replace(/^## (.+)$/gm, '<h3 style="margin:14px 0 8px;font-size:1.1em;color:var(--accent-color,#a78bfa);">$1</h3>');
+  html = html.replace(/^# (.+)$/gm, '<h2 style="margin:16px 0 10px;font-size:1.2em;color:var(--accent-color,#a78bfa);">$1</h2>');
+  // Bullet lists
+  html = html.replace(/^[\*\-] (.+)$/gm, '<li style="margin:4px 0;">$1</li>');
+  html = html.replace(/(<li[^>]*>.*<\/li>\n?)+/g, '<ul style="margin:8px 0;padding-left:20px;">$&</ul>');
+  // Numbered lists
+  html = html.replace(/^\d+\. (.+)$/gm, '<li style="margin:4px 0;">$1</li>');
+  // Paragraphs - double newlines
+  html = html.replace(/\n\n/g, '</p><p style="margin:8px 0;">');
+  // Single newlines
+  html = html.replace(/\n/g, '<br>');
+  return `<p style="margin:0 0 8px;line-height:1.6;">${html}</p>`;
+}
+
+// ---- RECOMENDED FOLLOWUPS CHIPS & ACTIONS ----
+function renderFollowUpChips(followups, cardId, query) {
+  let chipsHtml = '';
+  if (followups && followups.length) {
+    chipsHtml = followups.slice(0, 3).map(q => `
+      <button class="followup-chip" onclick="sendFollowUpQuestion('${escapeAttr(q)}')">
+        💬 ${escapeHtml(q)}
+      </button>
+    `).join('');
+  }
+
+  let actionsHtml = '';
+  if (cardId) {
+    actionsHtml = `
+      <button class="action-btn" onclick="copyResponse('${cardId}')" title="Copy Response">📋 Copy</button>
+      <button class="action-btn" onclick="shareResponse('${cardId}')" title="Share Response">🔗 Share</button>
+      <button class="action-btn" onclick="downloadResponsePDF('${cardId}')" title="Download PDF">📥 PDF</button>
+      <button class="action-btn" onclick="bookmarkResponse('${cardId}')" title="Bookmark">🔖 Save</button>
+      <button class="action-btn" onclick="discussResponse('${cardId}')" title="Discuss">💬 Discuss</button>
+    `;
+  }
+
+  if (!chipsHtml && !actionsHtml) return '';
+
   return `
-    <div class="followup-chips-container" style="display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; padding:0 4px;">
-      ${followups.slice(0, 3).map(q => `
-        <button class="followup-chip" onclick="sendFollowUpQuestion('${escapeAttr(q)}')">
-          💬 ${escapeHtml(q)}
-        </button>
-      `).join('')}
+    <div class="message-footer-actions" style="display:flex; flex-wrap:wrap; gap:8px; margin-top:16px; padding:12px 16px; border-top: 1px solid var(--border-color); align-items: center;">
+      <div class="followup-chips-container" style="display:flex; flex-wrap:wrap; gap:8px;">
+        ${chipsHtml}
+      </div>
+      <div class="response-actions-group" style="display:flex; gap:8px; margin-left: auto;">
+        ${actionsHtml}
+      </div>
     </div>
   `;
 }
@@ -1674,7 +2305,8 @@ function prependQuotaWarningIfEnabled(html, data) {
     </div>
   `;
   
-  const match = html.match(/<div class="response-card"[^>]*>/) || html.match(/<div class="quiz-card"[^>]*>/);
+  const match = html.match(/<div class="response-card"[^>
+      ${metaBadgeHtml}]*>/) || html.match(/<div class="quiz-card"[^>]*>/);
   if (match) {
     const insertIndex = match.index + match[0].length;
     return html.slice(0, insertIndex) + banner + html.slice(insertIndex);
@@ -1778,15 +2410,149 @@ function renderInteractiveSimulator(data, query) {
         `).join('')}
       </div>
       ` : ''}
+      ${premiumCommonHtml}
     </div>
   `;
 }
 
+
+// ---- OMNI-PREMIUM HELPERS ----
+function generatePremiumMetaBadgeHtml(data) {
+  const detectedSubject = data.subject || state.subject || '';
+  const detectedChapter = data.chapter || '';
+  const detectedDifficulty = data.difficulty || '';
+  const confidence = typeof data.confidence === 'number' ? data.confidence : null;
+
+  const subjectIcons = {
+    'Physics': '⚛️', 'Chemistry': '🧪', 'Mathematics': '📐', 'Biology': '🌿',
+    'English': '📖', 'History': '🏛️', 'Economics': '📊', 'Geography': '🌍',
+    'Accountancy': '🧾', 'Political Science': '🗳️', 'Other': '📚'
+  };
+  const subjectIcon = subjectIcons[detectedSubject] || '📚';
+
+  const difficultyStars = {
+    'Class 10': '⭐⭐', 'Class 11': '⭐⭐⭐', 'Class 12': '⭐⭐⭐',
+    'JEE Main': '⭐⭐⭐⭐', 'JEE Advanced': '⭐⭐⭐⭐⭐',
+    'NEET': '⭐⭐⭐⭐', 'Olympiad': '⭐⭐⭐⭐⭐'
+  };
+  const difficultyDisplay = difficultyStars[detectedDifficulty] ? `${difficultyStars[detectedDifficulty]} ${detectedDifficulty}` : detectedDifficulty;
+
+  if (!detectedSubject && !detectedChapter && !detectedDifficulty) return '';
+
+  return `
+    <div class="resp-meta-strip">
+      ${detectedSubject ? `<span class="resp-meta-badge meta-subject">${subjectIcon} ${detectedSubject}</span>` : ''}
+      ${detectedChapter ? `<span class="resp-meta-badge meta-chapter">📖 ${detectedChapter}</span>` : ''}
+      ${detectedDifficulty ? `<span class="resp-meta-badge meta-difficulty">${difficultyDisplay}</span>` : ''}
+      ${confidence !== null ? `
+        <span class="resp-meta-badge meta-confidence">
+          <span class="confidence-label">AI Confidence</span>
+          <span class="confidence-bar-wrap">
+            <span class="confidence-bar-fill" style="width:${confidence}%"></span>
+          </span>
+          <span class="confidence-pct">${confidence}%</span>
+        </span>
+      ` : ''}
+    </div>
+  `;
+}
+
+function generatePremiumCommonSectionsHtml(data) {
+  let html = '';
+  
+  if (data.formula) {
+    const formulaIcon = (data.subject || state.subject) === 'Mathematics' ? '📐' :
+                        (data.subject || state.subject) === 'Chemistry' ? '🧪' : '🔬';
+    const formulaTitle = (data.subject || state.subject) === 'Mathematics' ? 'Formula & Key Equation' :
+                         (data.subject || state.subject) === 'Chemistry' ? 'Chemical Reaction / Formula' :
+                         'Formula / Reaction';
+    html += `
+      <div class="resp-section sec-formula" style="margin-top:16px;">
+        <div class="resp-section-header">
+          <span class="section-icon">${formulaIcon}</span>
+          <span class="resp-section-title">${formulaTitle}</span>
+        </div>
+        <div class="resp-section-body">
+          <div class="formula-block">${escapeHtml(data.formula)}</div>
+        </div>
+      </div>
+    `;
+  }
+
+  if (data.mindMap) {
+    const mermaidCode = data.mindMap.replace(/\n/g, '
+').replace(/
+/g, '
+');
+    html += `
+      <div class="resp-section sec-mindmap" style="margin-top:16px;">
+        <div class="resp-section-header">
+          <span class="section-icon">🗺️</span>
+          <span class="resp-section-title">Mind Map</span>
+        </div>
+        <div class="resp-section-body">
+          <div class="mermaid-wrap">
+            <div class="mermaid">${escapeHtml(mermaidCode)}</div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+  
+  if (data.example) {
+    html += `
+      <div class="resp-section sec-example" style="margin-top:16px;">
+        <div class="resp-section-header">
+          <span class="section-icon">🌍</span>
+          <span class="resp-section-title">Real-World Examples</span>
+        </div>
+        <div class="resp-section-body">${formatBold(data.example || '').replace(/
+/g, '<br>')}</div>
+      </div>
+    `;
+  }
+  
+  if (data.diagram) {
+    html += `
+      <div class="resp-section sec-diagram" style="margin-top:16px;">
+        <div class="resp-section-header">
+          <span class="section-icon">💡</span>
+          <span class="resp-section-title">Diagram & Mental Model</span>
+        </div>
+        <div class="resp-section-body">
+          <div class="diagram-block">${escapeHtml(data.diagram)}</div>
+        </div>
+      </div>
+    `;
+  }
+
+  return html;
+}
+
 function _renderStructuredResponse(data, query) {
+  const metaBadgeHtml = generatePremiumMetaBadgeHtml(data);
+  const premiumCommonHtml = generatePremiumCommonSectionsHtml(data);
+
   const id = data._cardId || ('resp_' + Date.now());
   const speakerBtn = `
     <button class="tts-speak-btn" onclick="speakResponseCard('${id}')" style="position:absolute; top: 12px; right: 12px; background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:14px; z-index: 5;" title="Listen to explanation">🔊</button>
   `;
+
+  if (data.definition && (data.definition.includes("I cannot assist with writing software") || data.definition.includes("cannot write software code") || data.definition.includes("specialized in academic curricula"))) {
+    return `
+      <div class="response-card" id="${id}" style="border-left: 4px solid var(--accent-amber); background: rgba(245,158,11,0.03); padding: 20px; position:relative;">
+      ${metaBadgeHtml}
+        ${speakerBtn}
+        <h4 style="color: var(--accent-amber); font-family: 'Space Grotesk', sans-serif; display:flex; align-items:center; gap:8px; font-weight:700; margin:0; font-size:15px;">
+          <span>⚠️</span> Subject Out of Scope
+        </h4>
+        <p style="font-size:13.5px; color:var(--text-secondary); margin-top:8px; line-height:1.6; margin-bottom:0;">
+          ${formatBold(data.definition)}
+        </p>
+      ${premiumCommonHtml}
+      </div>
+    `;
+  }
 
   if (data.type === 'pyq') {
     return renderPYQResponse(data, query).replace('class="response-card"', 'class="response-card" style="position:relative;"').replace('</h3>', '</h3>' + speakerBtn);
@@ -1817,17 +2583,15 @@ function _renderStructuredResponse(data, query) {
     
     return `
       <div class="response-card" id="${id}" style="position:relative; padding: 24px 20px;">
+      ${metaBadgeHtml}
         ${speakerBtn}
         <div class="resp-section-header" style="margin-bottom: 18px;">
           <span class="section-icon">🪜</span>
           <span class="resp-section-title" style="color: var(--text-accent);">Step-by-Step Learning — ${data.topic || 'Concept'}</span>
         </div>
         <div class="steps-container">${stepsHtml}</div>
-        <div class="response-actions" style="margin-top: 16px; padding: 10px 0 0; border-top: 1px solid var(--border-color);">
-          <button class="action-btn" onclick="copyResponse('${id}')">📋 Copy</button>
-          <button class="action-btn" onclick="bookmarkResponse('${id}')">🔖 Bookmark</button>
-          <button class="action-btn" onclick="askFollowUp('${escapeAttr(query)}')">💬 Discuss</button>
-        </div>
+      ${premiumCommonHtml}
+        
       </div>
     `;
   }
@@ -1839,6 +2603,7 @@ function _renderStructuredResponse(data, query) {
       
     return `
       <div class="response-card" id="${id}" style="position:relative; padding: 24px 20px;">
+      ${metaBadgeHtml}
         ${speakerBtn}
         <div class="resp-section-header" style="margin-bottom: 16px; border-bottom: 1px solid var(--border-color); padding-bottom: 12px;">
           <span class="section-icon">🔬</span>
@@ -1852,11 +2617,8 @@ function _renderStructuredResponse(data, query) {
             📌 <strong>Key Research Insight:</strong> ${formatBold(data.teacherTip)}
           </div>
         ` : ''}
-        <div class="response-actions" style="margin-top: 20px; padding: 10px 0 0; border-top: 1px solid var(--border-color);">
-          <button class="action-btn" onclick="copyResponse('${id}')">📋 Copy</button>
-          <button class="action-btn" onclick="bookmarkResponse('${id}')">🔖 Bookmark</button>
-          <button class="action-btn" onclick="askFollowUp('${escapeAttr(query)}')">💬 Discuss</button>
-        </div>
+      ${premiumCommonHtml}
+        
       </div>
     `;
   }
@@ -1885,6 +2647,7 @@ function _renderStructuredResponse(data, query) {
     
     return `
       <div class="response-card" id="${id}" style="position:relative; padding: 24px 20px;">
+      ${metaBadgeHtml}
         ${speakerBtn}
         <div class="resp-section-header" style="margin-bottom: 16px;">
           <span class="section-icon">📊</span>
@@ -1902,11 +2665,8 @@ function _renderStructuredResponse(data, query) {
         <div class="resp-section-body" style="font-size: 13.5px; line-height: 1.7; color: var(--text-secondary); margin-top: 16px;">
           ${formatBold(data.explanation || '')}
         </div>
-        <div class="response-actions" style="margin-top: 16px; padding: 10px 0 0; border-top: 1px solid var(--border-color);">
-          <button class="action-btn" onclick="copyResponse('${id}')">📋 Copy</button>
-          <button class="action-btn" onclick="bookmarkResponse('${id}')">🔖 Bookmark</button>
-          <button class="action-btn" onclick="askFollowUp('${escapeAttr(query)}')">💬 Discuss</button>
-        </div>
+      ${premiumCommonHtml}
+        
       </div>
     `;
   }
@@ -1915,6 +2675,7 @@ function _renderStructuredResponse(data, query) {
     // Long Answer
     return `
       <div class="response-card" id="${id}" style="position:relative; padding: 24px 20px;">
+      ${metaBadgeHtml}
         ${speakerBtn}
         <div class="resp-section-header" style="margin-bottom: 16px;">
           <span class="section-icon">📝</span>
@@ -1928,12 +2689,9 @@ function _renderStructuredResponse(data, query) {
             📌 <strong>Teacher Tip:</strong> ${formatBold(data.teacherTip)}
           </div>
         ` : ''}
+      ${premiumCommonHtml}
         
-        <div class="response-actions" style="margin-top: 16px; padding: 10px 0 0; border-top: 1px solid var(--border-color);">
-          <button class="action-btn" onclick="copyResponse('${id}')">📋 Copy</button>
-          <button class="action-btn" onclick="bookmarkResponse('${id}')">🔖 Bookmark</button>
-          <button class="action-btn" onclick="askFollowUp('${escapeAttr(query)}')">💬 Discuss</button>
-        </div>
+        
       </div>
     `;
   }
@@ -1946,6 +2704,7 @@ function _renderStructuredResponse(data, query) {
     
     return `
       <div class="response-card" id="${id}" style="position:relative; padding: 24px 20px;">
+      ${metaBadgeHtml}
         ${speakerBtn}
         <div class="resp-section-header" style="margin-bottom: 12px;">
           <span class="section-icon">⚡</span>
@@ -1959,12 +2718,9 @@ function _renderStructuredResponse(data, query) {
             💡 <strong>Key Tip:</strong> ${formatBold(data.teacherTip)}
           </div>
         ` : ''}
+      ${premiumCommonHtml}
         
-        <div class="response-actions" style="margin-top: 12px; padding: 10px 0 0; border-top: 1px solid var(--border-color);">
-          <button class="action-btn" onclick="copyResponse('${id}')">📋 Copy</button>
-          <button class="action-btn" onclick="bookmarkResponse('${id}')">🔖 Bookmark</button>
-          <button class="action-btn" onclick="askFollowUp('${escapeAttr(query)}')">💬 Discuss</button>
-        </div>
+        
       </div>
     `;
   }
@@ -1987,6 +2743,7 @@ function _renderStructuredResponse(data, query) {
 
     return `
       <div class="response-card" id="${id}" style="position:relative;">
+      ${metaBadgeHtml}
         ${speakerBtn}
         
         <!-- Header -->
@@ -2052,12 +2809,9 @@ function _renderStructuredResponse(data, query) {
             ${formatBold(data.modelAnswer)}
           </div>
         </div>
+      ${premiumCommonHtml}
 
-        <div class="response-actions">
-          <button class="action-btn" onclick="copyResponse('${id}')">📋 Copy</button>
-          <button class="action-btn" onclick="bookmarkResponse('${id}')">🔖 Bookmark</button>
-          <button class="action-btn" onclick="askFollowUp('${escapeAttr(query)}')">💬 Discuss</button>
-        </div>
+        
       </div>
     `;
   }
@@ -2069,10 +2823,48 @@ function _renderStructuredResponse(data, query) {
 
 function renderStructuredResponseDefault(data, query) {
   const id = data._cardId || ('resp_' + Date.now());
-  const formulaIcon = state.subject === 'Mathematics' ? '📐' : state.subject === 'Chemistry' ? '🧪' : '🔬';
-  const formulaTitle = state.subject === 'Mathematics' ? 'Formula & Key Equation' :
-                       state.subject === 'Chemistry' ? 'Chemical Reaction / Formula' :
+  const formulaIcon = (data.subject || state.subject) === 'Mathematics' ? '📐' :
+                      (data.subject || state.subject) === 'Chemistry' ? '🧪' : '🔬';
+  const formulaTitle = (data.subject || state.subject) === 'Mathematics' ? 'Formula & Key Equation' :
+                       (data.subject || state.subject) === 'Chemistry' ? 'Chemical Reaction / Formula' :
                        'Formula / Reaction';
+
+  // — Subject / Chapter / Difficulty Badge Strip —
+  const detectedSubject = data.subject || state.subject || '';
+  const detectedChapter = data.chapter || '';
+  const detectedDifficulty = data.difficulty || '';
+  const confidence = typeof data.confidence === 'number' ? data.confidence : null;
+
+  const subjectIcons = {
+    'Physics': '⚛️', 'Chemistry': '🧪', 'Mathematics': '📐', 'Biology': '🌿',
+    'English': '📖', 'History': '🏛️', 'Economics': '📊', 'Geography': '🌍',
+    'Accountancy': '🧾', 'Political Science': '🗳️', 'Other': '📚'
+  };
+  const subjectIcon = subjectIcons[detectedSubject] || '📚';
+
+  const difficultyStars = {
+    'Class 10': '⭐⭐', 'Class 11': '⭐⭐⭐', 'Class 12': '⭐⭐⭐',
+    'JEE Main': '⭐⭐⭐⭐', 'JEE Advanced': '⭐⭐⭐⭐⭐',
+    'NEET': '⭐⭐⭐⭐', 'Olympiad': '⭐⭐⭐⭐⭐'
+  };
+  const difficultyDisplay = difficultyStars[detectedDifficulty] ? `${difficultyStars[detectedDifficulty]} ${detectedDifficulty}` : detectedDifficulty;
+
+  const metaBadgeHtml = (detectedSubject || detectedChapter || detectedDifficulty) ? `
+    <div class="resp-meta-strip">
+      ${detectedSubject ? `<span class="resp-meta-badge meta-subject">${subjectIcon} ${detectedSubject}</span>` : ''}
+      ${detectedChapter ? `<span class="resp-meta-badge meta-chapter">📖 ${detectedChapter}</span>` : ''}
+      ${detectedDifficulty ? `<span class="resp-meta-badge meta-difficulty">${difficultyDisplay}</span>` : ''}
+      ${confidence !== null ? `
+        <span class="resp-meta-badge meta-confidence">
+          <span class="confidence-label">AI Confidence</span>
+          <span class="confidence-bar-wrap">
+            <span class="confidence-bar-fill" style="width:${confidence}%"></span>
+          </span>
+          <span class="confidence-pct">${confidence}%</span>
+        </span>
+      ` : ''}
+    </div>
+  ` : '';
 
   const examRows = (data.examData || []).map(e => {
     const freq = e.frequency === 'HIGH' ? 'freq-high' : e.frequency === 'MEDIUM' ? 'freq-med' : 'freq-low';
@@ -2100,11 +2892,31 @@ function renderStructuredResponseDefault(data, query) {
 
   const kwChips = (data.keywords || []).map(k => `<span class="keyword-chip">${k}</span>`).join('');
 
+  // Mind map section — use Mermaid
+  let mindMapHtml = '';
+  if (data.mindMap) {
+    const mermaidCode = data.mindMap.replace(/\\n/g, '\n');
+    mindMapHtml = `
+      <div class="resp-section sec-mindmap">
+        <div class="resp-section-header">
+          <span class="section-icon">🗺️</span>
+          <span class="resp-section-title">Mind Map</span>
+        </div>
+        <div class="resp-section-body">
+          <div class="mermaid-wrap">
+            <div class="mermaid">${escapeHtml(mermaidCode)}</div>
+          </div>
+        </div>
+      </div>`;
+  }
+
   return `
     <div class="response-card" id="${id}">
+      ${metaBadgeHtml}
+
       <div class="resp-section sec-definition">
         <div class="resp-section-header">
-          <span class="section-icon">🎓</span>
+          <span class="section-icon">🎯</span>
           <span class="resp-section-title">Definition</span>
         </div>
         <div class="resp-section-body">${formatBold(data.definition || '')}</div>
@@ -2114,7 +2926,7 @@ function renderStructuredResponseDefault(data, query) {
       <div class="resp-section sec-mechanism">
         <div class="resp-section-header">
           <span class="section-icon">⚙️</span>
-          <span class="resp-section-title">Mechanism / How It Works</span>
+          <span class="resp-section-title">How It Works — Step by Step</span>
         </div>
         <div class="resp-section-body">
           <ul class="step-list">${steps}</ul>
@@ -2132,11 +2944,13 @@ function renderStructuredResponseDefault(data, query) {
         </div>
       </div>` : ''}
 
+      ${mindMapHtml}
+
       ${(data.diagram || data.analogy) ? `
       <div class="resp-section sec-diagram">
         <div class="resp-section-header">
-          <span class="section-icon">📐</span>
-          <span class="resp-section-title">Diagram & Mental Model</span>
+          <span class="section-icon">💡</span>
+          <span class="resp-section-title">Analogy & Mental Model</span>
         </div>
         <div class="resp-section-body">
           ${data.diagram ? `<div class="diagram-block">${escapeHtml(data.diagram)}</div>` : ''}
@@ -2147,7 +2961,7 @@ function renderStructuredResponseDefault(data, query) {
       ${data.example ? `
       <div class="resp-section sec-example">
         <div class="resp-section-header">
-          <span class="section-icon">💡</span>
+          <span class="section-icon">🌍</span>
           <span class="resp-section-title">Real-World Examples</span>
         </div>
         <div class="resp-section-body">${formatBold(data.example || '').replace(/\n/g, '<br>')}</div>
@@ -2178,7 +2992,7 @@ function renderStructuredResponseDefault(data, query) {
       ${kwChips ? `
       <div class="resp-section sec-keywords">
         <div class="resp-section-header">
-          <span class="section-icon">✅</span>
+          <span class="section-icon">🔑</span>
           <span class="resp-section-title">Board-Approved Keywords</span>
         </div>
         <div class="resp-section-body">
@@ -2204,12 +3018,8 @@ function renderStructuredResponseDefault(data, query) {
           </div>
         </div>
       </div>` : ''}
+      ${premiumCommonHtml}
 
-      <div class="response-actions">
-        <button class="action-btn" onclick="copyResponse('${id}')">📋 Copy</button>
-        <button class="action-btn" onclick="bookmarkResponse('${id}')">🔖 Bookmark</button>
-        <button class="action-btn" onclick="askFollowUp('${escapeAttr(query)}')">💬 Discuss</button>
-      </div>
     </div>
   `;
 }
@@ -2255,6 +3065,7 @@ function renderPYQResponse(data, query) {
 
   return `
     <div class="response-card" id="${id}">
+      ${metaBadgeHtml}
       <div class="resp-section" style="background: rgba(99,102,241,0.05);">
         <div class="resp-section-header">
           <span class="section-icon">📝</span>
@@ -2265,6 +3076,7 @@ function renderPYQResponse(data, query) {
         </p>
       </div>
       <div class="pyq-list">${qList}</div>
+      ${premiumCommonHtml}
     </div>
   `;
 }
@@ -2401,6 +3213,7 @@ function renderFormulaSheetResponse(data, query) {
 
   return `
     <div class="response-card" id="${id}">
+      ${metaBadgeHtml}
       <div class="resp-section" style="background: rgba(99,102,241,0.05); border-bottom: 1px solid var(--border-color);">
         <div class="resp-section-header">
           <span class="section-icon">📋</span>
@@ -2415,6 +3228,7 @@ function renderFormulaSheetResponse(data, query) {
         ${constantsHtml}
         ${revisionHtml}
       </div>
+      ${premiumCommonHtml}
     </div>
   `;
 }
@@ -2763,17 +3577,82 @@ window.submitInlineQuiz = function(inputId, question, correctAnswer) {
 };
 
 // ---- ACTION BUTTONS ----
-window.copyResponse = function(id) {
+window.copyResponse = async function(id) {
   const el = document.getElementById(id);
   if (!el) return;
-  // Clean LaTeX and symbols for clean plain text copy
   let cleanText = el.innerText.replace(/\$\$/g, '').replace(/\$/g, '');
-  navigator.clipboard.writeText(cleanText).then(() => {
-    showToast('📋 Clean response copied to clipboard!');
-  });
+  if (navigator.clipboard && window.isSecureContext) {
+    try {
+      await navigator.clipboard.writeText(cleanText);
+      showToast('📋 Copied to clipboard!');
+    } catch (err) {
+      fallbackCopy(cleanText);
+    }
+  } else {
+    fallbackCopy(cleanText);
+  }
+};
+
+function fallbackCopy(text) {
+  const textArea = document.createElement("textarea");
+  textArea.value = text;
+  textArea.style.position = "fixed";
+  textArea.style.opacity = "0"; 
+  document.body.appendChild(textArea);
+  textArea.focus();
+  textArea.select();
+  try {
+    document.execCommand('copy');
+    showToast('📋 Copied to clipboard!');
+  } catch (err) {}
+  document.body.removeChild(textArea);
+}
+
+window.shareResponse = async function(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  let cleanText = el.innerText.replace(/\$\$/g, '').replace(/\$/g, '');
+  const shareData = {
+    title: 'Bruhaspati AI Response',
+    text: cleanText,
+    url: window.location.href
+  };
+  if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
+    try {
+      await navigator.share(shareData);
+    } catch (error) {
+      if (error.name !== 'AbortError') window.copyResponse(id);
+    }
+  } else {
+    window.copyResponse(id);
+  }
+};
+
+window.downloadResponsePDF = async function(id) {
+  const el = document.getElementById(id);
+  if (!el) {
+    showToast('⚠️ Could not find response to export.');
+    return;
+  }
+  showToast('📥 Generating PDF...');
+  try {
+    const opt = {
+      margin: [10, 10, 10, 10],
+      filename: `bruhaspati_ai_${Date.now()}.pdf`,
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2, useCORS: true, backgroundColor: '#060913' },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+    await html2pdf().set(opt).from(el).save();
+    showToast('✅ PDF saved successfully!');
+  } catch (err) {
+    showToast('⚠️ PDF export failed. Try copying instead.');
+    console.error('PDF export error:', err);
+  }
 };
 
 window.bookmarkResponse = function(id) {
+
   let msg = state.messages.find(m => m.data && m.data._cardId === id);
   if (!msg) {
     for (let session of state.history) {
@@ -2804,6 +3683,33 @@ window.bookmarkResponse = function(id) {
     showToast('🔖 Bookmarked successfully!');
   }
   renderBookmarksList();
+};
+
+window.discussResponse = function(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  
+  // Extract text and clean it
+  let cleanText = el.innerText.replace(/\$\$/g, '').replace(/\$/g, '').trim();
+  // Get a short snippet
+  let snippet = cleanText.substring(0, 60);
+  if (cleanText.length > 60) snippet += '...';
+  
+  state.replyContext = snippet;
+  
+  // Show UI
+  document.getElementById('replyContextText').innerText = snippet;
+  document.getElementById('replyContextStrip').style.display = 'flex';
+  
+  // Focus input
+  const input = document.getElementById('userInput');
+  input.focus();
+};
+
+window.cancelReplyContext = function() {
+  state.replyContext = null;
+  document.getElementById('replyContextStrip').style.display = 'none';
+  document.getElementById('replyContextText').innerText = '';
 };
 
 function renderBookmarksList() {
@@ -3120,7 +4026,8 @@ function getPlainTextFromResponse(data) {
       data.formulas.map(f => `${f.name}: ${f.terms}`).join(' ');
   }
   if (data.essay) {
-    return `${data.title}. ${data.essay}. Teacher Tip: ${data.teacherTip || ''}`;
+    const essayText = Array.isArray(data.essay) ? data.essay.join(' ') : data.essay;
+    return `${data.title}. ${essayText}. Teacher Tip: ${data.teacherTip || ''}`;
   }
   if (data.points) {
     return `Summary of ${data.topic}. ${data.points.join('. ')}. Teacher Tip: ${data.teacherTip || ''}`;
@@ -3174,9 +4081,9 @@ function saveTokenState() {
 }
 
 function getPlanLimit() {
-  if (tokenState.plan === 'pro') return 20000;
+  if (tokenState.plan === 'pro') return 100000;
   if (tokenState.plan === 'ultra') return Infinity;
-  return 2000; // free limit
+  return 1000000; // free limit
 }
 
 function updateTokenMeterUI() {
@@ -3466,10 +4373,24 @@ function saveAIMessageToState(query, parsed, cardId, isError = false) {
   saveCurrentChatSession();
 }
 
+
+window.currentAbortController = null;
+window.stopGenerating = function() {
+  if (window.currentAbortController) {
+    window.currentAbortController.abort();
+    window.currentAbortController = null;
+  }
+};
+
 // ---- SEND MESSAGE ----
 window.sendMessage = async function() {
   const input = document.getElementById('userInput');
-  const query = input.value.trim();
+  let query = input.value.trim();
+  
+  if (state.replyContext && query) {
+    query = `Regarding your previous point ("${state.replyContext}"): \n\n${query}`;
+    cancelReplyContext();
+  }
   
   if (!localStorage.getItem('bruhaspati_auth')) {
     showToast("⚠️ Please log in to use the chat.");
@@ -3539,12 +4460,24 @@ window.sendMessage = async function() {
   scrollToBottom();
   
   state.isTyping = true;
-  document.getElementById('sendBtn').disabled = true;
+  const sendBtn = document.getElementById('sendBtn');
+  const stopBtnContainer = document.getElementById('stopGeneratingBtn');
+  if (sendBtn) {
+    sendBtn.disabled = true;
+    sendBtn.style.display = 'none';
+  }
+  if (stopBtnContainer) stopBtnContainer.style.display = 'flex';
+  
+  window.currentAbortController = new AbortController();
   
   try {
     // Stream response call
     await streamAIResponse(query, streamCardId);
   } catch (err) {
+    if (err.name === 'AbortError') {
+      console.log('Generation aborted by user.');
+      return;
+    }
     console.error("Critical error inside sendMessage stream:", err);
     showToast("⚠️ An unexpected error occurred. Please try again.");
     if (typeof addErrorMessage === 'function') {
@@ -3557,7 +4490,13 @@ window.sendMessage = async function() {
     
     state.isTyping = false;
     const sendBtn = document.getElementById('sendBtn');
-    if (sendBtn) sendBtn.disabled = false;
+    const stopBtnContainer = document.getElementById('stopGeneratingBtn');
+    if (sendBtn) {
+      sendBtn.style.display = '';
+      sendBtn.disabled = false;
+    }
+    if (stopBtnContainer) stopBtnContainer.style.display = 'none';
+    window.currentAbortController = null;
   }
 }
 
@@ -3573,14 +4512,34 @@ window.retryMessage = async function(query, cardId) {
   }
   
   state.isTyping = true;
-  document.getElementById('sendBtn').disabled = true;
+  const sendBtn = document.getElementById('sendBtn');
+  const stopBtnContainer = document.getElementById('stopGeneratingBtn');
+  if (sendBtn) {
+    sendBtn.disabled = true;
+    sendBtn.style.display = 'none';
+  }
+  if (stopBtnContainer) stopBtnContainer.style.display = 'flex';
+  
+  window.currentAbortController = new AbortController();
   
   try {
     await streamAIResponse(query, cardId);
+  } catch (err) {
+    if (err.name === 'AbortError') {
+      console.log('Generation aborted by user.');
+      return;
+    }
+    throw err;
   } finally {
     state.isTyping = false;
     const sendBtn = document.getElementById('sendBtn');
-    if (sendBtn) sendBtn.disabled = false;
+    const stopBtnContainer = document.getElementById('stopGeneratingBtn');
+    if (sendBtn) {
+      sendBtn.style.display = '';
+      sendBtn.disabled = false;
+    }
+    if (stopBtnContainer) stopBtnContainer.style.display = 'none';
+    window.currentAbortController = null;
   }
 };
 
@@ -3590,7 +4549,7 @@ window.handlePreWarm = function() {
   if (hasPreWarmed) return;
   hasPreWarmed = true;
   
-  if (state.apiKey) {
+  if (state.apiKey && state.apiKey !== 'REDACTED_API_KEY') {
     if (state.apiKey.startsWith('sk-')) {
       fetch("https://api.openai.com/v1/chat/completions", { method: "OPTIONS" }).catch(() => {});
     } else {
@@ -3776,17 +4735,25 @@ window.saveSettings = function() {
   localStorage.setItem('bruhaspati_class_level', classLevel);
   localStorage.setItem('bruhaspati_language', language);
   
+  const apiProvider = document.getElementById('settingsApiProvider').value;
+  state.apiProvider = apiProvider;
+  localStorage.setItem('bruhaspati_api_provider', apiProvider);
+  
   if (apiKey) {
     state.apiKey = apiKey;
     localStorage.setItem('bruhaspati_api_key', apiKey);
     updateAPIStatus(true);
-    const isOA = apiKey.startsWith('sk-');
-    showToast(`🔑 Custom ${isOA ? 'OpenAI' : 'Gemini'} API key saved & connected!`);
+    const providerName = apiProvider === 'kimi' ? 'Kimi' : (apiProvider === 'openai' ? 'OpenAI' : 'Gemini');
+    showToast(`🔑 Custom ${providerName} API key saved & connected!`);
   } else {
     localStorage.removeItem('bruhaspati_api_key');
     state.apiKey = 'REDACTED_API_KEY';
-    updateAPIStatus(false);
-    showToast("ℹ️ Custom key cleared. Switched to fallback mode.");
+    updateAPIStatus(apiProvider === 'kimi'); // Kimi default is active
+    if (apiProvider === 'kimi') {
+      showToast("🚀 Kimi default API key connected!");
+    } else {
+      showToast("ℹ️ Custom key cleared. Switched to fallback mode.");
+    }
   }
   
   updateSidebarSelectors(state.subject, classLevel);
@@ -3836,6 +4803,23 @@ window.resetAllPreferences = function() {
   }
 };
 
+window.updateApiKeyPlaceholder = function(provider) {
+  const keyInput = document.getElementById('settingsApiKey');
+  const helpText = document.getElementById('apiKeyHelpText');
+  if (!keyInput || !helpText) return;
+
+  if (provider === 'gemini') {
+    keyInput.placeholder = "Paste Google Gemini (starts with AIzaSy) key";
+    helpText.innerHTML = `⚠️ Gemini key is used for cascading model versions. Get a free key at <a href="https://aistudio.google.com" target="_blank" style="color:var(--accent-indigo); text-decoration:none;">aistudio.google.com</a>.`;
+  } else if (provider === 'openai') {
+    keyInput.placeholder = "Paste OpenAI (starts with sk-) key";
+    helpText.innerHTML = `⚠️ OpenAI key is used to hit gpt-4o-mini. Get a key at <a href="https://platform.openai.com" target="_blank" style="color:var(--accent-indigo); text-decoration:none;">platform.openai.com</a>.`;
+  } else if (provider === 'kimi') {
+    keyInput.placeholder = "Paste Kimi / Moonshot (starts with sk-) key";
+    helpText.innerHTML = `🚀 Kimi (Moonshot AI) key enables deep reasoning. Default key provided by administrator is active if left blank.`;
+  }
+};
+
 function loadAllSettings() {
   state.studentName = localStorage.getItem('bruhaspati_student_name') || '';
   state.board = localStorage.getItem('bruhaspati_board') || 'CBSE';
@@ -3845,6 +4829,7 @@ function loadAllSettings() {
   state.fontSize = localStorage.getItem('bruhaspati_font_size') || 'medium';
   state.reduceAnimations = localStorage.getItem('bruhaspati_reduce_animations') === 'true';
   state.format = localStorage.getItem('bruhaspati_answer_format') || 'structured';
+  state.apiProvider = localStorage.getItem('bruhaspati_api_provider') || 'gemini';
   
   // Populate settings elements
   document.getElementById('profileName').value = state.studentName;
@@ -3854,10 +4839,12 @@ function loadAllSettings() {
   document.getElementById('settingsTheme').value = state.theme;
   document.getElementById('settingsFontSize').value = state.fontSize;
   document.getElementById('reduceAnimations').checked = state.reduceAnimations;
+  document.getElementById('settingsApiProvider').value = state.apiProvider;
   
   // Populate custom API key
   const savedKey = localStorage.getItem('bruhaspati_api_key');
   document.getElementById('settingsApiKey').value = (savedKey && savedKey !== 'REDACTED_API_KEY') ? savedKey : '';
+  updateApiKeyPlaceholder(state.apiProvider);
   
   applySettingsTheme(state.theme);
   applySettingsFontSize(state.fontSize);
@@ -4013,9 +5000,11 @@ function addErrorMessage(text) {
     <div class="ai-avatar"><img src="logo.jpg" alt="Bruhaspati AI"></div>
     <div class="ai-content">
       <div class="response-card" style="padding: 16px 20px;">
+      ${metaBadgeHtml}
         <div class="callout callout-rose">⚠️ ${text}</div>
       </div>
       <span class="msg-timestamp">${formatTime(Date.now())}</span>
+      ${premiumCommonHtml}
     </div>
   `;
   area.appendChild(div);
@@ -4138,7 +5127,7 @@ window.saveApiKey = function() {
 
 window.setAPIKey = function(key) {
   state.apiKey = key;
-  state.useRealAPI = !!key;
+  state.useRealAPI = !!key || state.apiProvider === 'kimi';
   if (key) {
     localStorage.setItem('bruhaspati_api_key', key);
     updateAPIStatus(true);
@@ -5664,30 +6653,70 @@ function applyStreamingCursor(data, isFinal) {
 }
 
 function showSkeletonLoader(cardId, container) {
-  container.innerHTML = `
-    <div class="response-card skeleton-card b-skel" id="${cardId}_loader" style="display:flex; flex-direction:column; gap:12px; padding:20px;">
-      <div style="display:flex; align-items:center; gap:12px;">
-        <div class="b-skel" style="width:36px; height:36px; border-radius:50%;"></div>
-        <div class="b-skel" style="height:12px; border-radius:6px; flex:1;"></div>
-      </div>
-      <div class="b-skel" style="height:10px; border-radius:5px; width:100%;"></div>
-      <div class="b-skel" style="height:10px; border-radius:5px; width:80%;"></div>
-      <div class="b-skel" style="height:10px; border-radius:5px; width:100%;"></div>
-      <div class="b-skel" style="height:10px; border-radius:5px; width:60%;"></div>
-    </div>
-  `;
+  showThinkingLoader(cardId, container, state.subject);
 }
 
 function showThinkingLoader(cardId, container, subject) {
   if (activeLoaderIntervals[cardId]) clearInterval(activeLoaderIntervals[cardId]);
   
+  const hints = [
+    "Analyzing syllabus patterns...",
+    "Extracting core concepts...",
+    "Planning educational structure...",
+    "Generating step-by-step logic...",
+    "Verifying formulas...",
+    "Structuring premium response..."
+  ];
+  let hintIdx = 0;
+  
   container.innerHTML = `
-    <div class="chat-loader-wrap" id="${cardId}_loader" style="padding: 4px 0; gap: 0;">
-      <div class="b-typing">
-        <span></span><span></span><span></span>
+    <div class="response-card thinking-card" id="${cardId}_loader" style="padding: 16px 20px; display:flex; flex-direction:column; gap:12px; border: 1px solid rgba(99,102,241,0.3); background: linear-gradient(180deg, rgba(99,102,241,0.05) 0%, rgba(0,0,0,0) 100%);">
+      <div style="display:flex; align-items:center; gap:12px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 12px;">
+        <div class="thinking-spinner" style="width:18px; height:18px; border: 2px solid rgba(99,102,241,0.3); border-top-color: var(--accent-indigo); border-radius: 50%; animation: spin 1s linear infinite;"></div>
+        <div style="font-family:'Space Grotesk',sans-serif; font-weight:600; color:var(--text-primary); font-size:14px; flex:1; display:flex; justify-content:space-between; align-items:center;">
+          <span>Thinking...</span>
+          <span class="thinking-timer" style="font-variant-numeric: tabular-nums; color:var(--text-muted); font-size:12px;">0 sec</span>
+        </div>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:8px; opacity:0.6; position:relative; overflow:hidden;">
+        <div class="b-skel" style="height:8px; border-radius:4px; width:100%; background:rgba(255,255,255,0.05);"></div>
+        <div class="b-skel" style="height:8px; border-radius:4px; width:85%; background:rgba(255,255,255,0.05);"></div>
+        <div class="b-skel" style="height:8px; border-radius:4px; width:95%; background:rgba(255,255,255,0.05);"></div>
+        <div class="thinking-hint-overlay" style="position:absolute; top:0; left:0; width:100%; height:100%; display:flex; align-items:center; justify-content:center; background:linear-gradient(90deg, transparent, var(--bg-card) 20%, var(--bg-card) 80%, transparent);">
+          <span class="thinking-hint-text" style="font-size:12px; color:var(--accent-indigo); font-weight:500; font-family:'Inter',sans-serif; letter-spacing:0.02em;">${hints[0]}</span>
+        </div>
       </div>
     </div>
   `;
+  
+  if (!document.querySelector('style#thinking-anim')) {
+    document.head.insertAdjacentHTML('beforeend', '<style id="thinking-anim">@keyframes spin { 100% { transform: rotate(360deg); } }</style>');
+  }
+
+  let startTime = Date.now();
+  activeLoaderIntervals[cardId] = setInterval(() => {
+    const el = document.getElementById(cardId + '_loader');
+    if (!el) {
+      clearInterval(activeLoaderIntervals[cardId]);
+      return;
+    }
+    const sec = Math.floor((Date.now() - startTime) / 1000);
+    const timerEl = el.querySelector('.thinking-timer');
+    if (timerEl) timerEl.textContent = sec + ' sec';
+    
+    if (sec > 0 && sec % 2 === 0) {
+      hintIdx = (hintIdx + 1) % hints.length;
+      const hintEl = el.querySelector('.thinking-hint-text');
+      if (hintEl) {
+        hintEl.style.opacity = 0;
+        setTimeout(() => {
+          hintEl.textContent = hints[hintIdx];
+          hintEl.style.transition = 'opacity 0.3s ease';
+          hintEl.style.opacity = 1;
+        }, 150);
+      }
+    }
+  }, 1000);
 }
 
 function showInteractiveLoader(cardId, container) {
@@ -5737,16 +6766,38 @@ try {
   console.log("Firebase not loaded or failed", e);
 }
 
-function handleMockLogin() {
+window.handleMockLogin = async function() {
   const emailEl = document.getElementById('mockEmail');
+  const pwdEl = document.getElementById('mockPassword');
+  const btnText = document.getElementById('mockSignInText');
+  const btnSpinner = document.getElementById('mockSignInSpinner');
+  const btn = document.getElementById('mockSignInBtn');
+  
   const email = emailEl ? emailEl.value.trim() : '';
-  if (!email) {
-    alert("Please enter an email");
+  const pwd = pwdEl ? pwdEl.value : '';
+  
+  if (!email || !pwd) {
+    alert("Please enter both email and password");
     return;
   }
+  
+  // Show Loading State
+  if (btn) btn.disabled = true;
+  if (btnText) btnText.style.display = 'none';
+  if (btnSpinner) btnSpinner.style.display = 'block';
+  
+  // Simulate network delay
+  await new Promise(r => setTimeout(r, 1500));
+  
+  // Reset Loading State
+  if (btn) btn.disabled = false;
+  if (btnText) btnText.style.display = 'block';
+  if (btnSpinner) btnSpinner.style.display = 'none';
+  
   const overlay = document.getElementById('authModalOverlay');
   if (overlay) overlay.style.display = 'none';
-  showToast("Logged in as " + email);
+  
+  showToast("Logged in successfully as " + email);
   // Store mock auth state
   localStorage.setItem('bruhaspati_auth', email);
 }

@@ -24,6 +24,29 @@
     };
   </script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" id="MathJax-script" async></script>
+  <!-- Mermaid.js for mind maps and diagrams -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+  <script>
+    if (typeof mermaid !== 'undefined') {
+      mermaid.initialize({ 
+        startOnLoad: false, 
+        theme: 'dark',
+        themeVariables: {
+          primaryColor: '#6366f1',
+          primaryTextColor: '#f1f5f9',
+          primaryBorderColor: '#4f46e5',
+          lineColor: '#94a3b8',
+          sectionBkgColor: '#080d1a',
+          altSectionBkgColor: '#060913',
+          gridColor: '#1e293b',
+          secondaryColor: '#8b5cf6',
+          tertiaryColor: '#10b981'
+        }
+      });
+    }
+  </script>
+  <!-- html2pdf for PDF export -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body>
   <!-- Global SVG Assets for Reusable Lotus Emblem -->
@@ -260,7 +283,7 @@
         <div class="token-meter-container">
           <div style="display:flex; justify-content:space-between; font-size:11px; font-weight:600; margin-bottom:4px; color:var(--text-secondary);">
             <span>⚡ Token Limit (Daily)</span>
-            <span id="tokenMeterText">0 / 2,000</span>
+            <span id="tokenMeterText">0 / 20,000</span>
           </div>
           <div class="token-meter-bar">
             <div class="token-meter-fill" id="tokenMeterFill" style="width: 0%;"></div>
@@ -328,15 +351,8 @@
 
         <!-- Welcome Screen -->
         <div class="welcome-screen" id="welcomeScreen">
-          <!-- Aurora shimmer backdrop for welcome screen logo -->
-          <div class="welcome-logo-glow"></div>
           
           <div class="welcome-hero">
-            <div class="welcome-logo lotus-loader">
-              <div class="lotus-ring-2"></div>
-              <div class="lotus-ring"></div>
-              <img src="logo.jpg" alt="Bruhaspati AI Logo" />
-            </div>
             <h1 class="welcome-title">Bruhaspati <span class="title-accent">AI</span></h1>
             <p class="welcome-subtitle">Your Elite Indian Exam Tutor</p>
             <p class="welcome-desc">Ask any question from CBSE, JEE, NEET, BSE/CHSE Odisha, or IAT. Get structured answers with definitions, diagrams, exam history & board keywords — just like a master teacher.</p>
@@ -418,9 +434,20 @@
           </button>
         </div>
 
+
+
         <div class="input-wrapper">
           <!-- Notes upload preview strip -->
           <div class="upload-preview-strip" id="uploadPreviewStrip" style="display: none;"></div>
+          <!-- Reply Context Strip -->
+          <div class="reply-context-strip" id="replyContextStrip" style="display: none;">
+            <div class="reply-context-indicator"></div>
+            <div class="reply-context-content">
+              <span class="reply-context-label">Replying to</span>
+              <span class="reply-context-text" id="replyContextText"></span>
+            </div>
+            <button class="reply-context-close" onclick="cancelReplyContext()" title="Cancel Reply">×</button>
+          </div>
           
           <div class="input-main-row">
             <!-- Upload Paperclip Button -->
@@ -453,6 +480,11 @@
               <button class="send-btn" id="sendBtn" onclick="sendMessage()">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                   <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                </svg>
+              </button>
+              <button class="send-btn" id="stopGeneratingBtn" onclick="stopGenerating()" style="display: none; background: #2a2a35; border: 1px solid #3f3f46; box-shadow: 0 4px 15px rgba(0,0,0,0.3); transition: all 0.2s;" title="Stop Generating" onmouseover="this.style.background='#3f3f46'; this.style.borderColor='#52525b'" onmouseout="this.style.background='#2a2a35'; this.style.borderColor='#3f3f46'">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                  <rect x="5" y="5" width="14" height="14" rx="2"></rect>
                 </svg>
               </button>
             </div>
@@ -657,10 +689,19 @@
           </div>
           
           <div class="modal-field" style="margin-top:16px;">
+            <label class="modal-label">API Provider</label>
+            <select class="quiz-input modal-select" id="settingsApiProvider" onchange="updateApiKeyPlaceholder(this.value)" style="width:100%;">
+              <option value="gemini">Google Gemini</option>
+              <option value="openai">OpenAI (GPT)</option>
+              <option value="kimi">Kimi (Moonshot AI)</option>
+            </select>
+          </div>
+          
+          <div class="modal-field" style="margin-top:12px;">
             <label class="modal-label">Custom API Key (Optional)</label>
-            <input type="password" class="quiz-input" id="settingsApiKey" placeholder="Paste Google Gemini (AIzaSy...) or OpenAI (sk-...) key" style="width:100%;" />
-            <div style="font-size:11px; color:var(--text-muted); margin-top:6px; line-height:1.45;">
-              ⚠️ The default free API quota is exhausted (429 Rate Limit). Sticking to <strong>Demo Fallback Mode</strong> unless a valid key is provided. Get a free Gemini key at <a href="https://aistudio.google.com" target="_blank" style="color:var(--accent-indigo); text-decoration:none;">aistudio.google.com</a>. Stored locally on your device.
+            <input type="password" class="quiz-input" id="settingsApiKey" placeholder="Paste Google Gemini (AIzaSy...) key" style="width:100%;" />
+            <div style="font-size:11px; color:var(--text-muted); margin-top:6px; line-height:1.45;" id="apiKeyHelpText">
+              ⚠️ Sticking to <strong>Demo Fallback Mode</strong> unless a valid key is provided. Stored locally on your device.
             </div>
           </div>
           
@@ -887,11 +928,15 @@
       <!-- Mock Login (Fallback if Firebase config is missing) -->
       <div id="mockAuthContainer">
         <div style="background: rgba(245, 158, 11, 0.08); border: 1px solid rgba(245, 158, 11, 0.25); border-radius: 8px; padding: 12px; margin-bottom: 16px; text-align: left; font-size: 12.5px; color: #fcd34d; line-height: 1.5; font-family: 'Inter', sans-serif;">
-          <strong>Sandbox Demo Mode</strong><br>
-          Real Firebase configuration is missing or inactive. Please enter any email to sign in immediately (no password required) for evaluation.
+          <strong>Premium Mode</strong><br>
+          Please enter your registered email and password to sign in.
         </div>
-        <input type="text" id="mockEmail" placeholder="Enter Email" style="width: 100%; padding: 12px; margin-bottom: 12px; border-radius: 8px; border: 1px solid var(--border-color); background: rgba(0,0,0,0.2); color: white;" />
-        <button onclick="handleMockLogin()" style="width: 100%; padding: 12px; background: var(--accent-gradient); border: none; border-radius: 8px; color: white; font-weight: 600; cursor: pointer;">Sign In</button>
+        <input type="email" id="mockEmail" placeholder="Enter Email" style="width: 100%; padding: 12px; margin-bottom: 12px; border-radius: 8px; border: 1px solid var(--border-color); background: rgba(0,0,0,0.2); color: white;" />
+        <input type="password" id="mockPassword" placeholder="Enter Password" style="width: 100%; padding: 12px; margin-bottom: 12px; border-radius: 8px; border: 1px solid var(--border-color); background: rgba(0,0,0,0.2); color: white;" />
+        <button id="mockSignInBtn" onclick="handleMockLogin()" style="width: 100%; padding: 12px; background: var(--accent-gradient); border: none; border-radius: 8px; color: white; font-weight: 600; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px;">
+          <span id="mockSignInText">Sign In</span>
+          <div id="mockSignInSpinner" class="lotus-spinner" style="display: none; width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.3); border-radius: 50%; border-top-color: white; animation: spin 1s linear infinite;"></div>
+        </button>
       </div>
     </div>
   </div>

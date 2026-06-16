@@ -98,11 +98,7 @@ function renderStructuredResponse(data, query) {
           </div>
         ` : ''}
         
-        <div class="response-actions" style="margin-top: 16px; padding: 10px 0 0; border-top: 1px solid var(--border-color);">
-          <button class="action-btn" onclick="copyResponse('${id}')">📋 Copy</button>
-          <button class="action-btn" onclick="bookmarkResponse('${id}')">🔖 Bookmark</button>
-          <button class="action-btn" onclick="askFollowUp('${escapeAttr(query)}')">💬 Discuss</button>
-        </div>
+        
       </div>
     `;
   }
@@ -129,11 +125,7 @@ function renderStructuredResponse(data, query) {
           </div>
         ` : ''}
         
-        <div class="response-actions" style="margin-top: 12px; padding: 10px 0 0; border-top: 1px solid var(--border-color);">
-          <button class="action-btn" onclick="copyResponse('${id}')">📋 Copy</button>
-          <button class="action-btn" onclick="bookmarkResponse('${id}')">🔖 Bookmark</button>
-          <button class="action-btn" onclick="askFollowUp('${escapeAttr(query)}')">💬 Discuss</button>
-        </div>
+        
       </div>
     `;
   }
@@ -222,11 +214,7 @@ function renderStructuredResponse(data, query) {
           </div>
         </div>
 
-        <div class="response-actions">
-          <button class="action-btn" onclick="copyResponse('${id}')">📋 Copy</button>
-          <button class="action-btn" onclick="bookmarkResponse('${id}')">🔖 Bookmark</button>
-          <button class="action-btn" onclick="askFollowUp('${escapeAttr(query)}')">💬 Discuss</button>
-        </div>
+        
       </div>
     `;
   }
@@ -375,11 +363,7 @@ function renderStructuredResponseDefault(data, query) {
         </div>
       </div>` : ''}
 
-      <div class="response-actions">
-        <button class="action-btn" onclick="copyResponse('${id}')">📋 Copy</button>
-        <button class="action-btn" onclick="bookmarkResponse('${id}')">🔖 Bookmark</button>
-        <button class="action-btn" onclick="askFollowUp('${escapeAttr(query)}')">💬 Discuss</button>
-      </div>
+      
     </div>
   `;
 }

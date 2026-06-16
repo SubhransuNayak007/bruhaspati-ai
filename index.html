@@ -49,6 +49,69 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body>
+
+  <!-- Premium Voice Mode Overlay -->
+  <div class="voice-mode-overlay" id="voiceModeOverlay" style="display: none;">
+    <button class="voice-close-btn" onclick="closeVoiceMode()">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="18" y1="6" x2="6" y2="18"/>
+        <line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+    
+    <div class="voice-content">
+      <h2 class="voice-status" id="voiceStatusText">Listening...</h2>
+      
+      <!-- Central Animated Voice Orb -->
+      <div class="voice-orb-container">
+        <div class="voice-orb active" id="mainVoiceOrb"></div>
+        <!-- Particle Effects -->
+        <div class="particles">
+          <div class="particle" style="--px: 50px; --py: -100px; --delay: 0s;"></div>
+          <div class="particle" style="--px: -80px; --py: 50px; --delay: 1s;"></div>
+          <div class="particle" style="--px: 100px; --py: 80px; --delay: 2s;"></div>
+          <div class="particle" style="--px: -50px; --py: -80px; --delay: 1.5s;"></div>
+        </div>
+      </div>
+      
+      <!-- Realtime Transcript -->
+      <div class="voice-transcript-container">
+        <p class="voice-transcript" id="voiceTranscript">Speak now, I'm listening to your questions...</p>
+      </div>
+      
+      <!-- Bottom Controls -->
+      <div class="voice-controls">
+        <button class="voice-action-btn" title="Keyboard" onclick="closeVoiceMode()">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="2" y="4" width="20" height="16" rx="2" ry="2"/>
+            <line x1="6" y1="8" x2="6" y2="8"/>
+            <line x1="10" y1="8" x2="10" y2="8"/>
+            <line x1="14" y1="8" x2="14" y2="8"/>
+            <line x1="18" y1="8" x2="18" y2="8"/>
+            <line x1="6" y1="12" x2="6" y2="12"/>
+            <line x1="10" y1="12" x2="10" y2="12"/>
+            <line x1="14" y1="12" x2="14" y2="12"/>
+            <line x1="18" y1="12" x2="18" y2="12"/>
+            <line x1="8" y1="16" x2="16" y2="16"/>
+          </svg>
+        </button>
+        <button class="voice-mic-btn active" id="voiceModeMicBtn" onclick="toggleVoiceListening()">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/>
+            <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+            <line x1="12" y1="19" x2="12" y2="23"/>
+          </svg>
+        </button>
+        <button class="voice-action-btn" title="End Session" onclick="closeVoiceMode()">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18.36 6.64a9 9 0 1 1-12.73 0"/>
+            <line x1="12" y1="2" x2="12" y2="12"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- Glowing Animated Orbs -->
   <div class="orb orb-1"></div>
   <div class="orb orb-2"></div>

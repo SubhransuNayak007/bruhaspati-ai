@@ -1777,6 +1777,16 @@ async function streamAIResponse(query, cardId) {
             generationConfig: genConfig
           };
           
+          // Update Thinking Step
+          const step2 = document.getElementById(`step2_${cardId}`);
+          const step3 = document.getElementById(`step3_${cardId}`);
+          if (step2 && step3) {
+            step2.className = 'step completed';
+            step2.innerHTML = '<svg class="step-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Researching Context';
+            step3.className = 'step active';
+            step3.innerHTML = '<div class="step-spinner"></div> Building Answer';
+          }
+          
           response = await fetch(url, {
             method: 'POST',
             headers: headers,
@@ -1918,6 +1928,60 @@ async function streamAIResponse(query, cardId) {
     }
     
     renderPartialText(accumulatedText, aiContent, cardId, query, true);
+    
+    // Finish Thinking Step
+    const step3End = document.getElementById(`step3_${cardId}`);
+    if (step3End) {
+      step3End.className = 'step completed';
+      step3End.innerHTML = '<svg class="step-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Building Answer';
+    }
+    const thinkingUi = document.getElementById(`thinking_${cardId}`);
+    if (thinkingUi) {
+      thinkingUi.classList.remove('expanded');
+    }
+    
+    // Inject Answer Actions
+    const actionsHtml = `
+          <!-- Answer Actions Toolbar -->
+          <div class="answer-actions">
+            <button class="action-btn" title="Copy Answer" onclick="navigator.clipboard.writeText(this.closest('.ai-content').innerText)">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+              </svg>
+              Copy
+            </button>
+            <button class="action-btn" title="Share Answer">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="18" cy="5" r="3"/>
+                <circle cx="6" cy="12" r="3"/>
+                <circle cx="18" cy="19" r="3"/>
+                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+              </svg>
+              Share
+            </button>
+            <button class="action-btn action-btn-accent" title="View Mindmap">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="10" y="3" width="4" height="4" rx="1" />
+                <rect x="3" y="17" width="4" height="4" rx="1" />
+                <rect x="17" y="17" width="4" height="4" rx="1" />
+                <path d="M12 7v4" />
+                <path d="M12 11l-7 6" />
+                <path d="M12 11l7 6" />
+              </svg>
+              Mindmap
+            </button>
+          </div>
+    `;
+    // Insert before the timestamp
+    const timestampSpan = aiContent.querySelector('.msg-timestamp');
+    if (timestampSpan) {
+      timestampSpan.insertAdjacentHTML('beforebegin', actionsHtml);
+    } else {
+      aiContent.insertAdjacentHTML('beforeend', actionsHtml);
+    }
+    
     consumeTokens(cost);
     state.hasRetriedQuiz = false;
     return true;
@@ -4313,6 +4377,47 @@ window.loadChatSession = function(id) {
         <div class="ai-avatar"><img src="logo.jpg" alt="Bruhaspati AI"></div>
         <div class="ai-content">
           ${renderStructuredResponse(msg.data, msg.query)}
+          
+          <!-- Answer Actions Toolbar -->
+          <div class="answer-actions">
+            <button class="action-btn" title="Copy Answer">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+              </svg>
+              Copy
+            </button>
+            <button class="action-btn" title="Share Answer">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="18" cy="5" r="3"/>
+                <circle cx="6" cy="12" r="3"/>
+                <circle cx="18" cy="19" r="3"/>
+                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+              </svg>
+              Share
+            </button>
+            <button class="action-btn" title="Export as PDF">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+              Export
+            </button>
+            <button class="action-btn action-btn-accent" title="View Mindmap">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="10" y="3" width="4" height="4" rx="1" />
+                <rect x="3" y="17" width="4" height="4" rx="1" />
+                <rect x="17" y="17" width="4" height="4" rx="1" />
+                <path d="M12 7v4" />
+                <path d="M12 11l-7 6" />
+                <path d="M12 11l7 6" />
+              </svg>
+              Mindmap
+            </button>
+          </div>
+
           <span class="msg-timestamp">${formatTime(msg.timestamp)}</span>
         </div>
       `;
@@ -4447,6 +4552,34 @@ window.sendMessage = async function() {
   aiBubbleDiv.innerHTML = `
     <div class="ai-avatar"><img src="logo.jpg" alt="Bruhaspati AI"></div>
     <div class="ai-content">
+      
+      <!-- Thinking Process Accordion -->
+      <div class="thinking-ui expanded" id="thinking_${streamCardId}">
+        <button class="thinking-header" onclick="this.parentElement.classList.toggle('expanded')">
+          <div class="thinking-spinner"></div>
+          <span class="thinking-title">Thinking Process</span>
+          <svg class="thinking-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 9l6 6 6-6"/>
+          </svg>
+        </button>
+        <div class="thinking-content">
+          <ul class="thinking-steps">
+            <li class="step completed" id="step1_${streamCardId}">
+              <svg class="step-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+              Understanding Topic
+            </li>
+            <li class="step active" id="step2_${streamCardId}">
+              <div class="step-spinner"></div>
+              Researching Context
+            </li>
+            <li class="step pending" id="step3_${streamCardId}">
+              <div class="step-dot"></div>
+              Building Answer
+            </li>
+          </ul>
+        </div>
+      </div>
+
       <div class="response-card skeleton-card" id="${streamCardId}">
         <div class="skeleton-line" style="width: 40%"></div>
         <div class="skeleton-line" style="width: 90%"></div>
@@ -6873,3 +7006,71 @@ window.handleKeyDown = function(event) {
 document.addEventListener('DOMContentLoaded', () => {
   window.initAuth();
 });
+
+// ==========================================
+// PREMIUM VOICE MODE UI LOGIC
+// ==========================================
+let voiceModeSimulationTimer = null;
+
+window.openVoiceMode = function() {
+  const overlay = document.getElementById('voiceModeOverlay');
+  if (overlay) {
+    overlay.style.display = 'flex';
+    document.getElementById('voiceStatusText').innerText = 'Listening...';
+    document.getElementById('voiceTranscript').innerText = 'Speak now, I\'m listening to your questions...';
+    document.getElementById('mainVoiceOrb').className = 'voice-orb active';
+    document.getElementById('voiceModeMicBtn').className = 'voice-mic-btn active';
+    
+    // Fallback: If standard speech recognition is used, trigger it here.
+    // For now, simulate voice recognition and AI response.
+    simulateVoiceInteraction();
+  }
+};
+
+window.closeVoiceMode = function() {
+  const overlay = document.getElementById('voiceModeOverlay');
+  if (overlay) overlay.style.display = 'none';
+  if (voiceModeSimulationTimer) clearTimeout(voiceModeSimulationTimer);
+  document.getElementById('mainVoiceOrb').className = 'voice-orb';
+};
+
+window.toggleVoiceListening = function() {
+  const micBtn = document.getElementById('voiceModeMicBtn');
+  if (micBtn.classList.contains('active')) {
+    micBtn.classList.remove('active');
+    document.getElementById('voiceStatusText').innerText = 'Paused';
+    document.getElementById('mainVoiceOrb').className = 'voice-orb';
+  } else {
+    micBtn.classList.add('active');
+    document.getElementById('voiceStatusText').innerText = 'Listening...';
+    document.getElementById('mainVoiceOrb').className = 'voice-orb active';
+  }
+};
+
+function simulateVoiceInteraction() {
+  const transcript = document.getElementById('voiceTranscript');
+  const orb = document.getElementById('mainVoiceOrb');
+  const status = document.getElementById('voiceStatusText');
+  
+  voiceModeSimulationTimer = setTimeout(() => {
+    transcript.innerText = 'Can you explain Monohybrid Cross?';
+    
+    voiceModeSimulationTimer = setTimeout(() => {
+      status.innerText = 'Thinking...';
+      orb.className = 'voice-orb active'; // Could add a spinning state
+      
+      voiceModeSimulationTimer = setTimeout(() => {
+        status.innerText = 'Speaking...';
+        orb.className = 'voice-orb speaking';
+        transcript.innerText = "A monohybrid cross is a genetic mix between two individuals who have homozygous genotypes...";
+        
+        // Return to listening state after a while
+        voiceModeSimulationTimer = setTimeout(() => {
+          status.innerText = 'Listening...';
+          orb.className = 'voice-orb active';
+          transcript.innerText = '...';
+        }, 6000);
+      }, 2000);
+    }, 1500);
+  }, 3000);
+}
